@@ -5,6 +5,8 @@ var db = require('../config/database');
 
 
 
+
+
 var app = express();  // create our app w/ express
 var port = process.env.PORT || 3000;
 var ip = "127.0.0.1";
@@ -26,6 +28,8 @@ app.use(bodyParser.json());
 app.get('/', function(req, res) {
   res.send('Hello');
 });
+
+
 
 
 /************************************************************/
