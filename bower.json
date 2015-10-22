@@ -1,0 +1,23 @@
+{
+  "name": "knapsack",
+  "description": "> Pithy project description",
+  "main": "public/index.html",
+  "authors": [
+    "mollymerp <mollylloyd@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/knapsack-app/knapsack",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "test",
+    "tests",
+    "bower_components",
+    "public/lib"
+  ],
+  "dependencies": {
+    "angular": "~1.4.7",
+    "angular-ui-router": "~0.2.15"
+  }
+}
