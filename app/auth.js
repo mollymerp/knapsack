@@ -21,6 +21,7 @@ angular.module('auth', ['ui.bootstrap'])
 
   $scope.ok = function () {
     $modalInstance.close();
+    console.log($scope)
   };
 
   $scope.cancel = function () {
