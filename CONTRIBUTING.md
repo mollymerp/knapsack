@@ -22,7 +22,10 @@ Know that this is not coherent with the Makersquare Contribution Guidelines, but
 
 ####The Pull-Request Workflow
 
-When you send in a pull-request, because you think your feature is ready to be merged into the master branch make sure that it is sufficiently tested. It is your responsiblity that the master branch does not break when you merge. If someone worked on code that interfers with the code that you worked on make sure that you talk to that person and handle the merge commits together with that person. Also every merge into master has to be signed of by someone. This is not a proper code review. We allocate time for that, but it should rather be a way to check for obvious mistakes
+- When you send in a pull-request, because you think your feature is ready to be merged into the master branch make sure that it is sufficiently tested. It is your responsiblity that the master branch does not break when you merge. 
+- If someone worked on code that interfers with the code that you worked on make sure that you talk to that person and handle the merge conflicts together with that person.
+- Also every merge into master has to be signed off by someone. This is not a proper code review. We allocate time for that, but it should rather be a way to check for obvious mistakes and things that seem problematic to the reviewer from a perspective of readibility.
+- If you are the reviewer handling the pull request and you find code that you think is problematic and will be harder to maintain in the feature let the person know through the pull request feature on github and/or talk to her/him in person.
 
 
 
