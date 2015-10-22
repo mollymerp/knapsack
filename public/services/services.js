@@ -1,6 +1,6 @@
 angular.module("knapsack.services",[])
 
-.factory("Contents", ["$http", "contentType", function ($http, contentType) {
+.factory("Contents", ["$http", function ($http) {
   
   var getContent = function () {
     return $http({
