@@ -16,5 +16,12 @@
   "bugs": {
     "url": "https://github.com/ccnixon/knapsack/issues"
   },
-  "homepage": "https://github.com/ccnixon/knapsack#readme"
+  "homepage": "https://github.com/ccnixon/knapsack#readme",
+  "dependencies": {
+    "angular": "^1.4.7",
+    "angular-bootstrap": "^0.12.2",
+    "bootstrap": "^3.3.5",
+    "bootswatch": "^3.3.5",
+    "ui-router": "^0.2.15"
+  }
 }
