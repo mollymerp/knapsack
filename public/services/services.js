@@ -21,10 +21,21 @@ angular.module("knapsack.services",[])
       console.log("data saved")
     });
   };
+
+  var removeContent = function (content) {
+    return $http({
+      method: 'POST',
+      url: "/"
+    })
+    .then( function (resp) {
+
+    });
+  }
   
   return {
     getContent: getContent,
-    addContent: addContent
+    addContent: addContent,
+    removeContent: removeContent
   };
 
 }])
