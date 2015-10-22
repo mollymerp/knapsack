@@ -18,6 +18,8 @@
   ],
   "dependencies": {
     "angular": "~1.4.7",
-    "angular-ui-router": "~0.2.15"
+    "angular-ui-router": "~0.2.15",
+    "angular-ui-bootstrap": "~0.14.2",
+    "angular-smart-table": "~2.1.4"
   }
 }
