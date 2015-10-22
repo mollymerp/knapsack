@@ -13,7 +13,8 @@
     "node_modules",
     "bower_components",
     "test",
-    "tests"
+    "tests",
+    "client/lib"
   ],
   "dependencies": {
     "angular": "~1.4.7",
