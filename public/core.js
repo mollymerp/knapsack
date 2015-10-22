@@ -1,4 +1,4 @@
-angular.module('knapsack', ["ui.bootstrap","knapsack.services"])
+angular.module("knapsack", ["ui.router","ui.bootstrap","smart-table","knapsack.services","knapsack.main"])
 
 .config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $urlRouteProvider) {
   $urlRouteProvider.otherwise("/");
@@ -7,7 +7,12 @@ angular.module('knapsack', ["ui.bootstrap","knapsack.services"])
     .state("main", {
       url:"/",
       templateUrl: "main/main.html",
-      controller: "MainCtrl"
+      controller: "MainController"
     })
 
 }]);
+// .run(["$rootScope", "$location", "Auth", function ($rootScope, $location, Auth){
+//   $rootScope.on("$routeChangeStart", function (){
+//     $location.path("/");
+//   })
+// }])
