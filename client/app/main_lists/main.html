@@ -1,5 +1,13 @@
 <uib-accordion>
   <uib-accordion-group heading="Books">
+    <form class="form-inline"  name="addBook" ng-submit="addBook()">
+      <input type="text" ng-model="title" placeholder="Title" required>
+      <input type="text" ng-model="author" placeholder="Author">
+      <input type="text" ng-model="readStatus" placeholder= "Read Status">
+      <button type="submit"  class = "btn btn-sm btn-success">
+        <i class="glyphicon glyphicon-plus"></i>
+      </button>
+    </form>
     <table st-table="booksCollection" class="table book-table">
       <thead>
         <tr>

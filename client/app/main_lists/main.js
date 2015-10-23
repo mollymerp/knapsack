@@ -28,4 +28,8 @@ angular.module("knapsack.main", [])
 
     };
 
+    $scope.addBook = function (){
+      
+    }
+
   }]);
