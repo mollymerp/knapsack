@@ -16,10 +16,22 @@ var ip = "127.0.0.1";
 /************************************************************/
 //placeholder for connecting to DB
 // db.connect()
-app.use(express.static(__dirname + '/../client'));
+
+// Express uses template engine to parse front-end scripts. Can parse HTML, EJS, JADE, ect
+app.set('view engine', 'ejs');
+// Tells Express from where to deliver front end views
+app.set('views', __dirname + '/../client/views')
+// Logger for dev environment
 app.use(morgan('dev'));
+// Body parser is middleware to handle POST data in Express 4
 app.use(bodyParser.urlencoded({'extended':'true'}));
 app.use(bodyParser.json());
+// Cookie parser is middleware to handle cookies.
+app.use(cookieParser());
+// Express sessions handles sessions in Express
+app.use(session({secret: '$#%!@#@@#SSDASASDVV@@@@', key: 'sid'}));
+// serve up static files
+app.use(express.static(__dirname + '/../client'));
 
 
 /************************************************************/
