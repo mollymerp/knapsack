@@ -1,21 +1,23 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html ng-app="knapsack">
 
 <head>
+  <meta charset="utf-8">
+  <title>Knapsack</title>
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 
 <body>
-  <!-- view -->
-  <div ng-view></div>
-  <!-- scripts -->
-  <script src="bower_components/angular/angular.js"></script>
-  <script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
-  
-  <script type="text/javascript" src="sidebar.js"></script>
-  <script type="text/javascript" src="services.js"></script>
-  <script type="text/javascript" src="app.js"></script>
+  <div ui-view></div>
+  <script src="lib/angular/angular.min.js"></script>
+  <script src="lib/angular-ui-router/release/angular-ui-router.min.js"></script>
+  <script src="lib/angular-smart-table/dist/smart-table.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.14.2/ui-bootstrap-tpls.min.js"></script>
+  <!-- -->
+  <script src="services/services.js"></script>
+  <script src="main/main.js"></script>
+  <script src="core.js"></script>
 </body>
 
 </html>
