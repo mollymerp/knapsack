@@ -18,10 +18,11 @@
   },
   "homepage": "https://github.com/ccnixon/knapsack#readme",
   "dependencies": {
-    "angular": "^1.4.7",
-    "angular-bootstrap": "^0.12.2",
-    "bootstrap": "^3.3.5",
-    "bootswatch": "^3.3.5",
-    "ui-router": "^0.2.15"
+    "body-parser": "^1.14.1",
+    "bookshelf": "^0.8.2",
+    "express": "~4.0.0",
+    "knex": "^0.8.6",
+    "morgan": "^1.6.1",
+    "nodemon": "^1.7.3"
   }
 }
