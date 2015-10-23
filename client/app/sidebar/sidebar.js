@@ -1,15 +1,14 @@
 angular.module("knapsack.sidebar", [])
-  .controller("SidebarController", ["Collections", function(Collections) {
+  .controller("SidebarController", ["$scope", "Collections", function($scope, Collections) {
 
-    var collections = this;
-    collections.data = {}
+    $scope.data = {}
 
     var getCollections = function() {
-      collections.data.collections = Collections.getAll();
+      $scope.data.collections = Collections.getAll();
 
       //this code is whenever we start working with http requests which return promises
       // .then(function(retrievedCollections) {
-      //   collections.data.collections = retrievedCollections;
+      //   $scope.data.collections = retrievedCollections;
       // })
       // .catch(function(error) {
       //   console.error(error);
