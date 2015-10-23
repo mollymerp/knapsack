@@ -2,7 +2,7 @@
   <div>
     <ul class="collections">
       <li class="collection" ng-repeat="collection in data.collections">
-        <span class="lead glyphicon glyphicon-folder-open"> {{collection}}</span>
+        <span class="lead glyphicon glyphicon-folder-open"><a ng-href="#/collection/{{collection}}"> {{collection}}</a></span>
       </li>
     </ul>
   </div>
