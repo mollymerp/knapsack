@@ -1,12 +1,12 @@
 angular.module("knapsack.main", [])
-  .controller("MainController", ["$scope", "$window", "$location", "Contents", function ($scope, $window, $location, Contents) {
+  .controller("MainController", ["$scope", "$window", "$location", "Contents", function($scope, $window, $location, Contents) {
     $scope.newBook = {
       title: "",
       author: "",
       readStatus: ""
     };
     console.log("MainController $location: ", $location.url().split('/'));
-    
+
     $scope.bookCollection = [{
       "title": "The Goldfinch",
       "author": "Donna Tartt",
@@ -26,13 +26,13 @@ angular.module("knapsack.main", [])
     }];
 
 
-    $scope.getNytimes = function (){
+    $scope.getNytimes = function() {
       var bestSellers = [];
-      Contents.getNytimes().then(function (resp){
-        resp.forEach(function (book){
+      Contents.getNytimes().then(function(resp) {
+        resp.forEach(function(book) {
           var tableData = {};
           var dat = book.book_details[0];
-      
+
           tableData.title = dat.title;
           tableData.author = dat.author;
           bestSellers.push(tableData);
@@ -41,7 +41,10 @@ angular.module("knapsack.main", [])
       })
     };
 
+    //need to make a copy for smart table to asynchronously paginate responses;
+    $scope.displayedCollection = [].concat($scope.bookCollection);
 
+    
     $scope.addBook = function() {
 
       $scope.bookCollection.unshift({
@@ -59,7 +62,7 @@ angular.module("knapsack.main", [])
 
     };
 
-    if ($location.url().split('/')[1]==="collection"){
+    if ($location.url().split('/')[1] === "collection") {
       console.log("inside");
       $scope.getNytimes();
     }
