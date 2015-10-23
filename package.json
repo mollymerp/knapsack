@@ -28,6 +28,8 @@
     "morgan": "^1.6.1",
     "mysql": "^2.9.0",
     "nodemailer": "^1.8.0",
-    "nodemon": "^1.7.3"
+    "nodemon": "^1.7.3",
+    "sequelize": "^3.12.2",
+    "sqlite3": "^3.1.0"
   }
 }
