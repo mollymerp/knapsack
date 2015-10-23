@@ -1,23 +1,8 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-sm-2 fixed" id="leftCol">
-      <div id="sidebar">
-        <div class="nav collections">
-          <ul class="collection" ng-repeat="collection in sidebar.data.collections">
-            <li>
-              <span class="lead glyphicon glyphicon-folder-open"> {{collection}}</span>
-            </li>
-        </div>
-      </div>
-    </div>
-    <!-- left column -->
-    <div class="col-md-8 col-md-offset-2 scrollit">
-      <span class="lead">HELLO, WORLD!</span>
-      <b>Scroll Content</b>
-      <br/>
-      <br/>
-    </div>
+<div id="sidebar">
+  <div class="nav collections">
+    <ul class="collection" ng-repeat="collection in sidebar.data.collections">
+      <li>
+        <span class="lead glyphicon glyphicon-folder-open"> {{collection}}</span>
+      </li>
   </div>
-  <!-- right column -->
-</div>
 </div>

@@ -1,15 +1,14 @@
+#sidebar {}
 
-#sidebar {
-  margin-top:100px;
-}
 li {
-  list-style-type: none;
+    list-style-type: none;
 }
-.fixed {
+
+/*.fixed {
         position: fixed;
         width: 25%;
 }
 .scrollit {
         float: left;
         width: 71%
-}
+}*/
