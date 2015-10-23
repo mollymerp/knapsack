@@ -1,27 +1,13 @@
 <uib-accordion>
   <uib-accordion-group heading="Books">
-    <table st-table="addBook" class="table add-book">
-      <tbody>
-        <tr>
-          <form name="addBook">
-          <td>
-            <input type="text" name="title" placeholder="Title" required>
-          </td>
-          <td>
-            <input type="text" name="author" placeholder="Author">
-          </td>
-          <td>
-            <input type="text" name="readStatus" placeholder= "Read Status">
-          </td>
-          <td>
-            <button type="button" ng-click="addBook(book)" class = "btn btn-sm">
-              <i class="glyphicon glyphicon-plus"></i>
-            </button>
-          </td>
-          </form>
-        </tr>
-      </tbody>
-    </table>
+    <form class="form-inline"  name="addBook" ng-submit="addBook()">
+      <input type="text" ng-model="title" placeholder="Title" required>
+      <input type="text" ng-model="author" placeholder="Author">
+      <input type="text" ng-model="readStatus" placeholder= "Read Status">
+      <button type="submit"  class = "btn btn-sm btn-success">
+        <i class="glyphicon glyphicon-plus"></i>
+      </button>
+    </form>
     <table st-table="booksCollection" class="table book-table">
       <thead>
         <tr>
@@ -32,7 +18,6 @@
         </tr>
       </thead>
       <tbody>
-
         <tr ng-repeat="book in bookCollection">
           <td> {{book.title | uppercase}} </td>
           <td> {{book.author | uppercase}} </td>
