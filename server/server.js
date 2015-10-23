@@ -76,6 +76,10 @@ app.post("/api/signup", function(req, res) {
   console.log("Username: ", username, "Password: ", password);
 });
 
+app.post("/api/collections", function(req, res) {
+  console.log("Im in api/collections POST request: ", req.body);
+});
+
 
 /************************************************************/
 // AUTHENTICATION ROUTES
