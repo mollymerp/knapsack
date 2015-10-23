@@ -2,8 +2,8 @@ var express = require('express');
 var bodyParser = require('body-parser'); // pull reqs from HTML POST
 var morgan = require('morgan');  // log requests to the console
 var db = require('../config/database'); 
-
-
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
 
 
 
@@ -29,7 +29,10 @@ app.use(bodyParser.json());
 // Cookie parser is middleware to handle cookies.
 app.use(cookieParser());
 // Express sessions handles sessions in Express
-app.use(session({secret: '$#%!@#@@#SSDASASDVV@@@@', key: 'sid'}));
+app.use(session({secret: '$#%!@#@@#SSDASASDVV@@@@', 
+                 key: 'sid',
+                 saveUninitialized: true,
+                 resave: true}));
 // serve up static files
 app.use(express.static(__dirname + '/../client'));
 
