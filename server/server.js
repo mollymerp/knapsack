@@ -71,9 +71,14 @@ app.post('/', function(req, res) {
 // apply the routes to our application
 app.use('/', router);
 
-app.post("/api/users", function(req, res) {
+app.post("/api/signin", function(req, res) {
   console.log(req.body);
-  res.end();
+});
+
+app.post("/api/signup", function(req, res) {
+  var username = req.body.username;
+  var password = req.body.password;
+  console.log("Username: ", username, "Password: ", password);
 });
 
 
