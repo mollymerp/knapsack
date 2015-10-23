@@ -4,6 +4,7 @@ var morgan = require("morgan");  // log requests to the console
 var db = require("../config/database"); 
 var cookieParser = require("cookie-parser");
 var session = require("express-session");
+var sequelize = require("sequelize");
 
 
 
@@ -78,6 +79,10 @@ app.post("/api/signin", function(req, res) {
 app.post("/api/signup", function(req, res) {
   var username = req.body.username;
   var password = req.body.password;
+
+  sequelize.query("INSERT INTO users (user_name, password) VALUES (username, password)").success(function(myTableRows) {
+    console.log(myTableRows);
+  });
   console.log("Username: ", username, "Password: ", password);
 });
 
