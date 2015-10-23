@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ccnixon/knapsack.git"
+    "url": "git+https://github.com/knapsack-app/knapsack"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ccnixon/knapsack/issues"
+    "url": "https://github.com/knapsack-app/knapsack/issues"
   },
-  "homepage": "https://github.com/ccnixon/knapsack#readme",
+  "homepage": "https://github.com/knapsack-app/knapsack#readme",
   "dependencies": {
     "body-parser": "^1.14.1",
     "bookshelf": "^0.8.2",
