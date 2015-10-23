@@ -24,7 +24,7 @@ var ModalInstanceCtrl = function($http, $scope, $modalInstance, userForm) {
     if ($scope.form.userForm.$valid) {
       $http({
         method: "POST",
-        url: "api/users",
+        url: "api/signup",
         data: $scope.user
       });
       $modalInstance.close('closed');
