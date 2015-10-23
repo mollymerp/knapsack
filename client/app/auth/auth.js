@@ -1,4 +1,4 @@
-angular.module('auth', ['ui.bootstrap'])
+angular.module("knapsack.auth", ['ui.bootstrap'])
 
 .controller('authController', function($scope, $modal, $log){
 
@@ -9,7 +9,7 @@ angular.module('auth', ['ui.bootstrap'])
   $scope.open = function (size) {
 
     var modalInstance = $modal.open({
-      templateUrl: 'signin.html',
+      templateUrl: 'login-modal.html',
       controller: 'ModalInstanceCtrl',
       size: size,
     });

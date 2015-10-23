@@ -1,0 +1,27 @@
+<uib-accordion>
+  <uib-accordion-group heading="Books">
+    <table st-table="booksCollection" class="table book-table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Read Status</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="book in bookCollection">
+          <td> {{book.title | uppercase}} </td>
+          <td> {{book.author | uppercase}} </td>
+          <td> {{book.readStatus}} </td>
+          <td>
+            <button type="button" ng-click="removeBook(book)" class="btn btn-sm btn-danger">
+              <i class="glyphicon glyphicon-trash">
+              </i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </uib-accordion-group>
+</uib-accordion>

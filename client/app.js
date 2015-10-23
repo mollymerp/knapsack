@@ -1,11 +1,11 @@
-angular.module("knapsack", ["ui.router", "ui.bootstrap", "smart-table", "knapsack.services", "knapsack.main","knapsack.auth"])
+angular.module("knapsack", ["ui.router", "ui.bootstrap", "smart-table", "knapsack.services", "knapsack.main","knapsack.sidebar", "knapsack.auth"])
 
 .config(["$stateProvider", "$urlRouterProvider", function($stateProvider, $urlRouteProvider) {
   $urlRouteProvider.otherwise("/");
 
   $stateProvider
     .state("main", {
-      url: "/"
+      url: "/",
       views: {
         "main_lists": {
           templateUrl: "app/main_lists/main.html",
@@ -13,14 +13,18 @@ angular.module("knapsack", ["ui.router", "ui.bootstrap", "smart-table", "knapsac
         },
         "sidebar": {
           templateUrl: "app/sidebar/sidebar.html",
-          controller: "SidebarController",
-          controllerAs: "sidebar"
+          controller:"SidebarController"
         },
         "header": {
           templateUrl: "app/auth/header.html",
-          controller: "authController",
+          controller:"SidebarController"
         }
       }
     })
 
 }]);
+// .run(["$rootScope", "$location", "Auth", function ($rootScope, $location, Auth){
+//   $rootScope.on("$routeChangeStart", function (){
+//     $location.path("/");
+//   })
+// }])
