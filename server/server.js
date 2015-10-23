@@ -1,13 +1,12 @@
 var express = require("express");
 var bodyParser = require("body-parser"); // pull reqs from HTML POST
 var morgan = require("morgan");  // log requests to the console
-var db = require("../config/database"); 
+
 var cookieParser = require("cookie-parser");
 var session = require("express-session");
 var sequelize = require("sequelize");
-
-
-
+var db = require("../config/database.js"); //connect to database
+var ddl = require("../config/ddl.js"); // create database tables
 
 var app = express(); // create our app w/ express
 var port = process.env.PORT || 3000;
@@ -17,11 +16,17 @@ var ip = "127.0.0.1";
 // CONFIGURE SERVER
 /************************************************************/
 
-////////////////////////////////////////////////
-// PLACEHOLDER FOR DB CONNECTION
-////////////////////////////////////////////////
+/************************************************************/
+// Initialize Database
+/************************************************************/
+db.sync()
+  .then(function(err) {
+    console.log('Database worked!');
+  }, function (err) {
+    console.log('An error occurred while creating the database:', err);
+  });
 
-
+/************************************************************/
 // Express uses template engine to parse front-end scripts. Can parse HTML, EJS, JADE, ect
 app.set("view engine", "ejs");
 // Tells Express from where to deliver front end views
@@ -34,7 +39,7 @@ app.use(bodyParser.json());
 // Cookie parser is middleware to handle cookies.
 app.use(cookieParser());
 // Express sessions handles sessions in Express
-app.use(session({secret: "$#%!@#@@#SSDASASDVV@@@@", 
+app.use(session({secret: "$#%!@#@@#SSDASASDVV@@@@",
                  key: "sid",
                  saveUninitialized: true,
                  resave: true}));
@@ -90,8 +95,8 @@ app.post("/api/collections", function(req, res) {
 
 /************************************************************/
 // HANDLE WILDCARD ROUTES - IF ALL OTHER ROUTES FAIL
-// 
-// 
+//
+//
 /************************************************************/
 
 
