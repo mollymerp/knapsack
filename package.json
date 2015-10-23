@@ -5,7 +5,8 @@
   "main": "./server/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./server/server.js"
+    "start": "node ./server/server.js",
+    "postinstall": "./node_modules/bower/bin/bower install"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,7 @@
   "dependencies": {
     "body-parser": "^1.14.1",
     "bookshelf": "^0.8.2",
+    "bower": "^1.6.3",
     "express": "~4.0.0",
     "knex": "^0.8.6",
     "morgan": "^1.6.1",
