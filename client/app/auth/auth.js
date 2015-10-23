@@ -19,7 +19,7 @@ angular.module("knapsack.auth", ['ui.bootstrap'])
 }]);
 
 var ModalInstanceCtrl = function($scope, $modalInstance, userForm) {
-  $scope.form = {}
+  $scope.form = {};
   $scope.submitForm = function() {
     if ($scope.form.userForm.$valid) {
       console.log('user form is in scope');
