@@ -20,10 +20,14 @@
   "dependencies": {
     "body-parser": "^1.14.1",
     "bookshelf": "^0.8.2",
+    "cookie-parser": "^1.4.0",
+    "ejs": "^2.3.4",
     "express": "~4.0.0",
+    "express-session": "^1.11.3",
     "knex": "^0.8.6",
     "morgan": "^1.6.1",
     "mysql": "^2.9.0",
+    "nodemailer": "^1.8.0",
     "nodemon": "^1.7.3"
   }
 }
