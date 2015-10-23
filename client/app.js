@@ -6,7 +6,7 @@ angular.module("knapsack", ["ui.router", "ui.bootstrap", "smart-table", "knapsac
   $stateProvider
     .state("main", {
       url: "/",
-      templateUrl: "main/main.html",
+      templateUrl: "app/main_lists/main.html",
       controller: "MainController"
     })
 
