@@ -1,7 +1,7 @@
 var express = require('express');   
 var bodyParser = require('body-parser'); // pull reqs from HTML POST
 var morgan = require('morgan');  // log requests to the console
-var db = require('./config/database'); 
+var db = require('../config/database'); 
 
 
 
@@ -13,8 +13,8 @@ var ip = "127.0.0.1";
 // CONFIGURE SERVER
 /************************************************************/
 //placeholder for connecting to DB
-db.connect()
-app.use(express.static(__dirname + '/public'));
+// db.connect()
+app.use(express.static(__dirname + '/../client'));
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({'extended':'true'}));
 app.use(bodyParser.json());
