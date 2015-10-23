@@ -57,16 +57,16 @@ app.post('/', function(req, res) {
 });
 
 // 
-app.post('/login', function(req, res) {
-  var name = req.body.name;
-  var username = req.body.username;
-  var email = req.body.email;
-  console.log("Name: ", name, "Username: ", username, "Email: ", email);
-});
+// app.post('/login', function(req, res) {
+//   var name = req.body.name;
+//   var username = req.body.username;
+//   var email = req.body.email;
+//   console.log("Name: ", name, "Username: ", username, "Email: ", email);
+// });
 
-app.post('signin', function(req, res) {
-  console.log(req);
-});
+// app.post('/signin', function(req, res) {
+//   console.log(req);
+// });
 // apply the routes to our application
 app.use('/', router);
 
