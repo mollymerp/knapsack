@@ -1,5 +1,11 @@
 angular.module("knapsack.main", [])
   .controller("MainController", ["$scope", "Contents", function($scope, Contents) {
+    $scope.newBook = {
+      title:"",
+      author:"",
+      readStatus:""
+    };
+
     $scope.bookCollection = [{
       "title": "The Goldfinch",
       "author": "Donna Tartt",
@@ -18,7 +24,11 @@ angular.module("knapsack.main", [])
       "readStatus": "Never"
     }];
 
-    $scope.articleCollection = [];
+    $scope.addBook = function (){
+
+      $scope.bookCollection.unshift({"title": $scope.newBook.title, 
+        "author": $scope.newBook.author, "readStatus": $scope.newBook.readStatus});
+    };
 
     $scope.getBooks = function() {
 
@@ -28,8 +38,6 @@ angular.module("knapsack.main", [])
 
     };
 
-    $scope.addBook = function (){
-      
-    }
+
 
   }]);
