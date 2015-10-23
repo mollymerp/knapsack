@@ -20,6 +20,6 @@ angular.module("knapsack", ["ui.router", "ui.bootstrap", "smart-table", "knapsac
           controller: "authController",
         }
       }
-    })
+    });
 
 }]);
