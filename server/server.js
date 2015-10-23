@@ -25,25 +25,37 @@ app.use(bodyParser.json());
 /************************************************************/
 // ROUTE HANDLING
 /************************************************************/
-app.get('/', function(req, res) {
-  res.send('Hello');
+
+// GET AN INSTANCE OF ROUTER
+var router  = express.Router();
+
+// Home page route (http://localhost:3000)
+router.get('/', function(req, res) {
+  res.send("Im the home page");
 });
 
+// 
 
-
-
-/************************************************************/
-// Authenticaton Routes
-/************************************************************/
+// apply the routes to our application
+app.use('/', router);
 
 
 
 
 /************************************************************/
-// Handle the wildcard route last - if all other routes fail
+// AUTHENTICATION ROUTES
+/************************************************************/
+
+
+/************************************************************/
+// HANDLE WILDCARD ROUTES - IF ALL OTHER ROUTES FAIL
 // 
 // 
 /************************************************************/
 
-console.log('Knapsack is listening on port ' + port);
+
+/************************************************************/
+// START THE SERVER
+/************************************************************/
 app.listen(3000);
+console.log('Knapsack is listening on port ' + port);
