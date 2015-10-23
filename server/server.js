@@ -14,8 +14,11 @@ var ip = "127.0.0.1";
 /************************************************************/
 // CONFIGURE SERVER
 /************************************************************/
-//placeholder for connecting to DB
-// db.connect()
+
+////////////////////////////////////////////////
+// PLACEHOLDER FOR DB CONNECTION
+////////////////////////////////////////////////
+
 
 // Express uses template engine to parse front-end scripts. Can parse HTML, EJS, JADE, ect
 app.set('view engine', 'ejs');
@@ -46,11 +49,24 @@ var router  = express.Router();
 
 // Home page route (http://localhost:3000)
 router.get('/', function(req, res) {
-  res.send("Im the home page");
+  res.render("index");
+});
+
+app.post('/', function(req, res) {
+  res.send("I got a POST Request from the home page");
 });
 
 // 
+app.post('/login', function(req, res) {
+  var name = req.body.name;
+  var username = req.body.username;
+  var email = req.body.email;
+  console.log("Name: ", name, "Username: ", username, "Email: ", email);
+});
 
+app.post('signin', function(req, res) {
+  console.log(req);
+});
 // apply the routes to our application
 app.use('/', router);
 
@@ -60,6 +76,8 @@ app.use('/', router);
 /************************************************************/
 // AUTHENTICATION ROUTES
 /************************************************************/
+
+
 
 
 /************************************************************/
