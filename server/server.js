@@ -1,7 +1,11 @@
-var express = require('express');
-var bodyParser = require('body-parser'); // pull reqs from HTML POST
-var morgan = require('morgan'); // log requests to the console
-var db = require('../config/database');
+var express = require("express");
+var bodyParser = require("body-parser"); // pull reqs from HTML POST
+var morgan = require("morgan");  // log requests to the console
+var db = require("../config/database"); 
+var cookieParser = require("cookie-parser");
+var session = require("express-session");
+var sequelize = require("sequelize");
+
 
 
 
@@ -12,41 +16,85 @@ var ip = "127.0.0.1";
 /************************************************************/
 // CONFIGURE SERVER
 /************************************************************/
-//placeholder for connecting to DB
-// db.connect()
-app.use(express.static(__dirname + '/../client'));
-app.use(morgan('dev'));
-app.use(bodyParser.urlencoded({
-  'extended': 'true'
-}));
+
+////////////////////////////////////////////////
+// PLACEHOLDER FOR DB CONNECTION
+////////////////////////////////////////////////
+
+
+// Express uses template engine to parse front-end scripts. Can parse HTML, EJS, JADE, ect
+app.set("view engine", "ejs");
+// Tells Express from where to deliver front end views
+app.set("views", __dirname + "/../client/views")
+// Logger for dev environment
+app.use(morgan("dev"));
+// Body parser is middleware to handle POST data in Express 4
+app.use(bodyParser.urlencoded({"extended":"true"}));
 app.use(bodyParser.json());
+// Cookie parser is middleware to handle cookies.
+app.use(cookieParser());
+// Express sessions handles sessions in Express
+app.use(session({secret: "$#%!@#@@#SSDASASDVV@@@@", 
+                 key: "sid",
+                 saveUninitialized: true,
+                 resave: true}));
+// serve up static files
+app.use(express.static(__dirname + "/../client"));
 
 
 /************************************************************/
 // ROUTE HANDLING
 /************************************************************/
-app.get('/', function(req, res) {
-  res.send('Hello');
+
+// GET AN INSTANCE OF ROUTER
+var router  = express.Router();
+
+// Home page route (http://localhost:3000)
+router.get("/", function(req, res) {
+  res.render("index");
 });
 
-app.post("/api/users", function(req, res) {
+app.post("/", function(req, res) {
+  res.send("I got a POST Request from the home page");
+});
+
+
+// apply the routes to our application
+app.use("/", router);
+
+app.post("/api/signin", function(req, res) {
   console.log(req.body);
-  res.end();
+});
+
+app.post("/api/signup", function(req, res) {
+  var username = req.body.username;
+  var password = req.body.password;
+
+  // sequelize.query("INSERT INTO users (user_name, password) VALUES (username, password)").success(function(myTableRows) {
+  //   console.log(myTableRows);
+  // });
+  console.log("Username: ", username, "Password: ", password);
 });
 
 
 /************************************************************/
-// Authenticaton Routes
+// AUTHENTICATION ROUTES
 /************************************************************/
 
 
 
 
 /************************************************************/
-// Handle the wildcard route last - if all other routes fail
+// HANDLE WILDCARD ROUTES - IF ALL OTHER ROUTES FAIL
 // 
 // 
 /************************************************************/
 
-console.log('Knapsack is listening on port ' + port);
-app.listen(3000);
+
+
+
+/************************************************************/
+// START THE SERVER
+/************************************************************/
+app.listen(port);
+console.log("Knapsack is listening on port " + port);
