@@ -1,11 +1,11 @@
-var express = require('express');   
+var express = require('express');
 var bodyParser = require('body-parser'); // pull reqs from HTML POST
-var morgan = require('morgan');  // log requests to the console
-var db = require('../config/database'); 
+var morgan = require('morgan'); // log requests to the console
+var db = require('../config/database');
 
 
 
-var app = express();  // create our app w/ express
+var app = express(); // create our app w/ express
 var port = process.env.PORT || 3000;
 var ip = "127.0.0.1";
 
@@ -16,7 +16,9 @@ var ip = "127.0.0.1";
 // db.connect()
 app.use(express.static(__dirname + '/../client'));
 app.use(morgan('dev'));
-app.use(bodyParser.urlencoded({'extended':'true'}));
+app.use(bodyParser.urlencoded({
+  'extended': 'true'
+}));
 app.use(bodyParser.json());
 
 
@@ -25,6 +27,11 @@ app.use(bodyParser.json());
 /************************************************************/
 app.get('/', function(req, res) {
   res.send('Hello');
+});
+
+app.post("/api/users", function(req, res) {
+  console.log(req.body);
+  res.end();
 });
 
 
