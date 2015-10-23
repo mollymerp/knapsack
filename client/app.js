@@ -5,7 +5,7 @@ angular.module("knapsack", ["ui.router", "ui.bootstrap", "smart-table", "knapsac
 
   $stateProvider
     .state("main", {
-      url: "/"
+      url: "/",
       views: {
         "main_lists": {
           templateUrl: "app/main_lists/main.html",
@@ -13,7 +13,7 @@ angular.module("knapsack", ["ui.router", "ui.bootstrap", "smart-table", "knapsac
         },
         "sidebar": {
           templateUrl: "app/sidebar/sidebar.html",
-          controller: "SidebarController"
+          controller:"SidebarController"
         },
         "header": {
           
