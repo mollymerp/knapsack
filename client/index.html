@@ -10,9 +10,16 @@
 
 <body>
   <div ui-view="header"></div>
-  <div ui-view="main_lists"></div>
-  <div ui-view="sidebar"></div>
-
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-2 fixed" id="leftCol">
+        <div ui-view="sidebar"></div>
+      </div>
+      <div class="col-md-8 col-md-offset-2 scrollit">
+        <div ui-view="main_lists"></div>
+      </div>
+    </div>
+  </div>
   <!-- dependencies -->
   <script src="lib/angular/angular.min.js"></script>
   <script src="lib/angular-ui-router/release/angular-ui-router.min.js"></script>

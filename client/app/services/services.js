@@ -2,15 +2,15 @@ angular.module("knapsack.services", [])
   .factory("Collections", ["$http", function($http) {
 
     var getAll = function() {
-      return $http({
-        method: "GET",
-        url: "api/collections"
-      }).then(function succesCallback(resp) {
-        console.log(resp.status + ": succesfully fetched collections");
-        return resp.data;
-      }, function errorCallback(resp) {
-        console.log(resp.status + ": failed fetching from server");
-      });
+      // return $http({
+      //   method: "GET",
+      //   url: "api/collections"
+      // }).then(function succesCallback(resp) {
+      //   console.log(resp.status + ": succesfully fetched collections");
+      //   return resp.data;
+      // }, function errorCallback(resp) {
+      //   console.log(resp.status + ": failed fetching from server");
+      // });
       //will be an http request at some point but not for now just return somehting
       return ["wine", "football", "cars", "trees", "boats"];
     };
