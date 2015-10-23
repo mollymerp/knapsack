@@ -58,17 +58,7 @@ app.post("/", function(req, res) {
   res.send("I got a POST Request from the home page");
 });
 
-// 
-// app.post("/login", function(req, res) {
-//   var name = req.body.name;
-//   var username = req.body.username;
-//   var email = req.body.email;
-//   console.log("Name: ", name, "Username: ", username, "Email: ", email);
-// });
 
-// app.post("/signin", function(req, res) {
-//   console.log(req);
-// });
 // apply the routes to our application
 app.use("/", router);
 
@@ -80,9 +70,9 @@ app.post("/api/signup", function(req, res) {
   var username = req.body.username;
   var password = req.body.password;
 
-  sequelize.query("INSERT INTO users (user_name, password) VALUES (username, password)").success(function(myTableRows) {
-    console.log(myTableRows);
-  });
+  // sequelize.query("INSERT INTO users (user_name, password) VALUES (username, password)").success(function(myTableRows) {
+  //   console.log(myTableRows);
+  // });
   console.log("Username: ", username, "Password: ", password);
 });
 
@@ -99,6 +89,7 @@ app.post("/api/signup", function(req, res) {
 // 
 // 
 /************************************************************/
+
 
 
 

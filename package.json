@@ -2,26 +2,28 @@
   "name": "knapsack",
   "version": "1.0.0",
   "description": "> Pithy project description",
-  "main": "server.js",
+  "main": "./server/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node ./server/server.js",
+    "postinstall": "./node_modules/bower/bin/bower install"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ccnixon/knapsack.git"
+    "url": "git+https://github.com/knapsack-app/knapsack"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ccnixon/knapsack/issues"
+    "url": "https://github.com/knapsack-app/knapsack/issues"
   },
-  "homepage": "https://github.com/ccnixon/knapsack#readme",
+  "homepage": "https://github.com/knapsack-app/knapsack#readme",
   "dependencies": {
     "body-parser": "^1.14.1",
     "bookshelf": "^0.8.2",
     "cookie-parser": "^1.4.0",
     "ejs": "^2.3.4",
+    "bower": "^1.6.3",
     "express": "~4.0.0",
     "express-session": "^1.11.3",
     "knex": "^0.8.6",
@@ -31,5 +33,12 @@
     "nodemon": "^1.7.3",
     "sequelize": "^3.12.2",
     "sqlite3": "^3.1.0"
+    "nodemon": "^1.7.3"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-jshint": "^1.11.2",
+    "gulp-util": "^3.0.7",
+    "jshint-stylish": "^2.0.1"
   }
 }
