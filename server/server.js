@@ -49,4 +49,4 @@ app.post("/api/users", function(req, res) {
 /************************************************************/
 
 console.log('Knapsack is listening on port ' + port);
-app.listen(3000);
+app.listen(port);
