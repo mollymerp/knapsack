@@ -3,8 +3,8 @@ var mysql = require('mysql');
 
 var pool = mysql.createPool({
   host     : 'localhost',
-  user     : '',
-  password : '',
+  user     : 'root',
+  password : 'root',
   database : 'ks_db'
 });
 
