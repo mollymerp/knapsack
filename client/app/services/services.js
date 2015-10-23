@@ -12,7 +12,7 @@ angular.module("knapsack.services", [])
       //   console.log(resp.status + ": failed fetching from server");
       // });
       //will be an http request at some point but not for now just return somehting
-      return ["wine", "football", "cars", "trees", "boats"];
+      return ["bestsellers", "wine", "football", "cars", "trees", "boats"];
     };
 
     var addCollection = function(data) {
@@ -53,6 +53,20 @@ angular.module("knapsack.services", [])
 
   }])
   .factory("Contents", ["$http", function($http) {
+//Molly's NYTimes Bestsellers API key / URI.
+//http://api.nytimes.com/svc/books/v3/lists.json?list-name=hardcover-fiction&api-key=b2f850985c69c53458eac07ce2f7a874%3A7%3A65642337
+
+    var getNytimes = function(){
+      return $http({
+        method:"GET",
+        url: "http://api.nytimes.com/svc/books/v3/lists.json?list-name=hardcover-fiction&api-key=b2f850985c69c53458eac07ce2f7a874%3A7%3A65642337"
+      })
+      .then(function (resp) {
+        console.log("NYTimes get request status:", resp.status)
+        return resp.data.results;
+      })
+    };  
+
 
     var getContent = function() {
       return $http({
@@ -87,7 +101,8 @@ angular.module("knapsack.services", [])
     return {
       getContent: getContent,
       addContent: addContent,
-      removeContent: removeContent
+      removeContent: removeContent,
+      getNytimes: getNytimes
     };
 
   }])
