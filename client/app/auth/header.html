@@ -1,20 +1,18 @@
-<div ng-controller="authController"> <!-- are there meant to be two authControllers? @ccnixon -->
-  <header>
-    <nav id="main-nav" class="navbar navbar-default" ng-controller="authController">
-    <div class="container">
-      <!-- site logo -->
-      <div class="navbar-header">
-        <a href="#" class="navbar-brand">
-          Knapsack
-        </a>
-      </div>
-      <!-- loading the modal templates to be ready for initial views -->
-      <div ng-include="'signin.html'"></div>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#" ng-click="open()">Sign In</a></li>
-        <li><a href="#">Sign Up</a></li>
-      </ul>
+<header>
+  <nav id="main-nav" class="navbar navbar-default" ng-controller="authController">
+  <div class="container">
+    <!-- site logo -->
+    <div class="navbar-header">
+      <a href="#" class="navbar-brand">
+        Knapsack
+      </a>
     </div>
-    </nav>  
-  </header>
-</div>
+    <!-- loading the modal templates to be ready for initial views -->
+    <!-- <div ng-include="'app/auth/login-modal.html'"></div> -->
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="#" ng-click="open()">Sign In</a></li>
+      <li><a href="#">Sign Up</a></li>
+    </ul>
+  </div>
+  </nav>  
+</header>

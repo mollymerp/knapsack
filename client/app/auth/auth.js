@@ -1,29 +1,35 @@
 angular.module("knapsack.auth", ['ui.bootstrap'])
 
-.controller('authController', function($scope, $modal, $log){
-
-  $scope.alert = function(){
-    alert("hello");
-  };
+.controller('authController', function($scope, $uibModal, $log){
 
   $scope.open = function (size) {
 
-    var modalInstance = $modal.open({
-      templateUrl: 'login-modal.html',
-      controller: 'ModalInstanceCtrl',
+    var modalInstance = $uibModal.open({
+      templateUrl: 'app/auth/login-modal.html',
+      controller: ModalInstanceCtrl,
       size: size,
+      resolve: {
+                    userForm: function () {
+                        return $scope.userForm;
+                    }
+                }
     });
   };
 
-})
-
-.controller('ModalInstanceCtrl', function ($scope, $modalInstance) {
-
-  $scope.ok = function () {
-    $modalInstance.close();
-  };
-
-  $scope.cancel = function () {
-    $modalInstance.dismiss('cancel');
-  };
 });
+
+var ModalInstanceCtrl = function ($scope, $modalInstance, userForm) {
+    $scope.form = {}
+    $scope.submitForm = function () {
+        if ($scope.form.userForm.$valid) {
+            console.log('user form is in scope');
+            $modalInstance.close('closed');
+        } else {
+            console.log('userform is not in scope');
+        }
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+};
