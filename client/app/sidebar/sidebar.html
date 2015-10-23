@@ -1,8 +1,9 @@
 <div id="sidebar">
-  <div class="nav collections">
-    <ul class="collection" ng-repeat="collection in sidebar.data.collections">
-      <li>
+  <div>
+    <ul class="collections">
+      <li class="collection" ng-repeat="collection in data.collections">
         <span class="lead glyphicon glyphicon-folder-open"> {{collection}}</span>
       </li>
+    </ul>
   </div>
 </div>
