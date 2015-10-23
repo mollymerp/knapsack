@@ -1,4 +1,4 @@
-var express = require('express');   
+var express = require('express');
 var bodyParser = require('body-parser'); // pull reqs from HTML POST
 var morgan = require('morgan');  // log requests to the console
 var db = require('../config/database'); 
@@ -7,7 +7,8 @@ var session = require('express-session');
 
 
 
-var app = express();  // create our app w/ express
+
+var app = express(); // create our app w/ express
 var port = process.env.PORT || 3000;
 var ip = "127.0.0.1";
 
@@ -70,7 +71,10 @@ app.post('/', function(req, res) {
 // apply the routes to our application
 app.use('/', router);
 
-
+app.post("/api/users", function(req, res) {
+  console.log(req.body);
+  res.end();
+});
 
 
 /************************************************************/
@@ -85,6 +89,7 @@ app.use('/', router);
 // 
 // 
 /************************************************************/
+
 
 
 /************************************************************/
