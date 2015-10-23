@@ -100,5 +100,5 @@ app.post("/api/signup", function(req, res) {
 /************************************************************/
 // START THE SERVER
 /************************************************************/
-app.listen(3000);
+app.listen(port);
 console.log('Knapsack is listening on port ' + port);
