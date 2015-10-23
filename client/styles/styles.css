@@ -1,10 +1,11 @@
-#sidebar {}
-
 li {
     list-style-type: none;
 }
 
-/*.fixed {
+/*
+if we want the scroll through feature this might
+need some extra modifications
+.fixed {
         position: fixed;
         width: 25%;
 }

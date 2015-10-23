@@ -14,7 +14,6 @@ angular.module("knapsack", ["ui.router", "ui.bootstrap", "smart-table", "knapsac
         "sidebar": {
           templateUrl: "app/sidebar/sidebar.html",
           controller: "SidebarController",
-          controllerAs: "sidebar"
         },
         "header": {
           templateUrl: "app/auth/header.html",
