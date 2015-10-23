@@ -1,28 +1,20 @@
-var mysql = require('mysql');
+//establish database connection
 
+var Sequelize = require("sequelize");
 
-var pool = mysql.createPool({
-  host     : 'localhost',
-  user     : 'root',
-  password : 'root',
-  database : 'ks_db'
+var db = new Sequelize(
+	"", //db
+	"", //user
+	"", //password
+	{
+  dialect : "sqlite",
+  port : "localhost",
+  pool: {
+    max: 10,
+    min:0,
+    idle:10000
+  },
+  storage: "../data/db.sqlite"
 });
 
-// pool.connect = function(callback){
-//   pool.getConnection(function(err, connection){
-//     if (err) throw err;
-//     callback(connection);
-//   });
-// };
-
-pool.getConnection(function(err, connection){
-  if(err){
-      // connection.release();
-      console.log("error: ", err);
-  } else {
-    console.log("Connection to mySQL successful!");
-  }
-});
-
-module.exports = pool;
-
+module.exports = db;
