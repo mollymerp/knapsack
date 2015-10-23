@@ -1,11 +1,12 @@
 angular.module("knapsack.main", [])
-  .controller("MainController", ["$scope", "Contents", function($scope, Contents) {
+  .controller("MainController", ["$scope", "$window", "$location", "Contents", function ($scope, $window, $location, Contents) {
     $scope.newBook = {
-      title:"",
-      author:"",
-      readStatus:""
+      title: "",
+      author: "",
+      readStatus: ""
     };
-
+    console.log("MainController $location: ", $location.url().split('/'));
+    
     $scope.bookCollection = [{
       "title": "The Goldfinch",
       "author": "Donna Tartt",
@@ -24,11 +25,30 @@ angular.module("knapsack.main", [])
       "readStatus": "Never"
     }];
 
-    $scope.addBook = function (){
 
-      $scope.bookCollection.unshift({"title": $scope.newBook
-.title, 
-        "author": $scope.newBook.author, "readStatus": $scope.newBook.readStatus});
+    $scope.getNytimes = function (){
+      var bestSellers = [];
+      Contents.getNytimes().then(function (resp){
+        resp.forEach(function (book){
+          var tableData = {};
+          var dat = book.book_details[0];
+      
+          tableData.title = dat.title;
+          tableData.author = dat.author;
+          bestSellers.push(tableData);
+        })
+        $scope.bookCollection = bestSellers;
+      })
+    };
+
+
+    $scope.addBook = function() {
+
+      $scope.bookCollection.unshift({
+        "title": $scope.newBook.title,
+        "author": $scope.newBook.author,
+        "readStatus": $scope.newBook.readStatus
+      });
     };
 
     $scope.getBooks = function() {
@@ -39,6 +59,9 @@ angular.module("knapsack.main", [])
 
     };
 
-
+    if ($location.url().split('/')[1]==="collection"){
+      console.log("inside");
+      $scope.getNytimes();
+    }
 
   }]);
