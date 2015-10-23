@@ -4,16 +4,19 @@ angular.module("knapsack", ["ui.router", "ui.bootstrap", "smart-table", "knapsac
   $urlRouteProvider.otherwise("/");
 
   $stateProvider
-    .state("main",
-      url: "/", { 
+    .state("main", {
+      url: "/"
       views: {
-        "main": {
+        "main_lists": {
           templateUrl: "app/main_lists/main.html",
           controller: "MainController"
         },
         "sidebar": {
           templateUrl: "app/sidebar/sidebar.html",
           controller: "SidebarController"
+        },
+        "header": {
+          
         }
       }
     })
