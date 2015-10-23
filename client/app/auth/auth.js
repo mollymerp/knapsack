@@ -32,28 +32,6 @@ angular.module("knapsack.auth", ["ui.bootstrap"])
 
 }]);
 
-// angular.module("knapsack.auth", ["ui.bootstrap"])
-
-// .controller("ModalInstanceCtrl", function($http, $scope, $modalInstance, userForm) {
-//   $scope.form = {};
-//   $scope.submitForm = function() {
-//     if ($scope.form.userForm.$valid) {
-//       $http({
-//         method: "POST",
-//         url: "api/signup",
-//         data: $scope.user
-//       });
-//       $modalInstance.close('closed');
-//     } else {
-//       console.log("form not valid");
-//     }
-//   };
-
-//   $scope.cancel = function() {
-//     $modalInstance.dismiss('cancel');
-//   };
-// });
-
 var SignupModalCtrl = function($http, $scope, $modalInstance, userForm) {
   $scope.form = {};
   $scope.submitForm = function() {
