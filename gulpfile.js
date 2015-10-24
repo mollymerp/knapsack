@@ -23,6 +23,12 @@ gulp.task('default', function() {
   console.log("Hello World");
 });
 
+gulp.task('jshint', function() {
+  return gulp.src('client/app/**/*.js')
+    .pipe(jshint())
+    .pipe(jshint.reporter('jshint-stylish'));
+});
+
 gulp.task('minify', function () {
    gulp.src(paths.scripts)
       .pipe(uglify())
