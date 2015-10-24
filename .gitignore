@@ -33,3 +33,6 @@ client/lib/
 
 # Files for Merging conflicts
 *.orig
+
+# database
+*.sqlite
