@@ -21,7 +21,7 @@ var ip = "127.0.0.1"; // localhost
 /************************************************************/
 db.sync()
   .then(function(err) {
-    console.log('Database worked!');
+    console.log('Database is up and running');
   }, function(err) {
     console.log('An error occurred while creating the database:', err);
   });
