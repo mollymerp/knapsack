@@ -27,10 +27,14 @@ db.sync()
   });
 
 /************************************************************/
-// Express uses template engine to parse front-end scripts. Can parse HTML, EJS, JADE, etc.
-app.set("view engine", "ejs");
-// Tells Express from where to deliver front end views
-app.set("views", __dirname + "/../client/views");
+
+//This part is not really necessary as we do not use any rendering engines and only serve static files
+//from /client served by app.use(express.static(...)) @cjpuskar
+// // Express uses template engine to parse front-end scripts. Can parse HTML, EJS, JADE, etc.
+// app.set("view engine", "ejs");
+// // Tells Express from where to deliver front end views
+// app.set("views", __dirname + "/../client/views");
+
 // Logger for dev environment
 app.use(morgan("dev"));
 // Body parser is middleware to handle POST data in Express 4
