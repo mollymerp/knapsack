@@ -41,7 +41,7 @@ angular.module("knapsack.main", [])
       })
     };
 
-    //need to make a copy for smart table to asynchronously paginate responses;
+    //need to make a copy for smart table to asynchronously paginate responses
     $scope.displayedCollection = [].concat($scope.bookCollection);
 
 
