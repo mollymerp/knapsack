@@ -37,10 +37,13 @@ db.sync()
 
 // Logger for dev environment
 app.use(morgan("dev"));
+
 // Body parser is middleware to handle POST data in Express 4
-app.use(bodyParser.urlencoded({
-  "extended": "true"
-}));
+// We do not use urlencoded infos for our application --> not needed at least for now
+// app.use(bodyParser.urlencoded({
+//   "extended": "true"
+// }));
+
 app.use(bodyParser.json());
 // Cookie parser is middleware to handle cookies sent from the client.
 app.use(cookieParser());
