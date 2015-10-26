@@ -79,7 +79,18 @@ app.post("/", function(req, res) {
 app.use("/", router);
 
 app.post("/api/signin", function(req, res) {
-  
+  var username = req.body.username;
+  var password = req.body.password;
+
+  ddl.users.findOne({
+    where: {
+      user_name: username
+    }
+  }).then(function(user) {
+    if (user) {
+      
+    }
+  })
 });
 
 app.post("/api/signup", function(req, res) {
