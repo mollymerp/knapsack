@@ -88,9 +88,23 @@ app.post("/api/signin", function(req, res) {
     }
   }).then(function(user) {
     if (user) {
-      
+      bcrypt.compare(password, user.password, function(err, success) {
+        if (err) return console.log("Error ocurred while comparing password: ", err);
+        if (success) {
+          req.session.regenerate(function() {
+            req.session.user = {
+              user_name: username
+            };
+            res.status(201).send("Succesfully signed in");
+          });
+        } else {
+          res.status(403).send("Wrong password");
+        }
+      });
+    } else {
+      res.status(404).send("User with username: " + username + " does not exist");
     }
-  })
+  });
 });
 
 app.post("/api/signup", function(req, res) {
@@ -114,7 +128,7 @@ app.post("/api/signup", function(req, res) {
             req.session.user = {
               user_name: username
             };
-            res.status(201).send("Succesfully logged in");
+            res.status(201).send("Succesfully signed up");
           });
         });
       });
