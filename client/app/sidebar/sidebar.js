@@ -3,6 +3,10 @@ angular.module("knapsack.sidebar", [])
 
     $scope.data = {}
 
+    $scope.newCollection = {
+      name: ""
+    };
+
     var getCollections = function() {
       $scope.data.collections = Collections.getAll();
 
@@ -15,4 +19,13 @@ angular.module("knapsack.sidebar", [])
       // });
     };
     getCollections();
+
+    $scope.addCollection = function addCollection() {
+      Collections.addCollection($scope.newCollection.name);
+      // .then(getCollections);
+      $scope.newCollection.name = "";
+    };
+
+
+
   }]);

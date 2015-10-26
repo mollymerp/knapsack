@@ -3,7 +3,11 @@
   "description": "> Pithy project description",
   "main": "client/app/app.js",
   "authors": [
-    "mollymerp <mollylloyd@gmail.com>"
+    "mollymerp <mollylloyd@gmail.com>",
+    "arthurmathies <arthurmnathies@googlemail.com",
+    "ccnixon <chrisnxn@gmail.com>",
+    "cjpuskar <cjpuskar@comcast.net>",
+    "sujaypatel16 <sujay.sanjay.patel@gmail.com>"
   ],
   "license": "MIT",
   "homepage": "https://github.com/knapsack-app/knapsack",

@@ -5,7 +5,6 @@ angular.module("knapsack.main", [])
       author: "",
       readStatus: ""
     };
-    console.log("MainController $location: ", $location.url().split('/'));
 
     $scope.bookCollection = [{
       "title": "The Goldfinch",
@@ -41,17 +40,20 @@ angular.module("knapsack.main", [])
       })
     };
 
-    //need to make a copy for smart table to asynchronously paginate responses;
+    //need to make a copy for smart table to asynchronously paginate responses
     $scope.displayedCollection = [].concat($scope.bookCollection);
 
 
     $scope.addBook = function() {
-
       $scope.bookCollection.unshift({
         "title": $scope.newBook.title,
         "author": $scope.newBook.author,
         "readStatus": $scope.newBook.readStatus
       });
+
+      $scope.newBook.title = "";
+      $scope.newBook.author = "";
+      $scope.newBook.readStatus = "";
     };
 
     $scope.getBooks = function() {
@@ -59,11 +61,10 @@ angular.module("knapsack.main", [])
     };
 
     $scope.removeBook = function(book) {
-
+      
     };
 
     if ($location.url().split('/')[1] === "collection") {
-      console.log("inside");
       $scope.getNytimes();
     }
 
