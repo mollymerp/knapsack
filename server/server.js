@@ -94,11 +94,13 @@ app.post("/api/signup", function(req, res) {
 // TEST DATA - dummyCollections is used to test that api/collections
 // GET REQUEST is working. 
 //**************************************************************
-var dummyCollections = ["bestsellers", "wine", "football", "cars", "forFriends", "boats"];
+var dummyCollections = ["bestsellers", "wine", "football", "cars", "forFriends", "boats", "shoes"];
 
 
 app.get("/api/collections", function(req, res) {
   console.log("IM IN api/collections GET Request", JSON.stringify(dummyCollections));
+
+  res.send(JSON.stringify(dummyCollections));
 });
 
 
