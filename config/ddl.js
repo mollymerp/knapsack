@@ -33,5 +33,28 @@ ddl.collections = db.define("collections", {
 
 });
 
+ddl.books = db.define("books", {
+
+  title: {
+    type: Sequelize.STRING,
+    description: Sequelize.TEXT
+  },
+
+  author: {
+    type: Sequelize.STRING,
+    description: Sequelize.TEXT
+  },
+
+  freezeTableName: true
+
+});
+
+
+
+///Set Up Relationships
+ddl.users.hasMany(ddl.collections, {as: 'collection'});
+ddl.collections.belongsToMany(ddl.books, {through : 'collections_to_books'});
+ddl.books.belongsToMany(ddl.collections, {through : 'collections_to_books'});
+
 module.exports = ddl;
 
