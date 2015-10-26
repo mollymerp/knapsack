@@ -45,12 +45,15 @@ angular.module("knapsack.main", [])
 
 
     $scope.addBook = function() {
-
       $scope.bookCollection.unshift({
         "title": $scope.newBook.title,
         "author": $scope.newBook.author,
         "readStatus": $scope.newBook.readStatus
       });
+
+      $scope.newBook.title = "";
+      $scope.newBook.author = "";
+      $scope.newBook.readStatus = "";
     };
 
     $scope.getBooks = function() {

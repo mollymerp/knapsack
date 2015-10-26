@@ -16,8 +16,8 @@
           <th>Title</th>
           <th>Author</th>
           <th>Read Status</th>
-          <th>Delete</th>
           <th>Share</th>
+          <th>Delete</th>
         </tr>
       </thead>
       <tbody>
@@ -26,16 +26,17 @@
           <td> {{book.author}} </td>
           <td> {{book.readStatus}} </td>
           <td>
+            <button type="button" ng-click="shareBook(book)" class="btn btn-sm btn-primary">
+              <i class="glyphicon glyphicon-share-alt">
+              </i>
+            </button>
+          </td>
+          <td>
             <button type="button" ng-click="removeBook(book)" class="btn btn-sm btn-danger">
               <i class="glyphicon glyphicon-trash">
               </i>
             </button>
           </td>
-          <td>
-            <button type="button" ng-click="shareBook(book)" class="btn btn-sm btn-primary">
-              <i class="glyphicon glyphicon-share-alt">
-              </i>
-            </button>
         </tr>
       </tbody>
       <tfoot>

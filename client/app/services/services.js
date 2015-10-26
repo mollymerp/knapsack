@@ -1,6 +1,8 @@
 angular.module("knapsack.services", [])
   .factory("Collections", ["$http", function($http) {
 
+    var collects = ["bestsellers", "wine", "football", "cars", "forFriends", "boats"];
+
     var getAll = function() {
       // return $http({
       //   method: "GET",
@@ -12,26 +14,28 @@ angular.module("knapsack.services", [])
       //   console.log(resp.status + ": failed fetching from server");
       // });
       //will be an http request at some point but not for now just return somehting
-      return ["bestsellers", "wine", "football", "cars", "for Flo", "boats"];
+      return collects;
     };
 
-    var addCollection = function(data) {
-      return $http({
-        method: "POST",
-        url: "api/collections",
-        data: data
-      }).then(function succesCallback(resp) {
-        console.log(resp.status + ": succesfully added Collection");
-      }, function errorCallback(resp) {
-        console.log(resp.status + ": failed adding Collection");
-      });
+    var addCollection = function(collection) {
+      console.log(collection);
+      collects.push(collection);
+      // return $http({
+      //   method: "POST",
+      //   url: "api/collections",
+      //   data: collection
+      // }).then(function succesCallback(resp) {
+      //   console.log(resp.status + ": succesfully added Collection");
+      // }, function errorCallback(resp) {
+      //   console.log(resp.status + ": failed adding Collection");
+      // });
     };
 
-    var removeCollection = function(colName) {
+    var removeCollection = function(collection) {
       return $http({
         method: "DELETE",
         url: "api/collections",
-        data: colName
+        data: collection
           //maybe we also need to send over the user if 
           //the server cannot identify us from the session cookie
       }).then(function succesCallback(resp) {
