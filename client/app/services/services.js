@@ -4,17 +4,17 @@ angular.module("knapsack.services", [])
     var collects = ["bestsellers", "wine", "football", "cars", "forFriends", "boats"];
 
     var getAll = function() {
-      // return $http({
-      //   method: "GET",
-      //   url: "api/collections"
-      // }).then(function succesCallback(resp) {
-      //   console.log(resp.status + ": succesfully fetched collections");
-      //   return resp.data;
-      // }, function errorCallback(resp) {
-      //   console.log(resp.status + ": failed fetching from server");
-      // });
-      //will be an http request at some point but not for now just return somehting
-      return collects;
+      return $http({
+        method: "GET",
+        url: "api/collections"
+      }).then(function succesCallback(resp) {
+        console.log(resp.status + ": succesfully fetched collections");
+        return resp.data;
+      }, function errorCallback(resp) {
+        console.log(resp.status + ": failed fetching from server");
+      });
+      //switch between faked data and real data
+      // return collects;
     };
 
     var addCollection = function(collection) {
