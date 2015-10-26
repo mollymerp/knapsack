@@ -89,8 +89,27 @@ app.post("/api/signup", function(req, res) {
   console.log("Username: ", username, "Password: ", password);
 });
 
+var dummyCollections = ["bestsellers", "wine", "football", "cars", "forFriends", "boats"];
+app.get("/api/collections", function(req, res) {
+  console.log("IM IN api/collections GET Request", dummyCollections);
+});
+
+
 app.post("/api/collections", function(req, res) {
   console.log("Im in api/collections POST request: ", req.body);
+});
+
+app.get("/api/collection:collection", function(req, res) {
+  console.log("Im in api/collection", req.body);
+});
+
+
+app.post("/api/collection:collection", function(req, res) {
+  console.log("Im in api/collection", req.body);
+});
+
+app.post("api/share", function(req, res) {
+  console.log("IM in api/share", req.body);
 });
 
 
