@@ -8,6 +8,9 @@ var sequelize = require("sequelize"); // promise based ORM for SQL
 var db = require("../config/database.js"); // connect to database
 var ddl = require("../config/ddl.js"); // create database tables
 
+var bcrypt = require('bcrypt-nodejs'); // hashing passwords
+var Promise = require('bluebird'); // for promisification
+
 var app = express(); // create our app w/ express
 var port = process.env.PORT || 3000;
 var ip = "127.0.0.1"; // localhost
@@ -83,9 +86,22 @@ app.post("/api/signup", function(req, res) {
   var username = req.body.username;
   var password = req.body.password;
 
-  // sequelize.query("INSERT INTO users (user_name, password) VALUES (username, password)").success(function(myTableRows) {
-  //   console.log(myTableRows);
-  // });
+  ddl.users.findOne({
+      where: {
+        username: username
+      }
+    }).then(function(user) {
+      if (!user) {
+        var hashing = Promise.promisify(bcrypt.hash); // hashing is a promisified version of bcyrpt hash
+        var hashPass = hashing(password, null, null).
+        then(function(hash) {
+          
+        })
+      }
+    })
+    // sequelize.query("INSERT INTO users (user_name, password) VALUES (username, password)").success(function(myTableRows) {
+    //   console.log(myTableRows);
+    // });
   console.log("Username: ", username, "Password: ", password);
 });
 
