@@ -8,21 +8,20 @@ angular.module("knapsack.sidebar", [])
     };
 
     var getCollections = function() {
-      $scope.data.collections = Collections.getAll();
-
       //this code is whenever we start working with http requests which return promises
-      // .then(function(retrievedCollections) {
-      //   $scope.data.collections = retrievedCollections;
-      // })
-      // .catch(function(error) {
-      //   console.error(error);
-      // });
+      Collections.getAll()
+      .then(function(retrievedCollections) {
+        $scope.data.collections = JSON.parse(retrievedCollections);
+      })
+      .catch(function(error) {
+        console.error(error);
+      });
     };
     getCollections();
 
     $scope.addCollection = function addCollection() {
-      Collections.addCollection($scope.newCollection.name);
-      // .then(getCollections);
+      Collections.addCollection($scope.newCollection.name)
+      .then(getCollections);
       $scope.newCollection.name = "";
     };
 
