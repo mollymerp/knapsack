@@ -1,6 +1,7 @@
 //establish database connection
 
 var Sequelize = require("sequelize");
+var path = require("path");
 
 var db = new Sequelize(
 	"", //db
@@ -14,7 +15,7 @@ var db = new Sequelize(
     min:0,
     idle:10000
   },
-  storage: "../data/db.sqlite"
+  storage: path.join(__dirname, "../data/db.sqlite")
 });
 
 module.exports = db;
