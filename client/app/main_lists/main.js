@@ -5,7 +5,6 @@ angular.module("knapsack.main", [])
       author: "",
       readStatus: ""
     };
-    console.log("MainController $location: ", $location.url().split('/'));
 
     $scope.bookCollection = [{
       "title": "The Goldfinch",
@@ -63,7 +62,6 @@ angular.module("knapsack.main", [])
     };
 
     if ($location.url().split('/')[1] === "collection") {
-      console.log("inside");
       $scope.getNytimes();
     }
 
