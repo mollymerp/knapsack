@@ -8,7 +8,7 @@ var db = new Sequelize(
 	"", //password
 	{
   dialect : "sqlite",
-  host : "localhost",
+  port : "localhost",
   pool: {
     max: 10,
     min:0,
