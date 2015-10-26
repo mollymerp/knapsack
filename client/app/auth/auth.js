@@ -41,6 +41,7 @@ var SignupModalCtrl = function($http, $scope, $modalInstance, userForm) {
         url: "api/signup",
         data: $scope.user
       });
+      //somehow handle errors and successes here either log the user in or show him a message
       $modalInstance.close();
     } else {
       console.log("form not valid");
@@ -61,6 +62,7 @@ var SigninModalCtrl = function($http, $scope, $modalInstance, userForm) {
         url: "api/signin",
         data: $scope.user
       });
+      //somehow handle errors and successes here as well and tell the user if he is signed in or not
       $modalInstance.close();
     } else {
       console.log("form not valid");
