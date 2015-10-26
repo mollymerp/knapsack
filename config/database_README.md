@@ -19,6 +19,30 @@
 1 users
 2 collections
 
+
+// app.get("/api/collections"
+// Returns all collections for a given user
+
+SELECT users.user_name, collections.collection
+FROM collections
+INNER JOIN users
+ON collections.userId = users.id
+WHERE users.id = 1;
+
+// DUMMY DATA TO INSERT INTO USERS TABLE
 INSERT INTO users (user_name, password, createdAt, updatedAt) VALUES ("chris", "qwerty", 10/26/2015, 10/26/2015);
 
-INSERT INTO collections (collection, user_id, createdAt, updatedAt) VALUES ("sports", 1, 10/26/2015, 10/26/2015);
+INSERT INTO users (user_name, password, createdAt, updatedAt) VALUES ("BATMAN", "IMBATMAN", 10/26/2015, 10/26/2015);
+
+INSERT INTO users (user_name, password, createdAt, updatedAt) VALUES ("Captain Morgan", "ilikerun", 10/26/2015, 10/26/2015);
+
+INSERT INTO users (user_name, password, createdAt, updatedAt) VALUES ("NattyBoh", "BohKnows", 10/26/2015, 10/26/2015);
+
+// DUMMY DATA TO INSERT INTO COLLECTIONS TABLE
+INSERT INTO collections (collection, createdAt, updatedAt, userId) VALUES ("sports", 10/26/2015, 10/26/2015, 1);
+
+INSERT INTO collections (collection, createdAt, updatedAt, userId) VALUES ("beer", 10/26/2015, 10/26/2015, 1);
+
+INSERT INTO collections (collection, createdAt, updatedAt, userId) VALUES ("camping", 10/26/2015, 10/26/2015, 1);
+
+INSERT INTO collections (collection, createdAt, updatedAt, userId) VALUES ("cats", 10/26/2015, 10/26/2015, 1);
