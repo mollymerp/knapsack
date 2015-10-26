@@ -79,7 +79,7 @@ app.post("/", function(req, res) {
 app.use("/", router);
 
 app.post("/api/signin", function(req, res) {
-  console.log(req.body);
+  
 });
 
 app.post("/api/signup", function(req, res) {
@@ -87,22 +87,31 @@ app.post("/api/signup", function(req, res) {
   var password = req.body.password;
 
   ddl.users.findOne({
-      where: {
-        username: username
-      }
-    }).then(function(user) {
-      if (!user) {
-        var hashing = Promise.promisify(bcrypt.hash); // hashing is a promisified version of bcyrpt hash
-        var hashPass = hashing(password, null, null).
-        then(function(hash) {
-          
-        })
-      }
-    })
-    // sequelize.query("INSERT INTO users (user_name, password) VALUES (username, password)").success(function(myTableRows) {
-    //   console.log(myTableRows);
-    // });
-  console.log("Username: ", username, "Password: ", password);
+    where: {
+      user_name: username
+    }
+  }).then(function(user) {
+    if (!user) {
+      var hashing = Promise.promisify(bcrypt.hash); // hashing is a promisified version of bcyrpt hash
+      var hashPass = hashing(password, null, null).
+      then(function(hash) {
+        ddl.users.create({
+          user_name: username,
+          password: hash
+        }).then(function(user) {
+          req.session.regenerate(function() {
+            req.session.user = {
+              user_name: username
+            };
+            res.status(201).send("Succesfully logged in");
+          });
+        });
+      });
+    } else {
+      console.log("User: " + username + " already exists");
+      res.status(403).send("Username is already taken");
+    }
+  });
 });
 
 
