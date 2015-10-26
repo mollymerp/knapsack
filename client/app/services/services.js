@@ -1,6 +1,8 @@
 angular.module("knapsack.services", [])
   .factory("Collections", ["$http", function($http) {
 
+    var collects = ["bestsellers", "wine", "football", "cars", "forFriends", "boats"];
+
     var getAll = function() {
       // return $http({
       //   method: "GET",
@@ -12,26 +14,28 @@ angular.module("knapsack.services", [])
       //   console.log(resp.status + ": failed fetching from server");
       // });
       //will be an http request at some point but not for now just return somehting
-      return ["bestsellers", "wine", "football", "cars", "trees", "boats"];
+      return collects;
     };
 
-    var addCollection = function(data) {
-      return $http({
-        method: "POST",
-        url: "api/collections",
-        data: data
-      }).then(function succesCallback(resp) {
-        console.log(resp.status + ": succesfully added Collection");
-      }, function errorCallback(resp) {
-        console.log(resp.status + ": failed adding Collection");
-      });
+    var addCollection = function(collection) {
+      console.log(collection);
+      collects.push(collection);
+      // return $http({
+      //   method: "POST",
+      //   url: "api/collections",
+      //   data: collection
+      // }).then(function succesCallback(resp) {
+      //   console.log(resp.status + ": succesfully added Collection");
+      // }, function errorCallback(resp) {
+      //   console.log(resp.status + ": failed adding Collection");
+      // });
     };
 
-    var removeCollection = function(colName) {
+    var removeCollection = function(collection) {
       return $http({
         method: "DELETE",
         url: "api/collections",
-        data: colName
+        data: collection
           //maybe we also need to send over the user if 
           //the server cannot identify us from the session cookie
       }).then(function succesCallback(resp) {
@@ -62,7 +66,6 @@ angular.module("knapsack.services", [])
         url: "http://api.nytimes.com/svc/books/v3/lists.json?list-name=hardcover-fiction&api-key=b2f850985c69c53458eac07ce2f7a874%3A7%3A65642337"
       })
       .then(function (resp) {
-        console.log("NYTimes get request status:", resp.status)
         return resp.data.results;
       })
     };  
@@ -71,7 +74,7 @@ angular.module("knapsack.services", [])
     var getContent = function() {
       return $http({
           method: "GET",
-          url: "/"
+          url: "/api/collections/" + "name of collection"
         })
         .then(function(resp) {
           return resp.data;
@@ -81,20 +84,22 @@ angular.module("knapsack.services", [])
     var addContent = function(content) {
       return $http({
           method: "POST",
-          url: "/"
+          url: "/api/collections/" + "name of collection",
+          data: content
         })
         .then(function(resp) {
-          console.log("data saved")
+          console.log("succesfully saved book into: " + "name of collection");
         });
     };
 
     var removeContent = function(content) {
       return $http({
-          method: 'POST',
-          url: "/"
+          method: 'DELETE',
+          url: "/api/collections/" + "name of collection",
+          data: content // should probably be a book title or something similar
         })
         .then(function(resp) {
-
+          console.log("succesfully deleted book from: " + "name of collection");
         });
     }
 

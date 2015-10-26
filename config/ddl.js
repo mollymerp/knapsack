@@ -34,3 +34,4 @@ ddl.collections = db.define("collections", {
 });
 
 module.exports = ddl;
+
