@@ -61,7 +61,7 @@ angular.module("knapsack.main", [])
     };
 
     $scope.removeBook = function(book) {
-
+      
     };
 
     if ($location.url().split('/')[1] === "collection") {
