@@ -2,6 +2,9 @@
 li {
     list-style-type: none;
 }
+.collections a {
+  text-decoration: none;
+}
 
 /*
 if we want the scroll through feature this might

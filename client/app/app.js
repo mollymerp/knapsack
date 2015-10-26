@@ -1,4 +1,12 @@
-angular.module("knapsack", ["ui.router", "ui.bootstrap", "smart-table", "knapsack.services", "knapsack.main", "knapsack.sidebar", "knapsack.auth"])
+angular.module("knapsack", [
+  "ui.router",
+  "ui.bootstrap",
+  "smart-table",
+  "knapsack.services",
+  "knapsack.main",
+  "knapsack.sidebar",
+  "knapsack.auth"
+])
 
 .config(["$stateProvider", "$urlRouterProvider", function($stateProvider, $urlRouteProvider, $urlRouter) {
   $urlRouteProvider.otherwise("/");
