@@ -11,7 +11,7 @@ angular.module("knapsack.sidebar", [])
       //this code is whenever we start working with http requests which return promises
       Collections.getAll()
       .then(function(retrievedCollections) {
-        $scope.data.collections = JSON.parse(retrievedCollections);
+        $scope.data.collections = retrievedCollections;
       })
       .catch(function(error) {
         console.error(error);

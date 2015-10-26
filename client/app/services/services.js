@@ -9,7 +9,7 @@ angular.module("knapsack.services", [])
         url: "api/collections"
       }).then(function succesCallback(resp) {
         console.log(resp.status + ": succesfully fetched collections");
-        return resp.data;
+        return JSON.parse(resp.data);
       }, function errorCallback(resp) {
         console.log(resp.status + ": failed fetching from server");
       });
@@ -22,7 +22,9 @@ angular.module("knapsack.services", [])
       return $http({
         method: "POST",
         url: "api/collections",
-        data: {name: collection}
+        data: JSON.stringify({
+          collection: collection
+        })
       }).then(function succesCallback(resp) {
         console.log(resp.status + ": succesfully added Collection");
       }, function errorCallback(resp) {
@@ -43,7 +45,7 @@ angular.module("knapsack.services", [])
         console.log(resp.status + ": failed deleting Collection");
       });
     };
-    
+
     //maybe use angular interceptors to make success and error handling nicer
     //and also maybe parsing the response that is coming as json if needed 
     //https://docs.angularjs.org/api/ng/service/$http
@@ -56,41 +58,48 @@ angular.module("knapsack.services", [])
 
   }])
   .factory("Contents", ["$http", function($http) {
-//Molly's NYTimes Bestsellers API key / URI.
-//http://api.nytimes.com/svc/books/v3/lists.json?list-name=hardcover-fiction&api-key=b2f850985c69c53458eac07ce2f7a874%3A7%3A65642337
+    //Molly's NYTimes Bestsellers API key / URI.
+    //http://api.nytimes.com/svc/books/v3/lists.json?list-name=hardcover-fiction&api-key=b2f850985c69c53458eac07ce2f7a874%3A7%3A65642337
 
-    var getNytimes = function(){
-      return $http({
-        method:"GET",
-        url: "http://api.nytimes.com/svc/books/v3/lists.json?list-name=hardcover-fiction&api-key=b2f850985c69c53458eac07ce2f7a874%3A7%3A65642337"
-      })
-      .then(function (resp) {
-        return resp.data.results;
-      })
-    };  
-
-
-    var getContent = function() {
+    var getNytimes = function() {
       return $http({
           method: "GET",
-          url: "/api/collections/" + "name of collection"
+          url: "http://api.nytimes.com/svc/books/v3/lists.json?list-name=hardcover-fiction&api-key=b2f850985c69c53458eac07ce2f7a874%3A7%3A65642337"
         })
         .then(function(resp) {
-          return resp.data;
+          return resp.data.results;
+        })
+    };
+
+
+    var getContent = function(collection) {
+      return $http({
+          method: "GET",
+          url: "/api/collection",
+          data: JSON.stringify({
+            collection: collection
+          })
+        })
+        .then(function(resp) {
+          return JSON.parse(resp.data);
         });
     };
 
-    var addContent = function(content) {
+    var addContent = function(collection, content) {
       return $http({
           method: "POST",
-          url: "/api/collections/" + "name of collection",
-          data: content
+          url: "/api/collection",
+          data: JSON.stringify({
+            collection: collection,
+            content: content
+          })
         })
         .then(function(resp) {
-          console.log("succesfully saved book into: " + "name of collection");
+          console.log("succesfully saved book into: " + collection);
         });
     };
 
+    //save this one for later
     var removeContent = function(content) {
       return $http({
           method: 'DELETE',
