@@ -18,17 +18,16 @@ angular.module("knapsack.services", [])
     };
 
     var addCollection = function(collection) {
-      console.log(collection);
-      collects.push(collection);
-      // return $http({
-      //   method: "POST",
-      //   url: "api/collections",
-      //   data: collection
-      // }).then(function succesCallback(resp) {
-      //   console.log(resp.status + ": succesfully added Collection");
-      // }, function errorCallback(resp) {
-      //   console.log(resp.status + ": failed adding Collection");
-      // });
+      // collects.push(collection);
+      return $http({
+        method: "POST",
+        url: "api/collections",
+        data: {name: collection}
+      }).then(function succesCallback(resp) {
+        console.log(resp.status + ": succesfully added Collection");
+      }, function errorCallback(resp) {
+        console.log(resp.status + ": failed adding Collection");
+      });
     };
 
     var removeCollection = function(collection) {

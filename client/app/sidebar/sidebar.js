@@ -20,8 +20,8 @@ angular.module("knapsack.sidebar", [])
     getCollections();
 
     $scope.addCollection = function addCollection() {
-      Collections.addCollection($scope.newCollection.name);
-      // .then(getCollections);
+      Collections.addCollection($scope.newCollection.name)
+      .then(getCollections);
       $scope.newCollection.name = "";
     };
 
