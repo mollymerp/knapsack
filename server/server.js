@@ -89,7 +89,6 @@ app.post("/api/signup", function(req, res) {
   console.log("Username: ", username, "Password: ", password);
 });
 
-
 /************************************************************/
 // AUTHENTICATION ROUTES
 /************************************************************/
