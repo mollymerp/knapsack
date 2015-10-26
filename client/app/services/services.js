@@ -9,8 +9,9 @@ angular.module("knapsack.services", [])
         url: "api/collections"
       }).then(function succesCallback(resp) {
         console.log(resp.status + ": succesfully fetched collections");
+
         console.log(resp.data);
-        return resp.data;
+        return JSON.parse(resp.data);
       }, function errorCallback(resp) {
         console.log(resp.status + ": failed fetching from server");
       });

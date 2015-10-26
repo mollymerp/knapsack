@@ -90,6 +90,7 @@ app.post("/api/signup", function(req, res) {
 });
 
 
+
 //**************************************************************
 // TEST DATA - dummyCollections is used to test that api/collections
 // GET REQUEST is working. 
@@ -120,6 +121,7 @@ app.post("/api/collection:collection", function(req, res) {
 app.post("api/share", function(req, res) {
   console.log("IM in api/share", req.body);
 });
+
 
 
 /************************************************************/
