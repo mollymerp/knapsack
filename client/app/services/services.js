@@ -10,7 +10,7 @@ angular.module("knapsack.services", [])
       }).then(function succesCallback(resp) {
         console.log(resp.status + ": succesfully fetched collections");
         console.log(resp.data);
-        return JSON.parse(resp.data);
+        return resp.data;
       }, function errorCallback(resp) {
         console.log(resp.status + ": failed fetching from server");
       });

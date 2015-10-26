@@ -19,3 +19,6 @@
 1 users
 2 collections
 
+INSERT INTO users (user_name, password, createdAt, updatedAt) VALUES ("chris", "qwerty", 10/26/2015, 10/26/2015);
+
+INSERT INTO collections (collection, user_id, createdAt, updatedAt) VALUES ("sports", 1, 10/26/2015, 10/26/2015);

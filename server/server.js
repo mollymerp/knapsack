@@ -75,10 +75,6 @@ app.post("/", function(req, res) {
 // apply the routes to our application
 app.use("/", router);
 
-app.post("/api/signin", function(req, res) {
-  console.log(req.body);
-});
-
 app.post("/api/signup", function(req, res) {
   var username = req.body.username;
   var password = req.body.password;
@@ -98,13 +94,14 @@ app.post("/api/signup", function(req, res) {
 var dummyCollections = ["bestsellers", "wine", "football", "cars", "forFriends", "boats", "shoes"];
 
 
+// Returns all collections for a given user
 app.get("/api/collections", function(req, res) {
   console.log("IM IN api/collections GET Request", JSON.stringify(dummyCollections));
 
   res.send(JSON.stringify(dummyCollections));
 });
 
-
+// Add a collection to a users list of collections
 app.post("/api/collections", function(req, res) {
   console.log("Im in api/collections POST request: ", req.body);
 });
