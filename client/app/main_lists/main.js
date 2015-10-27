@@ -39,40 +39,43 @@ angular.module("knapsack.main", [])
     $scope.displayedCollection = [].concat($scope.bookCollection);
 
 
-    $scope.addContent = function() {
+    $scope.addBook = function() {
       if ($scope.newBook.title && $scope.newBook.title) {
-        var content = {
+        var book = {
           title: $scope.newBook.title,
           author: $scope.newBook.author
         };
-        Contents.addContent($location.url().split("/")[2], content)
+        Contents.addBook($location.url().split("/")[2], book)
           .then(getContent);
         $scope.newBook.title = "";
         $scope.newBook.author = "";
       }
     };
 
-    var getContent = function() {
+    var getBooks = function() {
       if ($location.url().split("/")[1] === "collection") {
-        Contents.getContent($location.url().split("/")[2]);
+        Contents.getBooks($location.url().split("/")[2]);
       } else {
         getNytimes();
       }
     };
 
-    $scope.removeContent = function(book) {
-
+    $scope.removeBook = function(book) {
+      Contents.removeBook($location.url().split("/")[2], {
+        title: book.title,
+        author: book.author
+      });
     };
 
-    $scope.shareContent = function(book, user) {
-      Contents.shareContent($location.url().split("/")[2], {
+    $scope.shareBook = function(book, user) {
+      Contents.shareBook($location.url().split("/")[2], {
         title: book.title,
         author: book.author
       }, user)
       console.log(book, user);
     }
 
-    getContent();
+    getBooks();
 
   }])
   .controller("DropdownCtrl", ["$scope", "Contents", function($scope, Contents) {
@@ -82,5 +85,5 @@ angular.module("knapsack.main", [])
     //         $scope.friends = users;
     //       });
     //   };
-      $scope.friends = ["hans", "peter", "klaus", "anja", "frauke", "meggie", "linda"];
+    $scope.friends = ["hans", "peter", "klaus", "anja", "frauke", "meggie", "linda"];
   }]);

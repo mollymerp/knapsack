@@ -60,7 +60,7 @@ angular.module("knapsack.services", [])
     };
 
 
-    var getContent = function(collection) {
+    var getBooks = function(collection) {
       return $http({
           method: "GET",
           url: "/api/collection",
@@ -71,55 +71,56 @@ angular.module("knapsack.services", [])
         .then(function succesCallback(resp) {
           return resp.data;
         }, function errorCallback(resp) {
-          console.log(resp.status + ": failed loading content for collection " + collection);
+          console.log(resp.status + ": failed loading books for collection " + collection);
         });
     };
 
-    var addContent = function(collection, content) {
+    var addBook = function(collection, book) {
       return $http({
           method: "POST",
           url: "/api/collection",
           data: JSON.stringify({
             collection: collection,
-            content: content
+            book: book
           })
         })
         .then(function succesCallback(resp) {
           console.log("succesfully saved book into: " + collection);
         }, function errorCallback(resp) {
-          console.log(resp.status + ": failed adding content to collection");
+          console.log(resp.status + ": failed adding book to collection");
         });
     };
 
-    //save this one for later
-    var removeContent = function(collection, content) {
+    var removeBook = function(collection, book) {
       return $http({
           method: 'DELETE',
-          url: "/api/collections/",
-          data: {
+          url: "/api/collection",
+          data: JSON.stringify({
             collection: collection,
-            content: content
-          }
+            book: book
+          })
         })
-        .then(function(resp) {
+        .then(function succesCallback(resp) {
           console.log("succesfully deleted book from: " + collection);
+        }, function errorCallback(resp) {
+          console.log("failed deleting book from: " + collection);
         });
     };
 
-    var shareContent = function(collection, book, user) {
+    var shareBook = function(collection, book, user) {
       return $http({
           method: "POST",
           url: "/api/share",
-          data: {
+          data: JSON.stringify({
             collection: collection,
-            content: content,
+            book: book,
             user: user
-          }
+          })
         })
         .then(function succesCallback(resp) {
-          console.log("succesfully shared content into to user: " + user);
+          console.log("succesfully shared book to user: " + user);
         }, function errorCallback(resp) {
-          console.log(resp.status + ": failed sharing content with user: " + user);
+          console.log(resp.status + ": failed sharing book with user: " + user);
         });
     };
 
@@ -138,11 +139,12 @@ angular.module("knapsack.services", [])
 
 
     return {
-      getContent: getContent,
-      addContent: addContent,
-      removeContent: removeContent,
+      getBooks: getBooks,
+      addBook: addBook,
+      removeBook: removeBook,
       getNytimes: getNytimes,
-      getFriends: getFriends
+      getFriends: getFriends,
+      shareBook: shareBook
     };
 
   }])
