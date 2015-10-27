@@ -46,25 +46,24 @@ angular.module("knapsack.main", [])
           author: $scope.newBook.author
         };
         Contents.addBook($location.url().split("/")[2], book)
-          .then(getContent);
+          .then(getBooks);
         $scope.newBook.title = "";
         $scope.newBook.author = "";
       }
     };
 
     var getBooks = function() {
-      if ($location.url().split("/")[1] === "collection") {
-        Contents.getBooks($location.url().split("/")[2]);
-      } else {
-        getNytimes();
-      }
+      Contents.getBooks($location.url().split("/")[2])
+        .then(function(books) {
+          $scope.displayedCollection = books;
+        });
     };
 
     $scope.removeBook = function(book) {
       Contents.removeBook($location.url().split("/")[2], {
         title: book.title,
         author: book.author
-      });
+      }).then(getBooks);
     };
 
     $scope.shareBook = function(book, user) {

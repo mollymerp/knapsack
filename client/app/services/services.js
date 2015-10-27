@@ -1,6 +1,7 @@
 angular.module("knapsack.services", [])
   .factory("Collections", ["$http", function($http) {
 
+    // get all collection names (ex. bestsellers, wine, ...)
     var getAll = function() {
       return $http({
         method: "GET",
@@ -12,6 +13,7 @@ angular.module("knapsack.services", [])
       });
     };
 
+    // add a new collection (ex. boats) to the current user
     var addCollection = function(collection) {
       return $http({
         method: "POST",
@@ -26,11 +28,12 @@ angular.module("knapsack.services", [])
       });
     };
 
+    //remove a collection from the collection list for current user
     var removeCollection = function(collection) {
       return $http({
         method: "DELETE",
         url: "api/collections",
-        data: collection
+        data: JSON.stringify(collection)
       }).then(function succesCallback(resp) {
         console.log(resp.status + ": succesfully deleted Collection");
       }, function errorCallback(resp) {
@@ -58,7 +61,6 @@ angular.module("knapsack.services", [])
           return resp.data.results;
         })
     };
-
 
     var getBooks = function(collection) {
       return $http({
