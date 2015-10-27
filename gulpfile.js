@@ -7,6 +7,8 @@ var minifyCss = require("gulp-minify-css");
 var rename = require("gulp-rename");
 var concat = require("gulp-concat");
 var templateCache = require('gulp-angular-templatecache');
+var ngAnnotate = require('gulp-ng-annotate');
+var connect = require('gulp-connect');
 
 var paths = {
   scripts: ["./client/app/app.js", "./client/app/**/*.js"],
@@ -19,6 +21,10 @@ var pipes = {};
 
 gulp.task("default", function() {
   console.log("Hello World");
+});
+
+gulp.task('connect', function() {
+  connect.server();
 });
 
 gulp.task("jshint", function() {
@@ -45,6 +51,7 @@ gulp.task("minify-css", function(){
 gulp.task("minify-js", function(){
   gulp.src(paths.scripts)
   .pipe(concat("all.js"))
+  .pipe(ngAnnotate())
   .pipe(uglify())
   .pipe(gulp.dest("./dist/"))
 });
@@ -56,14 +63,13 @@ gulp.task("main-bower-files", function(){
   .pipe(gulp.dest("./dist/"))
 });
 
+
 gulp.task("template-cache", function(){
   gulp.src(paths.partials)
-  .pipe(templateCache())
+  .pipe(templateCache({standalone:true, root:"app/"}))
   .pipe(gulp.dest("./dist/"))
-})
-
-gulp.task("minify", function () {
-   gulp.src(paths.scripts)
-      .pipe(uglify())
-      .pipe(gulp.dest(paths.distProd))
 });
+
+gulp.task('build',
+  ['jshint', 'minify-css', 'minify-js', 'main-bower-files', 'template-cache', 'connect']
+);
