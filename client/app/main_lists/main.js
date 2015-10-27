@@ -64,10 +64,23 @@ angular.module("knapsack.main", [])
 
     };
 
-    $scope.shareBook = function(book) {
-      console.log(book);
+    $scope.shareContent = function(book, user) {
+      Contents.shareContent($location.url().split("/")[2], {
+        title: book.title,
+        author: book.author
+      }, user)
+      console.log(book, user);
     }
 
     getContent();
 
+  }])
+  .controller("DropdownCtrl", ["$scope", "Contents", function($scope, Contents) {
+    // $scope.loadFriends = function() {
+    //     Contents.getFriends()
+    //       .then(function(users) {
+    //         $scope.friends = users;
+    //       });
+    //   };
+      $scope.friends = ["hans", "peter", "klaus", "anja", "frauke", "meggie", "linda"];
   }]);

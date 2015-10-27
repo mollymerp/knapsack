@@ -69,7 +69,7 @@ angular.module("knapsack.services", [])
           })
         })
         .then(function succesCallback(resp) {
-          return JSON.parse(resp.data);
+          return resp.data;
         }, function errorCallback(resp) {
           console.log(resp.status + ": failed loading content for collection " + collection);
         });
@@ -92,28 +92,57 @@ angular.module("knapsack.services", [])
     };
 
     //save this one for later
-    var removeContent = function(content) {
+    var removeContent = function(collection, content) {
       return $http({
           method: 'DELETE',
-          url: "/api/collections/" + "name of collection",
-          data: content // should probably be a book title or something similar
+          url: "/api/collections/",
+          data: {
+            collection: collection,
+            content: content
+          }
         })
         .then(function(resp) {
-          console.log("succesfully deleted book from: " + "name of collection");
+          console.log("succesfully deleted book from: " + collection);
         });
     };
 
-    var shareBook = function(collection, book, user) {
-      
-    }
+    var shareContent = function(collection, book, user) {
+      return $http({
+          method: "POST",
+          url: "/api/share",
+          data: {
+            collection: collection,
+            content: content,
+            user: user
+          }
+        })
+        .then(function succesCallback(resp) {
+          console.log("succesfully shared content into to user: " + user);
+        }, function errorCallback(resp) {
+          console.log(resp.status + ": failed sharing content with user: " + user);
+        });
+    };
 
+
+    var getFriends = function() {
+      return $http({
+          method: "GET",
+          url: "/api/friends"
+        })
+        .then(function succesCallback(resp) {
+          return resp.data;
+        }, function errorCallback(resp) {
+          console.log(resp.status + ": failed loading friends");
+        });
+    };
 
 
     return {
       getContent: getContent,
       addContent: addContent,
       removeContent: removeContent,
-      getNytimes: getNytimes
+      getNytimes: getNytimes,
+      getFriends: getFriends
     };
 
   }])

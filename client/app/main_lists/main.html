@@ -18,19 +18,25 @@
           <th>Delete</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody ng-controller="DropdownCtrl">
         <tr ng-repeat="book in displayedCollection">
           <td> {{book.title | uppercase}} </td>
           <td> {{book.author}} </td>
           <td>
-            <button type="button" ng-click="shareBook(book)" class="btn btn-sm btn-primary">
-              <i class="glyphicon glyphicon-share-alt">
+            <div class="btn-group" uib-dropdown>
+              <button type="button" class="btn btn-sm btn-primary" ng-click="loadFriends()" uib-dropdown-toggle>
+                <i class="glyphicon glyphicon-share-alt">
               </i>
-            </button>
+              </button>
+              <ul class="uib-dropdown-menu" role="menu">
+                <li role="menuitem" ng-click="shareBook(book, user)" ng-repeat="user in friends">
+                  {{user}}
+                </li>
+              </ul>
           </td>
           <td>
-            <button type="button" ng-click="removeBook(book)" class="btn btn-sm btn-danger">
-              <i class="glyphicon glyphicon-trash">
+            <button type="button " ng-click="removeBook(book)" class="btn btn-sm btn-danger">
+              <i class="glyphicon glyphicon-trash ">
               </i>
             </button>
           </td>
@@ -38,7 +44,7 @@
       </tbody>
       <tfoot>
         <tr>
-          <td colspan="5" class="text-center">
+          <td colspan="5 " class="text-center ">
             <st-pagination st-items-by-page=5></st-pagination>
           </td>
         </tr>
