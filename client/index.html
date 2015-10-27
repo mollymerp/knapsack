@@ -8,18 +8,8 @@
   <link rel="stylesheet" type="text/css" href="styles/styles.css">
 </head>
 
-<body>
-  <div ui-view="header"></div>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-2" id="leftCol"> <!-- fixed and scrolling functionality needs to be added -->
-        <div ui-view="sidebar"></div>
-      </div>
-      <div class="col-md-10 scrollit">
-        <div ui-view="main_lists"></div>
-      </div>
-    </div>
-  </div>
+<body ui-view="main">
+
   <!-- dependencies -->
   <script src="lib/angular/angular.min.js"></script>
   <script src="lib/angular-ui-router/release/angular-ui-router.min.js"></script>

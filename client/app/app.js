@@ -13,18 +13,26 @@ angular.module("knapsack", [
 
 
   $stateProvider
-    .state("main", {
+
+    .state("home", {
+      url: "/home",
+      templateUrl: "app/landing/landing.html"
+    })
+    .state("dashboard", {
       url: "/",
       views: {
-        "main_lists": {
+        "main": {
+          templateUrl: "app/dashboard/dashboard.html"
+        },
+        "main_lists@dashboard": {
           templateUrl: "app/main_lists/main.html",
           controller: "MainController"
         },
-        "sidebar": {
+        "sidebar@dashboard": {
           templateUrl: "app/sidebar/sidebar.html",
           controller: "SidebarController",
         },
-        "header": {
+        "header@dashboard": {
           templateUrl: "app/auth/header.html",
           controller: "authController",
         }
