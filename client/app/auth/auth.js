@@ -1,4 +1,4 @@
-angular.module("knapsack.auth", ["ui.bootstrap"])
+angular.module("knapsack.auth", [])
 
 .controller("authController", ["$scope", "$uibModal", "$log", function($scope, $uibModal, $log) {
 

@@ -5,7 +5,8 @@ angular.module("knapsack", [
   "knapsack.services",
   "knapsack.main",
   "knapsack.sidebar",
-  "knapsack.auth"
+  "knapsack.auth",
+  "knapsack.landing"
 ])
 
 .config(["$stateProvider", "$urlRouterProvider", function($stateProvider, $urlRouteProvider, $urlRouter) {
@@ -14,10 +15,14 @@ angular.module("knapsack", [
 
   $stateProvider
 
-    .state("home", {
-      url: "/home",
-      templateUrl: "app/landing/landing.html"
-    })
+    .state("landing", {
+      url: "/landing",
+      views: {
+        "main": {
+          templateUrl: "app/landing/landing.html",
+          controller: "LandingController"
+      }
+    }})
     .state("dashboard", {
       url: "/",
       views: {
