@@ -20,7 +20,7 @@ angular.module("knapsack", [
       views: {
         "main": {
           templateUrl: "app/landing/landing.html",
-          controller: "LandingController"
+          controller: "authController"
       }
     }})
     .state("dashboard", {
