@@ -2,26 +2,21 @@ angular.module("knapsack.main", [])
   .controller("MainController", ["$scope", "$window", "$location", "Contents", function($scope, $window, $location, Contents) {
     $scope.newBook = {
       title: "",
-      author: "",
-      readStatus: ""
+      author: ""
     };
 
     $scope.bookCollection = [{
       "title": "The Goldfinch",
-      "author": "Donna Tartt",
-      "readStatus": "Reading now"
+      "author": "Donna Tartt"
     }, {
       "title": "Harry Potter",
-      "author": "J.K. Rowling",
-      "readStatus": "Finished"
+      "author": "J.K. Rowling"
     }, {
       "title": "Just Kids",
-      "author": "Patti Smith",
-      "readStatus": "To read"
+      "author": "Patti Smith"
     }, {
       "title": "Pro AngularJS",
-      "author": "Adam Freeman",
-      "readStatus": "Never"
+      "author": "Adam Freeman"
     }];
 
 
@@ -47,13 +42,11 @@ angular.module("knapsack.main", [])
     $scope.addBook = function() {
       $scope.bookCollection.unshift({
         "title": $scope.newBook.title,
-        "author": $scope.newBook.author,
-        "readStatus": $scope.newBook.readStatus
+        "author": $scope.newBook.author
       });
 
       $scope.newBook.title = "";
       $scope.newBook.author = "";
-      $scope.newBook.readStatus = "";
     };
 
     $scope.getBooks = function() {
