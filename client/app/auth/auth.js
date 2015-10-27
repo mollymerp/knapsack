@@ -40,6 +40,8 @@ var SignupModalCtrl = function($http, $scope, $modalInstance, userForm) {
         method: "POST",
         url: "api/signup",
         data: $scope.user
+      }).then(function(resp) {
+        console.log(resp.data);
       });
       //somehow handle errors and successes here either log the user in or show him a message
       $modalInstance.close();
@@ -61,6 +63,8 @@ var SigninModalCtrl = function($http, $scope, $modalInstance, userForm) {
         method: "POST",
         url: "api/signin",
         data: $scope.user
+      }).then(function(resp) {
+        console.log(resp.data);
       });
       //somehow handle errors and successes here as well and tell the user if he is signed in or not
       $modalInstance.close();
