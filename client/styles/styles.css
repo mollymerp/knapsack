@@ -68,12 +68,12 @@ button {
   padding:4px 18px;
   text-decoration:none;
 }
-.sign-up-small {
+.sign-small {
   color:#4A4A4A;
   background-color: #FFFFFF;
 }
 
-.sign-up-small:hover {
+.sign-small:hover {
   background-color:#B8E986;
   opacity: 50%;
 }
