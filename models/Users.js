@@ -1,17 +1,12 @@
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define("Users", {
-    user_name: DataTypes.STRING,
-    password: DataTypes.STRING,
-    freezeTableName: true //prevents sequelize from adding (s) to end of table
-    // ,{//test query
-    //   instanceMethods: {
-    //     uppercaseAndSave: function(field) {
-    //       this.set(field, this.get(field).toUpperCase())
-    //       return this.save()
-    //     }
-    //   }
-    // }
-  })
+	return sequelize.define("users", {
+		user_name: DataTypes.STRING,
+		password: DataTypes.STRING
+	}, {
+		freezeTableName: true, //name table exactly as defined - do not add (s)
+		timestamps: false, // no created or update dates
+		underscored: true //automatically attributes should be named with _
+	});
 };
 
 //real query required

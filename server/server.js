@@ -8,6 +8,7 @@ var Sequelize = require("sequelize"); // promise based ORM for SQL
 var db = require("../config/database.js"); // connect to database
 var ddl = require("../config/ddl.js"); // create database tables
 var path = require("path");
+var _ = require('underscore');
 
 var bcrypt = require("bcrypt-nodejs"); // hashing passwords
 var Promise = require("bluebird"); // for promisification
@@ -28,6 +29,7 @@ var Collections = db.import(path.join(__dirname, "../models/Collections.js"));
 var Books = db.import(path.join(__dirname, "../models/Books.js"));
 
 Users.hasMany(Collections);
+Collections.belongsTo(Users, {foreignKey: 'fk_users'});
 Collections.belongsToMany(Books, {
   through: "collections_to_books"
 });
@@ -158,63 +160,65 @@ app.post("/api/signup", function(req, res) {
 // TEST DATA - dummyCollections is used to test that api/collections
 // GET REQUEST is working.
 //**************************************************************
-var dummyCollections = ["bestsellers", "wine", "football", "cars", "forFriends", "boats", "shoes"];
-var log = function (inst){
-  console.dir(inst.get());
+var loopObjreturnArr = function(collection) {
+  var results = [];
+  _.each(collection, function(item) {
+    results.push(item.collection)
+  })
+  return results;
 };
 
 app.get("/api/collections", function(req, res) {
-
   Collections.findAll({
-    // include: [{
-    //   model : Users,
-    //   where : {id = '1'}
-  }).then(function(collections){
-    //collections.forEach(log);
-  console.log("IM IN api/collections GET Request", collections);
-    // res.send(collections);
-  })
+    attributes: ['collection'],
+    include: [{
+      model: Users,
+      where: { id : Sequelize.col('userId') }
+    }]
 
+    }).then(function(collections) {
 
-  //res.send(JSON.stringify(dummyCollections));
+      console.log("IM IN api/collections GET Request", loopObjreturnArr(collections));
+      res.send(loopObjreturnArr(collections));
+    })
 });
 
 
-app.post("/api/collections", function(req, res) {
-  console.log("Im in api/collections POST request: ", req.body);
-});
+      app.post("/api/collections", function(req, res) {
+        console.log("Im in api/collections POST request: ", req.body);
+      });
 
-app.get("/api/collection:collection", function(req, res) {
-  console.log("Im in api/collection", req.body);
-});
-
-
-app.post("/api/collection:collection", function(req, res) {
-  console.log("Im in api/collection", req.body);
-});
-
-app.post("api/share", function(req, res) {
-  console.log("IM in api/share", req.body);
-});
+      app.get("/api/collection:collection", function(req, res) {
+        console.log("Im in api/collection", req.body);
+      });
 
 
+      app.post("/api/collection:collection", function(req, res) {
+        console.log("Im in api/collection", req.body);
+      });
 
-/************************************************************/
-// AUTHENTICATION ROUTES
-/************************************************************/
+      app.post("api/share", function(req, res) {
+        console.log("IM in api/share", req.body);
+      });
 
 
 
-
-/************************************************************/
-// HANDLE WILDCARD ROUTES - IF ALL OTHER ROUTES FAIL
-/************************************************************/
+      /************************************************************/
+      // AUTHENTICATION ROUTES
+      /************************************************************/
 
 
 
 
-/************************************************************/
-// START THE SERVER
-/************************************************************/
-app.listen(port);
-console.log("Knapsack is listening on port " + port);
+      /************************************************************/
+      // HANDLE WILDCARD ROUTES - IF ALL OTHER ROUTES FAIL
+      /************************************************************/
+
+
+
+
+      /************************************************************/
+      // START THE SERVER
+      /************************************************************/
+      app.listen(port);
+      console.log("Knapsack is listening on port " + port);
