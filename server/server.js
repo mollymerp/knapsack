@@ -93,12 +93,18 @@ app.get("/api/collections", function(req, res) {
   console.log("IM IN api/collections GET Request", JSON.stringify(dummyCollections));
 
 // TESTING SELECT QUERY
-  sequelize.query("SELECT * FROM `users`", { type: sequelize.QueryTypes.SELECT})
-    .then(function(users) {
-      console.log(users);
-    });
+  // var sql = "SELECT * FROM users";
+  // return sequelize
+  //   .query(sql)
+  //   .success(function(row) {
+  //     console.log("SOMETHING HAPPENED: ", row);
+  //   })
+  // sequelize.query(sql, null, { raw: true, type: 'SELECT'})
+  //   .then(function(users) {
+  //     console.log(users);
+  //   });
 //
-
+  // res.send("Coming soon...data from the database: ", users);
   res.send(JSON.stringify(dummyCollections));
 });
  
@@ -107,15 +113,18 @@ app.post("/api/collections", function(req, res) {
   console.log("Im in api/collections POST request: ", req.body);
 });
 
-app.get("/api/collection:collection", function(req, res) {
+
+// For a logged in user, give back all books for a specific collection
+app.get("/api/collection", function(req, res) {
+  console.log("Im in api/collection GET REQUEST", "Req.body: ", req.body);
+});
+
+// For a logged in user, add a book to a specified collection
+app.post("/api/collection", function(req, res) {
   console.log("Im in api/collection", req.body);
 });
 
-
-app.post("/api/collection:collection", function(req, res) {
-  console.log("Im in api/collection", req.body);
-});
-
+// Send a collection name, book name, to another user.
 app.post("api/share", function(req, res) {
   console.log("IM in api/share", req.body);
 });
@@ -195,7 +204,9 @@ app.post("/api/signup", function(req, res) {
 /************************************************************/
 // HANDLE WILDCARD ROUTES - IF ALL OTHER ROUTES FAIL
 /************************************************************/
-
+app.get("*", function(req, res) {
+  console.log("Im the wildcare route handler.....", "Heres a console.log of the req object: ", req.body, "Heres the req url: ", req.url);
+})
 
 
 
