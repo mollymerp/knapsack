@@ -5,7 +5,8 @@ angular.module("knapsack", [
   "knapsack.services",
   "knapsack.main",
   "knapsack.sidebar",
-  "knapsack.auth"
+  "knapsack.auth",
+  "templates"
 ])
 
 .config(["$stateProvider", "$urlRouterProvider", function($stateProvider, $urlRouteProvider, $urlRouter) {
