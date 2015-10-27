@@ -1,6 +1,6 @@
-angular.module("knapsack.auth", ["ui.bootstrap"])
+angular.module("knapsack.auth", ["ui.router"])
 
-.controller("authController", ["$scope", "$uibModal", "$log", function($scope, $uibModal, $log) {
+.controller("authController", ["$scope", "$window", "$location", "$uibModal", "$log", "Auth", function($scope, $window, $location, $uibModal, $log, Auth) {
 
   $scope.signupOpen = function() {
     var modalInstance = $uibModal.open({
@@ -32,17 +32,18 @@ angular.module("knapsack.auth", ["ui.bootstrap"])
 
 }]);
 
-var SignupModalCtrl = function($http, $scope, $modalInstance, userForm) {
+var SignupModalCtrl = function($http, $scope, $state, $modalInstance, userForm, Auth) {
   $scope.form = {};
   $scope.submitForm = function() {
     if ($scope.form.userForm.$valid) {
-      $http({
-        method: "POST",
-        url: "api/signup",
-        data: $scope.user
+      Auth.signUp().then(function(resp){
+        console.log("signup fired: ", resp.data);
+        //somehow handle errors and successes here either log the user in or show him a message
+        $modalInstance.close();
+        // this is not working for some reason :(
+        // need to get page to redirect after submit
+        // $state.go('dashboard')
       });
-      //somehow handle errors and successes here either log the user in or show him a message
-      $modalInstance.close();
     } else {
       console.log("form not valid");
     }
@@ -53,17 +54,17 @@ var SignupModalCtrl = function($http, $scope, $modalInstance, userForm) {
   };
 };
 
-var SigninModalCtrl = function($http, $scope, $modalInstance, userForm) {
+var SigninModalCtrl = function($http, $scope, $state, $modalInstance, userForm, Auth) {
   $scope.form = {};
   $scope.submitForm = function() {
     if ($scope.form.userForm.$valid) {
-      $http({
-        method: "POST",
-        url: "api/signin",
-        data: $scope.user
+      Auth.signIn().then(function (resp){
+        console.log("signin fired: ", resp.data);
+        $modalInstance.close();
+        // this is not working for some reason :(
+        // need to get page to redirect after submit
+        // $state.go('dashboard');
       });
-      //somehow handle errors and successes here as well and tell the user if he is signed in or not
-      $modalInstance.close();
     } else {
       console.log("form not valid");
     }
