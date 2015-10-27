@@ -38,7 +38,6 @@ INSERT INTO users (user_name, password, createdAt, updatedAt) VALUES ("Captain M
 
 INSERT INTO users (user_name, password, createdAt, updatedAt) VALUES ("NattyBoh", "BohKnows", 10/26/2015, 10/26/2015);
 
-// DUMMY DATA TO INSERT INTO COLLECTIONS TABLE
 INSERT INTO collections (collection, createdAt, updatedAt, userId) VALUES ("sports", 10/26/2015, 10/26/2015, 1);
 
 INSERT INTO collections (collection, createdAt, updatedAt, userId) VALUES ("beer", 10/26/2015, 10/26/2015, 1);

@@ -31,6 +31,13 @@ ddl.collections = db.define("collections", {
 
   freezeTableName: true
 
+  // instanceMethods: {
+  //   retrieveAll: function(onSuccess, onError) {
+  //     collections.findAll({}, {raw:true})
+  //                .sucess(onSuccess).error(onError);
+  //   }
+  // }
+
 });
 
 ddl.books = db.define("books", {

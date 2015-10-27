@@ -15,9 +15,7 @@ var app = express(); // create our app w/ express
 var port = process.env.PORT || 3000;
 var ip = "127.0.0.1"; // localhost
 
-/************************************************************/
-// CONFIGURE SERVER
-/************************************************************/
+
 
 /************************************************************/
 // Initialize Database
@@ -31,6 +29,10 @@ db.sync()
 
 /************************************************************/
 
+
+/************************************************************/
+// CONFIGURE SERVER
+/************************************************************/
 // Express uses template engine to parse front-end scripts. Can parse HTML, EJS, JADE, etc.
 app.set("view engine", "ejs");
 // Tells Express from where to deliver front end views
@@ -78,6 +80,52 @@ app.post("/", function(req, res) {
 // apply the routes to our application
 app.use("/", router);
 
+//**************************************************************
+// TEST DATA - dummyCollections is used to test that api/collections
+// GET REQUEST is working. 
+//**************************************************************
+var dummyCollections = ["bestsellers", "wine", "football", "cars", "forFriends", "boats", "shoes"];
+
+
+// Returns all collections for a given user
+app.get("/api/collections", function(req, res) {
+
+  console.log("IM IN api/collections GET Request", JSON.stringify(dummyCollections));
+
+// TESTING SELECT QUERY
+  sequelize.query("SELECT * FROM `users`", { type: sequelize.QueryTypes.SELECT})
+    .then(function(users) {
+      console.log(users);
+    });
+//
+
+  res.send(JSON.stringify(dummyCollections));
+});
+ 
+// Add a collection to a users list of collections
+app.post("/api/collections", function(req, res) {
+  console.log("Im in api/collections POST request: ", req.body);
+});
+
+app.get("/api/collection:collection", function(req, res) {
+  console.log("Im in api/collection", req.body);
+});
+
+
+app.post("/api/collection:collection", function(req, res) {
+  console.log("Im in api/collection", req.body);
+});
+
+app.post("api/share", function(req, res) {
+  console.log("IM in api/share", req.body);
+});
+
+/************************************************************/
+
+
+/************************************************************/
+// AUTHENTICATION ROUTES
+/************************************************************/
 app.post("/api/signin", function(req, res) {
   var username = req.body.username;
   var password = req.body.password;
@@ -138,46 +186,8 @@ app.post("/api/signup", function(req, res) {
     }
   });
 });
-
-
-
-//**************************************************************
-// TEST DATA - dummyCollections is used to test that api/collections
-// GET REQUEST is working. 
-//**************************************************************
-var dummyCollections = ["bestsellers", "wine", "football", "cars", "forFriends", "boats", "shoes"];
-
-
-// Returns all collections for a given user
-app.get("/api/collections", function(req, res) {
-  console.log("IM IN api/collections GET Request", JSON.stringify(dummyCollections));
-
-  res.send(JSON.stringify(dummyCollections));
-});
-
-// Add a collection to a users list of collections
-app.post("/api/collections", function(req, res) {
-  console.log("Im in api/collections POST request: ", req.body);
-});
-
-app.get("/api/collection:collection", function(req, res) {
-  console.log("Im in api/collection", req.body);
-});
-
-
-app.post("/api/collection:collection", function(req, res) {
-  console.log("Im in api/collection", req.body);
-});
-
-app.post("api/share", function(req, res) {
-  console.log("IM in api/share", req.body);
-});
-
-
-
 /************************************************************/
-// AUTHENTICATION ROUTES
-/************************************************************/
+
 
 
 
