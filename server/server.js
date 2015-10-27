@@ -98,11 +98,11 @@ app.post("/api/signin", function(req, res) {
             res.status(201).send("Succesfully signed in");
           });
         } else {
-          res.status(403).send("Wrong password");
+          res.status(200).send("Wrong password");
         }
       });
     } else {
-      res.status(404).send("User with username: " + username + " does not exist");
+      res.status(200).send("User with username: " + username + " does not exist");
     }
   });
 });
@@ -134,7 +134,7 @@ app.post("/api/signup", function(req, res) {
       });
     } else {
       console.log("User: " + username + " already exists");
-      res.status(403).send("Username is already taken");
+      res.status(200).send("Username is already taken");
     }
   });
 });
