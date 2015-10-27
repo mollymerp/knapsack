@@ -20,7 +20,7 @@ angular.module("knapsack.main", [])
     }];
 
 
-    $scope.getNytimes = function() {
+    var getNytimes = function() {
       var bestSellers = [];
       Contents.getNytimes().then(function(resp) {
         resp.forEach(function(book) {
@@ -39,26 +39,35 @@ angular.module("knapsack.main", [])
     $scope.displayedCollection = [].concat($scope.bookCollection);
 
 
-    $scope.addBook = function() {
-      $scope.bookCollection.unshift({
-        "title": $scope.newBook.title,
-        "author": $scope.newBook.author
-      });
-
-      $scope.newBook.title = "";
-      $scope.newBook.author = "";
+    $scope.addContent = function() {
+      if ($scope.newBook.title && $scope.newBook.title) {
+        var content = {
+          title: $scope.newBook.title,
+          author: $scope.newBook.author
+        };
+        Contents.addContent($location.url().split("/")[2], content)
+          .then(getContent);
+        $scope.newBook.title = "";
+        $scope.newBook.author = "";
+      }
     };
 
-    $scope.getBooks = function() {
+    var getContent = function() {
+      if ($location.url().split("/")[1] === "collection") {
+        Contents.getContent($location.url().split("/")[2]);
+      } else {
+        getNytimes();
+      }
+    };
+
+    $scope.removeContent = function(book) {
 
     };
 
-    $scope.removeBook = function(book) {
-      
-    };
-
-    if ($location.url().split('/')[1] === "collection") {
-      $scope.getNytimes();
+    $scope.shareBook = function(book) {
+      console.log(book);
     }
+
+    getContent();
 
   }]);

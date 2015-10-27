@@ -68,8 +68,10 @@ angular.module("knapsack.services", [])
             collection: collection
           })
         })
-        .then(function(resp) {
+        .then(function succesCallback(resp) {
           return JSON.parse(resp.data);
+        }, function errorCallback(resp) {
+          console.log(resp.status + ": failed loading content for collection " + collection);
         });
     };
 
@@ -82,8 +84,10 @@ angular.module("knapsack.services", [])
             content: content
           })
         })
-        .then(function(resp) {
+        .then(function succesCallback(resp) {
           console.log("succesfully saved book into: " + collection);
+        }, function errorCallback(resp) {
+          console.log(resp.status + ": failed adding content to collection");
         });
     };
 
@@ -97,7 +101,13 @@ angular.module("knapsack.services", [])
         .then(function(resp) {
           console.log("succesfully deleted book from: " + "name of collection");
         });
+    };
+
+    var shareBook = function(collection, book, user) {
+      
     }
+
+
 
     return {
       getContent: getContent,
