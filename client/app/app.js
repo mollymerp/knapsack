@@ -46,15 +46,18 @@ angular.module("knapsack", [
     .state("collection", {
       url: "/collection/:collection",
       views: {
-        "main_lists": {
+        "main": {
+          templateUrl: "app/dashboard/dashboard.html"
+        },
+        "main_lists@collection": {
           templateUrl: "app/main_lists/main.html",
           controller: "MainController"
         },
-        "sidebar": {
+        "sidebar@collection": {
           templateUrl: "app/sidebar/sidebar.html",
           controller: "SidebarController",
         },
-        "header": {
+        "header@collection": {
           templateUrl: "app/auth/header.html",
           controller: "authController",
         }
@@ -67,15 +70,15 @@ angular.module("knapsack", [
 //       // Prevent $urlRouter's default handler from firing
 //       e.preventDefault();
 
-//       * 
-//        * provide conditions on when to 
-//        * sync change in $location.path() with state reload.
-//        * I use $location and $state as examples, but
-//        * You can do any logic
-//        * before syncing OR stop syncing all together.
+// //       * 
+// //        * provide conditions on when to 
+// //        * sync change in $location.path() with state reload.
+// //        * I use $location and $state as examples, but
+// //        * You can do any logic
+// //        * before syncing OR stop syncing all together.
        
 
-//       if ($state.current.name !== 'landing' ) {
+//       if ($state.current.name === 'landing' && newUrl==="/" ) {
 //         // your stuff
 
 //         $urlRouter.sync();
@@ -83,6 +86,6 @@ angular.module("knapsack", [
 //         // don't sync
 //       }
 //     });
-//     // Configures $urlRouter's listener *after* your custom listener
+// //     // Configures $urlRouter's listener *after* your custom listener
 //     $urlRouter.listen();
 //   }]);;

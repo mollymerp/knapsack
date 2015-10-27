@@ -128,7 +128,7 @@ app.post("/api/signup", function(req, res) {
             req.session.user = {
               user_name: username
             };
-            res.status(201).send("Succesfully signed up");
+            res.status(201);
           });
         });
       });

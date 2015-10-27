@@ -53,10 +53,15 @@ angular.module("knapsack.main", [])
     };
 
     var getBooks = function() {
+      console.log($location.url().split("/")[2])
+      if ($location.url().split("/")[2] === "bestsellers"){
+        Contents.getNytimes();
+      } else {
       Contents.getBooks($location.url().split("/")[2])
         .then(function(books) {
           $scope.displayedCollection = books;
         });
+      }
     };
 
     $scope.removeBook = function(book) {
@@ -74,7 +79,8 @@ angular.module("knapsack.main", [])
       console.log(book, user);
     }
 
-    getBooks();
+    // getBooks();
+    getNytimes();
 
   }])
   .controller("DropdownCtrl", ["$scope", "Contents", function($scope, Contents) {

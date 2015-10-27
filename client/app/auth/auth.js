@@ -42,7 +42,9 @@ var SignupModalCtrl = function($http, $scope, $state, $modalInstance, userForm, 
         $modalInstance.close();
         // this is not working for some reason :(
         // need to get page to redirect after submit
-        // $state.go('dashboard')
+        $location.path('/');
+        $state.go('dashboard');
+
       });
     } else {
       console.log("form not valid");
@@ -54,7 +56,7 @@ var SignupModalCtrl = function($http, $scope, $state, $modalInstance, userForm, 
   };
 };
 
-var SigninModalCtrl = function($http, $scope, $state, $modalInstance, userForm, Auth) {
+var SigninModalCtrl = function($http, $scope, $state, $urlRouter, $modalInstance, userForm, Auth) {
   $scope.form = {};
   $scope.submitForm = function() {
     if ($scope.form.userForm.$valid) {
@@ -63,7 +65,8 @@ var SigninModalCtrl = function($http, $scope, $state, $modalInstance, userForm, 
         $modalInstance.close();
         // this is not working for some reason :(
         // need to get page to redirect after submit
-        // $state.go('dashboard');
+        $location.path('/');
+        $state.go('dashboard');
       });
     } else {
       console.log("form not valid");
