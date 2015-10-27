@@ -1,6 +1,7 @@
 var gulp = require("gulp");
 var bowerFiles = require("main-bower-files");
 var uglify = require("gulp-uglify");
+var plugins = require('gulp-load-plugins')();
 var jshint = require("gulp-jshint");
 var clean = require("gulp-clean");
 var minifyCss = require("gulp-minify-css");
@@ -9,6 +10,8 @@ var concat = require("gulp-concat");
 var templateCache = require('gulp-angular-templatecache');
 var ngAnnotate = require('gulp-ng-annotate');
 var connect = require('gulp-connect');
+var inject = require('gulp-inject');
+var angularFilesort = require('gulp-angular-filesort');
 
 var paths = {
   scripts: ["./client/app/app.js", "./client/app/**/*.js"],
@@ -19,8 +22,20 @@ var paths = {
 
 var pipes = {};
 
+pipes.orderedAppScripts = function(){
+  return plugins.angularFilesort();
+}
+
 gulp.task("default", function() {
   console.log("Hello World");
+});
+
+gulp.task("angular-filesort", function(){
+  gulp.src(paths.index)
+  .pipe(inject(
+        gulp.src(paths.scripts).pipe(angularFilesort())
+        ))
+  .pipe(gulp.dest("./dest/"))
 });
 
 gulp.task('connect', function() {
