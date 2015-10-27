@@ -4,12 +4,13 @@ var morgan = require("morgan"); // log requests to the console
 
 var cookieParser = require("cookie-parser"); // parses cookie header, populate req.cookies
 var session = require("express-session");
-var sequelize = require("sequelize"); // promise based ORM for SQL
+var Sequelize = require("sequelize"); // promise based ORM for SQL
 var db = require("../config/database.js"); // connect to database
 var ddl = require("../config/ddl.js"); // create database tables
+var path = require("path");
 
-var bcrypt = require('bcrypt-nodejs'); // hashing passwords
-var Promise = require('bluebird'); // for promisification
+var bcrypt = require("bcrypt-nodejs"); // hashing passwords
+var Promise = require("bluebird"); // for promisification
 
 var app = express(); // create our app w/ express
 var port = process.env.PORT || 3000;
@@ -22,11 +23,23 @@ var ip = "127.0.0.1"; // localhost
 /************************************************************/
 // Initialize Database
 /************************************************************/
+var Users = db.import(path.join(__dirname, "../models/Users"));
+var Collections = db.import(path.join(__dirname, "../models/Collections.js"));
+var Books = db.import(path.join(__dirname, "../models/Books.js"));
+
+Users.hasMany(Collections);
+Collections.belongsToMany(Books, {
+  through: "collections_to_books"
+});
+Books.belongsToMany(Collections, {
+  through: "collections_to_books"
+});
+
 db.sync()
   .then(function(err) {
-    console.log('Database is up and running');
+    console.log("Database is up and running");
   }, function(err) {
-    console.log('An error occurred while creating the database:', err);
+    console.log("An error occurred while creating the database:", err);
   });
 
 /************************************************************/
@@ -143,15 +156,27 @@ app.post("/api/signup", function(req, res) {
 
 //**************************************************************
 // TEST DATA - dummyCollections is used to test that api/collections
-// GET REQUEST is working. 
+// GET REQUEST is working.
 //**************************************************************
 var dummyCollections = ["bestsellers", "wine", "football", "cars", "forFriends", "boats", "shoes"];
-
+var log = function (inst){
+  console.dir(inst.get());
+};
 
 app.get("/api/collections", function(req, res) {
-  console.log("IM IN api/collections GET Request", JSON.stringify(dummyCollections));
 
-  res.send(JSON.stringify(dummyCollections));
+  Collections.findAll({
+    // include: [{
+    //   model : Users,
+    //   where : {id = '1'}
+  }).then(function(collections){
+    //collections.forEach(log);
+  console.log("IM IN api/collections GET Request", collections);
+    // res.send(collections);
+  })
+
+
+  //res.send(JSON.stringify(dummyCollections));
 });
 
 
