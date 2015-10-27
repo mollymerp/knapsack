@@ -1,4 +1,4 @@
-angular.module("knapsack.auth", [])
+angular.module("knapsack.auth", ["ui.router"])
 
 .controller("authController", ["$scope", "$window", "$location", "$uibModal", "$log", "Auth", function($scope, $window, $location, $uibModal, $log, Auth) {
 
@@ -40,6 +40,9 @@ var SignupModalCtrl = function($http, $scope, $state, $modalInstance, userForm, 
         console.log("signup fired: ", resp.data);
         //somehow handle errors and successes here either log the user in or show him a message
         $modalInstance.close();
+        // this is not working for some reason :(
+        // need to get page to redirect after submit
+        // $state.go('dashboard')
       });
     } else {
       console.log("form not valid");
@@ -51,13 +54,16 @@ var SignupModalCtrl = function($http, $scope, $state, $modalInstance, userForm, 
   };
 };
 
-var SigninModalCtrl = function($http, $scope, $modalInstance, userForm, Auth) {
+var SigninModalCtrl = function($http, $scope, $state, $modalInstance, userForm, Auth) {
   $scope.form = {};
   $scope.submitForm = function() {
     if ($scope.form.userForm.$valid) {
       Auth.signIn().then(function (resp){
         console.log("signin fired: ", resp.data);
         $modalInstance.close();
+        // this is not working for some reason :(
+        // need to get page to redirect after submit
+        // $state.go('dashboard');
       });
     } else {
       console.log("form not valid");
