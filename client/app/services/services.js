@@ -1,8 +1,6 @@
 angular.module("knapsack.services", [])
   .factory("Collections", ["$http", function($http) {
 
-    var collects = ["bestsellers", "wine", "football", "cars", "forFriends", "boats"];
-
     var getAll = function() {
       return $http({
         method: "GET",
@@ -12,12 +10,9 @@ angular.module("knapsack.services", [])
       }, function errorCallback(resp) {
         console.log(resp.status + ": failed fetching from server");
       });
-      //switch between faked data and real data
-      // return collects;
     };
 
     var addCollection = function(collection) {
-      // collects.push(collection);
       return $http({
         method: "POST",
         url: "api/collections",
@@ -36,18 +31,12 @@ angular.module("knapsack.services", [])
         method: "DELETE",
         url: "api/collections",
         data: collection
-          //maybe we also need to send over the user if 
-          //the server cannot identify us from the session cookie
       }).then(function succesCallback(resp) {
         console.log(resp.status + ": succesfully deleted Collection");
       }, function errorCallback(resp) {
         console.log(resp.status + ": failed deleting Collection");
       });
     };
-
-    //maybe use angular interceptors to make success and error handling nicer
-    //and also maybe parsing the response that is coming as json if needed 
-    //https://docs.angularjs.org/api/ng/service/$http
 
     return {
       getAll: getAll,
