@@ -16,13 +16,9 @@ angular.module("knapsack.main", [])
           tableData.author = dat.author;
           bestSellers.push(tableData);
         });
-        var books = bestSellers;
-        $scope.displayedCollection = [].concat(books);
+        $scope.displayedCollection = bestSellers;
       });
     };
-
-    //need to make a copy for smart table to asynchronously paginate responses
-
 
     $scope.addBook = function() {
       if ($scope.newBook.title && $scope.newBook.title) {
@@ -71,6 +67,7 @@ angular.module("knapsack.main", [])
   }])
   .controller("DropdownCtrl", ["$scope", "Contents", function($scope, Contents) {
     $scope.loadFriends = function() {
+      console.log("trying to load");
         Contents.getFriends()
           .then(function(users) {
             $scope.friends = users;
