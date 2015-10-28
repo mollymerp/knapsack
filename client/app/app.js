@@ -7,7 +7,14 @@ angular.module("knapsack", [
   "knapsack.sidebar",
   "knapsack.auth"
 ])
-
+.controller('AppController', function ($scope, Auth) {
+  $scope.currentUser = null;
+  $scope.isAuthorized = Auth.isAuthorized;
+ 
+  $scope.setCurrentUser = function (user) {
+    $scope.currentUser = user;
+  };
+})
 .config(["$stateProvider", "$urlRouterProvider", function($stateProvider, $urlRouteProvider, $urlRouter) {
   $urlRouteProvider.otherwise("/");
 
@@ -62,28 +69,26 @@ angular.module("knapsack", [
       }
     });
 
-}]);
-// .run(['$rootScope', '$urlRouter', '$location', '$state', function ($rootScope, $urlRouter, $location, $state) {
-//     $rootScope.$on('$locationChangeSuccess', function(e, newUrl, oldUrl) {
-//       // Prevent $urlRouter's default handler from firing
-//       e.preventDefault();
+}])
+.constant('AUTH_EVENTS', {
+  loginSuccess: 'auth-login-success',
+  loginFailed: 'auth-login-failed',
+  logoutSuccess: 'auth-logout-success',
+  sessionTimeout: 'auth-session-timeout',
+  notAuthenticated: 'auth-not-authenticated'
+});
+.run(['$rootScope', '$urlRouter', '$location', "AUTH_EVENTS","Auth", function ($rootScope, $urlRouter, $location, AUTH_EVENTS, Auth) {
+    $rootScope.$on('$locationChangeSuccess', function(e, newUrl, oldUrl) {
+      // Prevent $urlRouter's default handler from firing
+      e.preventDefault();
 
-// //       * 
-// //        * provide conditions on when to 
-// //        * sync change in $location.path() with state reload.
-// //        * I use $location and $state as examples, but
-// //        * You can do any logic
-// //        * before syncing OR stop syncing all together.
-       
-
-//       if ($state.current.name === 'landing' && newUrl==="/" ) {
-//         // your stuff
-
-//         $urlRouter.sync();
-//       } else {
-//         // don't sync
-//       }
-//     });
-// //     // Configures $urlRouter's listener *after* your custom listener
-//     $urlRouter.listen();
-//   }]);;
+//       * 
+//        * provide conditions on when to 
+//        * sync change in $location.path() with state reload.
+//        * I use $location and $state as examples, but
+//        * You can do any logic
+//        * before syncing OR stop syncing all together.
+    });
+//     // Configures $urlRouter's listener *after* your custom listener
+    $urlRouter.listen();
+  }]);;

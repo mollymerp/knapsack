@@ -1,14 +1,23 @@
 angular.module("knapsack.services", [])
-
-  .factory("Auth", ["$http", function($http){
+  .service('Session', function () {
+    this.create = function (sessionId, userId) {
+      this.id = sessionId;
+      this.userId = userId;
+    };
+    this.destroy = function () {
+      this.id = null;
+      this.userId = null;
+    };
+  })
+  .factory("Auth", ["$http", "Session", function($http, Session){
     var signUp = function (user){
       return $http({
         method: "POST",
         url: "api/signup",
         data: user
       }).then(function succesCallback(resp){
-        console.log("in signup factory");
-        return resp;
+        Session.create(resp.data.id, resp.data.user);
+        return resp.data.user;
       }, function errorCallback(resp){
         // does the backend handle usernames that already exist?
         console.log(resp.status + ": failed to signup user");
@@ -22,16 +31,22 @@ angular.module("knapsack.services", [])
         url: "api/signin",
         data: user
       }).then(function succesCallback(resp){
-        return resp;
+        Session.create(resp.data.id, resp.data.user);
+        return resp.data.user;
       }, function errorCallback(resp){
         console.log(resp.status + ": incorrect username or password");
         return resp;
       });
     };
 
+    var isAuthenticated = function () {
+        return !!Session.userId;
+      };
+
   return {
     signIn: signIn,
-    signUp: signUp
+    signUp: signUp,
+    isAuthenticated: isAuthenticated
   };
 
 }])

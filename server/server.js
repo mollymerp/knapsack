@@ -110,7 +110,8 @@ app.post("/api/signin", function(req, res) {
             req.session.user = {
               user_name: username
             };
-            res.status(201).send("Succesfully signed in");
+            // changed to send session user data back to front-end - ML
+            res.status(201).send({id: req.session.id, user: req.session.user.user_name});
           });
         } else {
           res.status(200).send("Wrong password");
@@ -153,7 +154,8 @@ app.post("/api/signup", function(req, res) {
             }).then(function(collection) {
               user.addCollection(collection);
             });
-            res.status(201).send("Succesfully signed up user: " + username);
+            // changed to send session user data back to front-end - ML
+            res.status(201).send({id: req.session.id, user: req.session.user.user_name});
           });
         });
       });
