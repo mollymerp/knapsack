@@ -28,14 +28,20 @@ var Users = db.import(path.join(__dirname, "../models/Users"));
 var Collections = db.import(path.join(__dirname, "../models/Collections.js"));
 var Books = db.import(path.join(__dirname, "../models/Books.js"));
 
-Users.hasMany(Collections);
-Collections.belongsTo(Users, {foreignKey: 'fk_users'});
-Collections.belongsToMany(Books, {
-  through: "collections_to_books"
+Users.hasMany(Collections, {
+  as: 'collections',
+  foreignKey: 'user_id',
+  constraints: true
 });
-Books.belongsToMany(Collections, {
-  through: "collections_to_books"
+ddl.collections.belongsToMany(ddl.books, {
+  through: 'collections_to_books'
 });
+ddl.books.belongsToMany(ddl.collections, {
+  through: 'collections_to_books'
+});
+
+
+
 
 db.sync()
   .then(function(err) {
@@ -169,56 +175,60 @@ var loopObjreturnArr = function(collection) {
 };
 
 app.get("/api/collections", function(req, res) {
-  Collections.findAll({
-    attributes: ['collection'],
-    include: [{
-      model: Users,
-      where: { id : Sequelize.col('userId') }
-    }]
+// Collections.findAll({
+//   attributes: ['collection']
+//   // ,include: [{
+//   //   model: Users,
+//   //   where: {
+//   //     id: 1//Sequelize.col('user_id')
+//   //   }
+//   // }]
 
-    }).then(function(collections) {
+db.query("SELECT collection FROM `collections` ", {
+  type: db.QueryTypes.SELECT
+}).then(function(collections) {
 
-      console.log("IM IN api/collections GET Request", loopObjreturnArr(collections));
-      res.send(loopObjreturnArr(collections));
-    })
+console.log("IM IN api/collections GET Request", loopObjreturnArr(collections));
+res.send(loopObjreturnArr(collections));
+})
 });
 
 
-      app.post("/api/collections", function(req, res) {
-        console.log("Im in api/collections POST request: ", req.body);
-      });
+app.post("/api/collections", function(req, res) {
+  console.log("Im in api/collections POST request: ", req.body);
+});
 
-      app.get("/api/collection:collection", function(req, res) {
-        console.log("Im in api/collection", req.body);
-      });
-
-
-      app.post("/api/collection:collection", function(req, res) {
-        console.log("Im in api/collection", req.body);
-      });
-
-      app.post("api/share", function(req, res) {
-        console.log("IM in api/share", req.body);
-      });
+app.get("/api/collection:collection", function(req, res) {
+  console.log("Im in api/collection", req.body);
+});
 
 
+app.post("/api/collection:collection", function(req, res) {
+  console.log("Im in api/collection", req.body);
+});
 
-      /************************************************************/
-      // AUTHENTICATION ROUTES
-      /************************************************************/
+app.post("api/share", function(req, res) {
+  console.log("IM in api/share", req.body);
+});
 
 
 
-
-      /************************************************************/
-      // HANDLE WILDCARD ROUTES - IF ALL OTHER ROUTES FAIL
-      /************************************************************/
+/************************************************************/
+// AUTHENTICATION ROUTES
+/************************************************************/
 
 
 
 
-      /************************************************************/
-      // START THE SERVER
-      /************************************************************/
-      app.listen(port);
-      console.log("Knapsack is listening on port " + port);
+/************************************************************/
+// HANDLE WILDCARD ROUTES - IF ALL OTHER ROUTES FAIL
+/************************************************************/
+
+
+
+
+/************************************************************/
+// START THE SERVER
+/************************************************************/
+app.listen(port);
+console.log("Knapsack is listening on port " + port);
