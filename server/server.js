@@ -148,6 +148,11 @@ app.post("/api/signup", function(req, res) {
             }).then(function(collection) {
               user.addCollection(collection);
             });
+            Collection.create({
+              collection: "bestsellers"
+            }).then(function(collection) {
+              user.addCollection(collection);
+            });
             res.status(201).send("Succesfully signed up user: " + username);
           });
         });

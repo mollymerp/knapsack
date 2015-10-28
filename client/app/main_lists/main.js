@@ -16,7 +16,8 @@ angular.module("knapsack.main", [])
           tableData.author = dat.author;
           bestSellers.push(tableData);
         });
-        $scope.displayedCollection = bestSellers;
+        var books = bestSellers;
+        $scope.displayedCollection = [].concat(books)
       });
     };
 
@@ -43,7 +44,7 @@ angular.module("knapsack.main", [])
       Contents.getBooks($location.url().split("/")[2])
         .then(function(books) {
           console.log("books fetched ",books);
-          
+
           $scope.displayedCollection = books;
         });
       }
