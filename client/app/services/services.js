@@ -2,11 +2,12 @@ angular.module("knapsack.services", [])
 
   .factory("Auth", ["$http", function($http){
     var signUp = function (user){
-      $http({
+      return $http({
         method: "POST",
         url: "api/signup",
         data: user
       }).then(function succesCallback(resp){
+        console.log("in signup factory")
         return resp;
       }, function errorCallback(resp){
         // does the backend handle usernames that already exist?
@@ -16,7 +17,7 @@ angular.module("knapsack.services", [])
     };
 
     var signIn = function (user){
-      $http({
+      return $http({
         method: "POST",
         url: "api/signin",
         data: user
