@@ -1,13 +1,13 @@
 var express = require("express");
 var bodyParser = require("body-parser"); // request body parsing middleware (json, url)
 var morgan = require("morgan"); // log requests to the console
-
 var cookieParser = require("cookie-parser"); // parses cookie header, populate req.cookies
 var session = require("express-session");
 var sequelize = require("sequelize"); // promise based ORM for SQL
 var db = require("../config/database.js"); // connect to database
 var ddl = require("../config/ddl.js"); // create database tables
-
+var path = require("path");
+var _ = require('underscore');
 var bcrypt = require('bcrypt-nodejs'); // hashing passwords
 var Promise = require('bluebird'); // for promisification
 
@@ -20,6 +20,19 @@ var ip = "127.0.0.1"; // localhost
 /************************************************************/
 // Initialize Database
 /************************************************************/
+var Users = db.import(path.join(__dirname, "../models/Users"));
+var Collections = db.import(path.join(__dirname, "../models/Collections.js"));
+var Books = db.import(path.join(__dirname, "../models/Books.js"));
+
+Users.hasMany(Collections);
+Collections.belongsToMany(Books, {
+  through: "collections_to_books"
+});
+Books.belongsToMany(Collections, {
+  through: "collections_to_books"
+});
+
+
 db.sync()
   .then(function(err) {
     console.log('Database is up and running');
@@ -110,13 +123,16 @@ app.get("/api/collections", function(req, res) {
  
 // Add a collection to a users list of collections
 app.post("/api/collections", function(req, res) {
-  console.log("Im in api/collections POST request: ", req.body);
+  console.log("Im in api/collections POST request: ", req.params);
 });
 
 
 // For a logged in user, give back all books for a specific collection
-app.get("/api/collection", function(req, res) {
-  console.log("Im in api/collection GET REQUEST", "Req.body: ", req.body);
+app.get("/api/collection:collection", function(req, res) {
+  var collectionName = req.params.collection;
+  console.log("IM THE REQUEST OBJECT FROM API/COLLECTION: ", req.originalUrl);
+  // console.log("Im in api/collection GET REQUEST", "Req.body: ", req.body, "Req.params: ", req.params, "Req.data: ", req.data);
+  res.send("COMING SOON...DATA");
 });
 
 // For a logged in user, add a book to a specified collection
@@ -205,7 +221,7 @@ app.post("/api/signup", function(req, res) {
 // HANDLE WILDCARD ROUTES - IF ALL OTHER ROUTES FAIL
 /************************************************************/
 app.get("*", function(req, res) {
-  console.log("Im the wildcare route handler.....", "Heres a console.log of the req object: ", req.body, "Heres the req url: ", req.url);
+  console.log("Im the wildcare route handler.....", "Heres a console.log of the req object: ", req.body, "Heres the req url: ", req.url, "Im req.params: ", req.params);
 })
 
 

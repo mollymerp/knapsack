@@ -65,10 +65,10 @@ angular.module("knapsack.services", [])
     var getBooks = function(collection) {
       return $http({
           method: "GET",
-          url: "/api/collection",
-          data: JSON.stringify({
-            collection: collection
-          })
+          url: "/api/collection/"+collection,
+          data: collection
+          // contentType: "application/json, charset=utf-8",
+          // dataType: "json"
         })
         .then(function succesCallback(resp) {
           return resp.data;
