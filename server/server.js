@@ -114,9 +114,24 @@ app.get("/api/collections", function(req, res) {
 //       users name to query against the database....
 app.post("/api/collections", function(req, res) {
   var collection = req.body.collection;
+  var resCollection = [];
   console.log("Im in api/collections POST request: ", collection);
-  var dummyCollection = dummyCollections.push(collection)
-  res.send(JSON.stringify(dummyCollections));
+
+  db.query("SELECT collections.collection FROM collections WHERE userId = 1", { type: db.QueryTypes.SELECT })
+    .then(function(users) {
+      // Loop through the users array of objects
+      for(var i = 0; i < users.length; i++) {
+        // loop through each key in the obj
+        // and push value to resCollection 
+        for(var key in users[i]) {
+          resCollection.push(users[i][key]);
+        }
+      }
+      console.log("IM FROM USERS: ", users, "dummyCollections: ", dummyCollections, "resCollection: ", resCollection);
+    });
+  console.log("Im in api/collections POST request: ", req.body);
+  var dummyCollection = dummyCollections.push(resCollection);
+  res.send(JSON.stringify(resCollection));
 });
 
 
