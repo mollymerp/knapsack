@@ -6,7 +6,7 @@ var cookieParser = require("cookie-parser"); // parses cookie header, populate r
 var session = require("express-session");
 var Sequelize = require("sequelize"); // promise based ORM for SQL
 var db = require("../config/database.js"); // connect to database
-// var ddl = require("../config/ddl.js"); // create database tables
+
 var path = require("path");
 var _ = require('underscore');
 
@@ -17,9 +17,6 @@ var app = express(); // create our app w/ express
 var port = process.env.PORT || 3000;
 var ip = "127.0.0.1"; // localhost
 
-/************************************************************/
-// CONFIGURE SERVER
-/************************************************************/
 
 /************************************************************/
 // Initialize Database
@@ -44,6 +41,11 @@ db.sync()
     console.log('An error occurred while creating the database:', err);
   });
 
+/************************************************************/
+
+
+/************************************************************/
+// CONFIGURE SERVER
 /************************************************************/
 
 // Express uses template engine to parse front-end scripts. Can parse HTML, EJS, JADE, etc.
@@ -92,6 +94,10 @@ app.post("/", function(req, res) {
 
 // apply the routes to our application
 app.use("/", router);
+
+/************************************************************/
+// AUTHENTICATION ROUTES
+/************************************************************/
 
 app.post("/api/signin", function(req, res) {
   var username = req.body.username;
@@ -164,13 +170,14 @@ app.post("/api/signup", function(req, res) {
   });
 });
 
-
-
 //**************************************************************
-// TEST DATA - dummyCollections is used to test that api/collections
-// GET REQUEST is working. 
+// GET and POST Requests
 //**************************************************************
 
+//Following GET request displays all the collections for a given user
+//getCollection() function uses established relationship between user and collections to return all collections
+//Note : _.map function is required to return array of all collections which can be rendered
+//Unit Test : Pass (10/28/2015)
 
 app.get("/api/collections", function(req, res) {
   User.findOne({
@@ -187,6 +194,8 @@ app.get("/api/collections", function(req, res) {
   });
 });
 
+//POST request creates new collection by using req information
+//Unit Test : Pass (10/28/2015)
 
 app.post("/api/collections", function(req, res) {
   Collection.create({
@@ -202,6 +211,10 @@ app.post("/api/collections", function(req, res) {
     });
   });
 });
+
+//POST request to GET all books within a collection instance e.g. /api/collection/bestsellers
+//Unit Test : Pass (10/28/2015)
+//Question : This is a get request, why is post used? 
 
 app.post("/api/collection/instance", function(req, res) {
   User.findOne({
@@ -233,6 +246,8 @@ app.post("/api/collection/instance", function(req, res) {
   });
 });
 
+//POST request to CREATE new books within a collection instance e.g. /api/collection/bestsellers
+//Unit Test : Pass (10/28/2015)
 
 app.post("/api/collection", function(req, res) {
   User.findOne({
@@ -256,6 +271,9 @@ app.post("/api/collection", function(req, res) {
   });
 });
 
+//POST request to SHARE book to another user and places book in Recommended collection
+//Unit Test : 
+
 app.post("/api/share", function(req, res) {
   User.findOne({
     where: {
@@ -278,6 +296,10 @@ app.post("/api/share", function(req, res) {
   });
 });
 
+//GET request to get all users from database
+//Unit Test : 
+//Questions : Can you share to yourself? 
+
 app.get("/api/friends", function(req, res) {
   User.findAll({
     limit: 5
@@ -290,17 +312,8 @@ app.get("/api/friends", function(req, res) {
 });
 
 /************************************************************/
-// AUTHENTICATION ROUTES
-/************************************************************/
-
-
-
-
-/************************************************************/
 // HANDLE WILDCARD ROUTES - IF ALL OTHER ROUTES FAIL
 /************************************************************/
-
-
 
 
 /************************************************************/
