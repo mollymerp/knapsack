@@ -5,8 +5,7 @@ angular.module("knapsack", [
   "knapsack.services",
   "knapsack.main",
   "knapsack.sidebar",
-  "knapsack.auth",
-  "knapsack.landing"
+  "knapsack.auth"
 ])
 
 .config(["$stateProvider", "$urlRouterProvider", function($stateProvider, $urlRouteProvider, $urlRouter) {
@@ -14,7 +13,6 @@ angular.module("knapsack", [
 
 
   $stateProvider
-
     .state("landing", {
       url: "/landing",
       views: {
