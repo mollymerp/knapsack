@@ -17,7 +17,7 @@ angular.module("knapsack.main", [])
           bestSellers.push(tableData);
         });
         var books = bestSellers;
-        $scope.displayedCollection = [].concat(books)
+        $scope.displayedCollection = [].concat(books);
       });
     };
 
@@ -63,7 +63,7 @@ angular.module("knapsack.main", [])
         author: book.author
       }, user);
       console.log(book, user);
-    }
+    };
 
     getBooks();
     // getNytimes();

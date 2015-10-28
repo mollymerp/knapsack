@@ -164,6 +164,8 @@ gulp.task('build-app-scripts-prod', pipes.builtAppScriptsProd);
 
 gulp.task('build-index-prod', pipes.builtIndexProd);
 
+gulp.task('validate-index', pipes.validatedIndex)
+
 gulp.task("angular-filesort", function(){
   gulp.src(paths.index)
   .pipe(inject(
