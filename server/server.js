@@ -103,7 +103,7 @@ var dummyCollections = ["bestsellers", "wine", "football", "cars", "forFriends",
 // Returns all collections for a given user
 app.get("/api/collections", function(req, res) {
   var resCollection = [];
-  db.query("SELECT collections.collection FROM collections WHERE userId = 1", { type: db.QueryTypes.SELECT })
+  db.query("SELECT collections.collection FROM collections WHERE userId = 2", { type: db.QueryTypes.SELECT })
     .then(function(users) {
       for(var i = 0; i < users.length; i++) {
         for(var key in users[i]) {
@@ -111,7 +111,7 @@ app.get("/api/collections", function(req, res) {
         }
       }
       console.log("resCollection: ", resCollection, "JSON.stringify: ", JSON.stringify(resCollection));
-      res.send(JSON.stringify(resCollection))
+      res.send(JSON.stringify(resCollection));
     });
 });
  
@@ -123,13 +123,12 @@ app.post("/api/collections", function(req, res) {
   var resCollection = [];
   console.log("Im in api/collections POST request: ", newCollection);
 
-  db.query("INSERT INTO collections (collection, createdAt, updatedAt, userId) VALUES (?, 10/26/15, 10/26/15, 1)", { replacements: [newCollection], type: db.QueryTypes.INSERT})
+  db.query("INSERT INTO collections (collection, createdAt, updatedAt, userId) VALUES (?, 10/26/15, 10/26/15, 2)", { replacements: [newCollection], type: db.QueryTypes.INSERT})
     .then(function(result) {
       console.log(result);
     });
 
-
-  db.query("SELECT collections.collection FROM collections WHERE userId = 1", { type: db.QueryTypes.SELECT })
+  db.query("SELECT collections.collection FROM collections WHERE userId = 2", { type: db.QueryTypes.SELECT })
     .then(function(users) {
       // Loop through the users array of objects
       for(var i = 0; i < users.length; i++) {

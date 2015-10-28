@@ -103,7 +103,7 @@ angular.module("knapsack.services", [])
     var getBooks = function(collection) {
       return $http({
           method: "GET",
-          url: "/api/collection/"+collection,
+          url: "/api/collection/",
           data: collection
           // contentType: "application/json, charset=utf-8",
           // dataType: "json"
