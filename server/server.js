@@ -103,27 +103,16 @@ var dummyCollections = ["bestsellers", "wine", "football", "cars", "forFriends",
 // Returns all collections for a given user
 app.get("/api/collections", function(req, res) {
 
-  console.log("IM IN api/collections GET Request", JSON.stringify(dummyCollections));
+  console.log("IM IN api/collections GET Request");
 
-// TESTING SELECT QUERY
-  // var sql = "SELECT * FROM users";
-  // return sequelize
-  //   .query(sql)
-  //   .success(function(row) {
-  //     console.log("SOMETHING HAPPENED: ", row);
-  //   })
-  // sequelize.query(sql, null, { raw: true, type: 'SELECT'})
-  //   .then(function(users) {
-  //     console.log(users);
-  //   });
-//
   // res.send("Coming soon...data from the database: ", users);
   res.send(JSON.stringify(dummyCollections));
 });
  
 // Add a collection to a users list of collections
 app.post("/api/collections", function(req, res) {
-  console.log("Im in api/collections POST request: ", req.params);
+  var collection = req.body.collection;
+  console.log("Im in api/collections POST request: ", collection);
 });
 
 
