@@ -6,7 +6,9 @@ var cookieParser = require("cookie-parser"); // parses cookie header, populate r
 var session = require("express-session");
 var sequelize = require("sequelize"); // promise based ORM for SQL
 var db = require("../config/database.js"); // connect to database
-var ddl = require("../config/ddl.js"); // create database tables
+// var ddl = require("../config/ddl.js"); // create database tables
+var path = require("path");
+var _ = require('underscore');
 
 var bcrypt = require('bcrypt-nodejs'); // hashing passwords
 var Promise = require('bluebird'); // for promisification
@@ -22,6 +24,13 @@ var ip = "127.0.0.1"; // localhost
 /************************************************************/
 // Initialize Database
 /************************************************************/
+
+var User = db.import(path.join(__dirname, "../models/Users"));
+var Collection = db.import(path.join(__dirname, "../models/Collections.js"));
+var Book = db.import(path.join(__dirname, "../models/Books.js"));
+
+User.hasMany(Collection);
+
 db.sync()
   .then(function(err) {
     console.log('Database is up and running');
@@ -82,7 +91,7 @@ app.post("/api/signin", function(req, res) {
   var username = req.body.username;
   var password = req.body.password;
 
-  ddl.users.findOne({
+  User.findOne({
     where: {
       user_name: username
     }
@@ -111,7 +120,7 @@ app.post("/api/signup", function(req, res) {
   var username = req.body.username;
   var password = req.body.password;
 
-  ddl.users.findOne({
+  User.findOne({
     where: {
       user_name: username
     }
@@ -120,7 +129,7 @@ app.post("/api/signup", function(req, res) {
       var hashing = Promise.promisify(bcrypt.hash); // hashing is a promisified version of bcyrpt hash
       var hashPass = hashing(password, null, null).
       then(function(hash) {
-        ddl.users.create({
+        User.create({
           user_name: username,
           password: hash
         }).then(function(user) {
@@ -128,7 +137,7 @@ app.post("/api/signup", function(req, res) {
             req.session.user = {
               user_name: username
             };
-            res.status(201);
+            res.status(201).send("Succesfully signed up user: " + username);
           });
         });
       });
@@ -149,22 +158,42 @@ var dummyCollections = ["bestsellers", "wine", "football", "cars", "forFriends",
 
 
 app.get("/api/collections", function(req, res) {
-  console.log("IM IN api/collections GET Request", JSON.stringify(dummyCollections));
-
-  res.send(JSON.stringify(dummyCollections));
+  User.findOne({
+    where: {
+      user_name: req.session.user.user_name
+    }
+  }).then(function(user) {
+    user.getCollections().then(function(collections) {
+      collections = _.map(collections, function(item) {
+        return item.collection;
+      });
+      res.send(collections);
+    });
+  });
 });
 
 
 app.post("/api/collections", function(req, res) {
-  console.log("Im in api/collections POST request: ", req.body);
+  Collection.create({
+    collection: req.body.collection
+  }).then(function(collection) {
+    User.findOne({
+      where: {
+        user_name: req.session.user.user_name
+      }
+    }).then(function(user) {
+      user.addCollection(collection);
+    });
+  });
+  res.status(201).send("succesfully added collection");
 });
 
-app.get("/api/collection:collection", function(req, res) {
+app.get("/api/collection", function(req, res) {
   console.log("Im in api/collection", req.body);
 });
 
 
-app.post("/api/collection:collection", function(req, res) {
+app.post("/api/collection", function(req, res) {
   console.log("Im in api/collection", req.body);
 });
 

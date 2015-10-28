@@ -75,7 +75,7 @@ angular.module("knapsack.main", [])
       Contents.shareBook($location.url().split("/")[2], {
         title: book.title,
         author: book.author
-      }, user)
+      }, user);
       console.log(book, user);
     }
 
