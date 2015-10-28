@@ -113,19 +113,21 @@ app.get("/api/collections", function(req, res) {
       console.log("resCollection: ", resCollection, "JSON.stringify: ", JSON.stringify(resCollection));
       res.send(JSON.stringify(resCollection))
     });
-
-
-  // console.log("IM IN api/collections GET Request", resCollection);
-  // res.send(JSON.stringify(dummyCollections));
 });
  
 // Add a collection to a users list of collections
 // Note: The problem is we're still not capturing the 
 //       users name to query against the database....
 app.post("/api/collections", function(req, res) {
-  var collection = req.body.collection;
+  var newCollection = req.body.collection;
   var resCollection = [];
-  console.log("Im in api/collections POST request: ", collection);
+  console.log("Im in api/collections POST request: ", newCollection);
+
+  db.query("INSERT INTO collections (collection, createdAt, updatedAt, userId) VALUES (?, 10/26/15, 10/26/15, 1)", { replacements: [newCollection], type: db.QueryTypes.INSERT})
+    .then(function(result) {
+      console.log(result);
+    });
+
 
   db.query("SELECT collections.collection FROM collections WHERE userId = 1", { type: db.QueryTypes.SELECT })
     .then(function(users) {
