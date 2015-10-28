@@ -110,6 +110,8 @@ app.get("/api/collections", function(req, res) {
 });
  
 // Add a collection to a users list of collections
+// Note: The problem is we're still not capturing the 
+//       users name to query against the database....
 app.post("/api/collections", function(req, res) {
   var collection = req.body.collection;
   console.log("Im in api/collections POST request: ", collection);
