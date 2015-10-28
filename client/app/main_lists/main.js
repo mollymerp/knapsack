@@ -38,11 +38,12 @@ angular.module("knapsack.main", [])
 
     var getBooks = function() {
       if ($location.url().split("/")[2] === "bestsellers"){
-        Contents.getNytimes();
+        getNytimes();
       } else {
       Contents.getBooks($location.url().split("/")[2])
         .then(function(books) {
           console.log("books fetched ",books);
+          
           $scope.displayedCollection = books;
         });
       }
