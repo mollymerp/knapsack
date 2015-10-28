@@ -170,7 +170,6 @@ app.post("/api/signup", function(req, res) {
 // TEST DATA - dummyCollections is used to test that api/collections
 // GET REQUEST is working. 
 //**************************************************************
-var dummyCollections = ["bestsellers", "wine", "football", "cars", "forFriends", "boats", "shoes"];
 
 
 app.get("/api/collections", function(req, res) {
@@ -205,7 +204,6 @@ app.post("/api/collections", function(req, res) {
 });
 
 app.post("/api/collection/instance", function(req, res) {
-  console.log(req.body);
   User.findOne({
     where: {
       user_name: req.session.user.user_name
