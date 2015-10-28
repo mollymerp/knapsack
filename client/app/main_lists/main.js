@@ -39,35 +39,56 @@ angular.module("knapsack.main", [])
     $scope.displayedCollection = [].concat($scope.bookCollection);
 
 
-    $scope.addContent = function() {
+    $scope.addBook = function() {
       if ($scope.newBook.title && $scope.newBook.title) {
-        var content = {
+        var book = {
           title: $scope.newBook.title,
           author: $scope.newBook.author
         };
-        Contents.addContent($location.url().split("/")[2], content)
-          .then(getContent);
+        Contents.addBook($location.url().split("/")[2], book)
+          .then(getBooks);
         $scope.newBook.title = "";
         $scope.newBook.author = "";
       }
     };
 
-    var getContent = function() {
-      if ($location.url().split("/")[1] === "collection") {
-        Contents.getContent($location.url().split("/")[2]);
+    var getBooks = function() {
+      console.log($location.url().split("/")[2])
+      if ($location.url().split("/")[2] === "bestsellers"){
+        Contents.getNytimes();
       } else {
-        getNytimes();
+      Contents.getBooks($location.url().split("/")[2])
+        .then(function(books) {
+          $scope.displayedCollection = books;
+        });
       }
     };
 
-    $scope.removeContent = function(book) {
-
+    $scope.removeBook = function(book) {
+      Contents.removeBook($location.url().split("/")[2], {
+        title: book.title,
+        author: book.author
+      }).then(getBooks);
     };
 
-    $scope.shareBook = function(book) {
-      console.log(book);
+    $scope.shareBook = function(book, user) {
+      Contents.shareBook($location.url().split("/")[2], {
+        title: book.title,
+        author: book.author
+      }, user)
+      console.log(book, user);
     }
 
-    getContent();
+    // getBooks();
+    getNytimes();
 
+  }])
+  .controller("DropdownCtrl", ["$scope", "Contents", function($scope, Contents) {
+    $scope.loadFriends = function() {
+        Contents.getFriends()
+          .then(function(users) {
+            $scope.friends = users;
+          });
+      };
+    // $scope.friends = ["hans", "peter", "klaus", "anja", "frauke", "meggie", "linda"];
   }]);

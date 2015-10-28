@@ -1,6 +1,44 @@
 angular.module("knapsack.services", [])
+
+  .factory("Auth", ["$http", function($http){
+    var signUp = function (user){
+      $http({
+        method: "POST",
+        url: "api/signup",
+        data: user
+      }).then(function succesCallback(resp){
+        return resp;
+      }, function errorCallback(resp){
+        // does the backend handle usernames that already exist?
+        console.log(resp.status + ": failed to signup user");
+        return resp;
+      });
+    };
+
+    var signIn = function (user){
+      $http({
+        method: "POST",
+        url: "api/signin",
+        data: user
+      }).then(function succesCallback(resp){
+        return resp;
+      }, function errorCallback(resp){
+        console.log(resp.status + ": incorrect username or password");
+        return resp;
+      })
+    };
+
+    return {
+      signIn: signIn,
+      signUp: signUp
+    } 
+
+  }])
+
+
   .factory("Collections", ["$http", function($http) {
 
+    // get all collection names (ex. bestsellers, wine, ...)
     var getAll = function() {
       return $http({
         method: "GET",
@@ -12,6 +50,7 @@ angular.module("knapsack.services", [])
       });
     };
 
+    // add a new collection (ex. boats) to the current user
     var addCollection = function(collection) {
       return $http({
         method: "POST",
@@ -26,11 +65,12 @@ angular.module("knapsack.services", [])
       });
     };
 
+    //remove a collection from the collection list for current user
     var removeCollection = function(collection) {
       return $http({
         method: "DELETE",
         url: "api/collections",
-        data: collection
+        data: JSON.stringify(collection)
       }).then(function succesCallback(resp) {
         console.log(resp.status + ": succesfully deleted Collection");
       }, function errorCallback(resp) {
@@ -59,8 +99,7 @@ angular.module("knapsack.services", [])
         })
     };
 
-
-    var getContent = function(collection) {
+    var getBooks = function(collection) {
       return $http({
           method: "GET",
           url: "/api/collection",
@@ -69,51 +108,82 @@ angular.module("knapsack.services", [])
           })
         })
         .then(function succesCallback(resp) {
-          return JSON.parse(resp.data);
+          return resp.data;
         }, function errorCallback(resp) {
-          console.log(resp.status + ": failed loading content for collection " + collection);
+          console.log(resp.status + ": failed loading books for collection " + collection);
         });
     };
 
-    var addContent = function(collection, content) {
+    var addBook = function(collection, book) {
       return $http({
           method: "POST",
           url: "/api/collection",
           data: JSON.stringify({
             collection: collection,
-            content: content
+            book: book
           })
         })
         .then(function succesCallback(resp) {
           console.log("succesfully saved book into: " + collection);
         }, function errorCallback(resp) {
-          console.log(resp.status + ": failed adding content to collection");
+          console.log(resp.status + ": failed adding book to collection");
         });
     };
 
-    //save this one for later
-    var removeContent = function(content) {
+    var removeBook = function(collection, book) {
       return $http({
           method: 'DELETE',
-          url: "/api/collections/" + "name of collection",
-          data: content // should probably be a book title or something similar
+          url: "/api/collection",
+          data: JSON.stringify({
+            collection: collection,
+            book: book
+          })
         })
-        .then(function(resp) {
-          console.log("succesfully deleted book from: " + "name of collection");
+        .then(function succesCallback(resp) {
+          console.log("succesfully deleted book from: " + collection);
+        }, function errorCallback(resp) {
+          console.log("failed deleting book from: " + collection);
         });
     };
 
     var shareBook = function(collection, book, user) {
-      
-    }
+      return $http({
+          method: "POST",
+          url: "/api/share",
+          data: JSON.stringify({
+            collection: collection,
+            book: book,
+            user: user
+          })
+        })
+        .then(function succesCallback(resp) {
+          console.log("succesfully shared book to user: " + user);
+        }, function errorCallback(resp) {
+          console.log(resp.status + ": failed sharing book with user: " + user);
+        });
+    };
 
+
+    var getFriends = function() {
+      return $http({
+          method: "GET",
+          url: "/api/friends"
+        })
+        .then(function succesCallback(resp) {
+          return resp.data;
+        }, function errorCallback(resp) {
+          console.log(resp.status + ": failed loading friends");
+        });
+    };
 
 
     return {
-      getContent: getContent,
-      addContent: addContent,
-      removeContent: removeContent,
-      getNytimes: getNytimes
+      getBooks: getBooks,
+      addBook: addBook,
+      removeBook: removeBook,
+      getNytimes: getNytimes,
+      getFriends: getFriends,
+      shareBook: shareBook
     };
 
   }])

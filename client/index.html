@@ -1,33 +1,28 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html ng-app="knapsack">
 
 <head>
   <meta charset="utf-8">
   <title>Knapsack</title>
+  <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,100italic,300italic,400italic' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  <!-- inject:css -->
-  <!-- endinject -->
+  <link rel="stylesheet" type="text/css" href="styles/styles.css">
+
+>>>>>>> master
 </head>
 
-<body>
-  <div ui-view="header"></div>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-2" id="leftCol"> <!-- fixed and scrolling functionality needs to be added -->
-        <div ui-view="sidebar"></div>
-      </div>
-      <div class="col-md-10 scrollit">
-        <div ui-view="main_lists"></div>
-      </div>
-    </div>
-  </div>
+<body ui-view="main">
+
   <!-- dependencies -->
-  <!-- bower:js -->
-  <!-- endinject -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.14.2/ui-bootstrap-tpls.min.js"></script>
   <!-- -->
-  <!-- inject:js -->
-  <!-- endinject -->
+  <script src="app/services/services.js"></script>
+  <script src="app/auth/auth.js"></script>
+  <script src="app/sidebar/sidebar.js"></script>
+  <script src="app/main_lists/main.js"></script>
+  <script src="app/landing/landing.js"></script>
+
+  <script src="app/app.js"></script>
 </body>
 
 </html>

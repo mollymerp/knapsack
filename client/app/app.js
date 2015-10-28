@@ -6,7 +6,7 @@ angular.module("knapsack", [
   "knapsack.main",
   "knapsack.sidebar",
   "knapsack.auth",
-  "templates"
+  "knapsack.landing"
 ])
 
 .config(["$stateProvider", "$urlRouterProvider", function($stateProvider, $urlRouteProvider, $urlRouter) {
@@ -14,18 +14,30 @@ angular.module("knapsack", [
 
 
   $stateProvider
-    .state("main", {
+
+    .state("landing", {
+      url: "/landing",
+      views: {
+        "main": {
+          templateUrl: "app/landing/landing.html",
+          controller: "authController"
+      }
+    }})
+    .state("dashboard", {
       url: "/",
       views: {
-        "main_lists": {
+        "main": {
+          templateUrl: "app/dashboard/dashboard.html"
+        },
+        "main_lists@dashboard": {
           templateUrl: "app/main_lists/main.html",
           controller: "MainController"
         },
-        "sidebar": {
+        "sidebar@dashboard": {
           templateUrl: "app/sidebar/sidebar.html",
           controller: "SidebarController",
         },
-        "header": {
+        "header@dashboard": {
           templateUrl: "app/auth/header.html",
           controller: "authController",
         }
@@ -34,19 +46,46 @@ angular.module("knapsack", [
     .state("collection", {
       url: "/collection/:collection",
       views: {
-        "main_lists": {
+        "main": {
+          templateUrl: "app/dashboard/dashboard.html"
+        },
+        "main_lists@collection": {
           templateUrl: "app/main_lists/main.html",
           controller: "MainController"
         },
-        "sidebar": {
+        "sidebar@collection": {
           templateUrl: "app/sidebar/sidebar.html",
           controller: "SidebarController",
         },
-        "header": {
+        "header@collection": {
           templateUrl: "app/auth/header.html",
           controller: "authController",
         }
       }
     })
 
-}]);
+}])
+// .run(['$rootScope', '$urlRouter', '$location', '$state', function ($rootScope, $urlRouter, $location, $state) {
+//     $rootScope.$on('$locationChangeSuccess', function(e, newUrl, oldUrl) {
+//       // Prevent $urlRouter's default handler from firing
+//       e.preventDefault();
+
+// //       * 
+// //        * provide conditions on when to 
+// //        * sync change in $location.path() with state reload.
+// //        * I use $location and $state as examples, but
+// //        * You can do any logic
+// //        * before syncing OR stop syncing all together.
+       
+
+//       if ($state.current.name === 'landing' && newUrl==="/" ) {
+//         // your stuff
+
+//         $urlRouter.sync();
+//       } else {
+//         // don't sync
+//       }
+//     });
+// //     // Configures $urlRouter's listener *after* your custom listener
+//     $urlRouter.listen();
+//   }]);;
