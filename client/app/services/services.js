@@ -52,13 +52,12 @@ angular.module("knapsack.services", [])
     };
 
     // add a new collection (ex. boats) to the current user
-    var addCollection = function(collection, user) {
+    var addCollection = function(collection) {
       return $http({
         method: "POST",
         url: "api/collections",
         data: JSON.stringify({
-          collection: collection,
-          user: user
+          collection: collection
         })
       }).then(function succesCallback(resp) {
         console.log(resp.status + ": succesfully added Collection");
@@ -104,10 +103,10 @@ angular.module("knapsack.services", [])
     var getBooks = function(collection) {
       return $http({
           method: "GET",
-          url: "/api/collection/",
-          data: collection
-          // contentType: "application/json, charset=utf-8",
-          // dataType: "json"
+          url: "/api/collection",
+          data: JSON.stringify({
+            collection: collection
+          })
         })
         .then(function succesCallback(resp) {
           return resp.data;
