@@ -29,15 +29,15 @@ angular.module("knapsack.services", [])
       })
     };
 
-    return {
-      signIn: signIn,
-      signUp: signUp
-    } 
+  return {
+    signIn: signIn,
+    signUp: signUp
+  };
 
-  }])
+}])
 
 
-  .factory("Collections", ["$http", function($http) {
+.factory("Collections", ["$http", function($http) {
 
     // get all collection names (ex. bestsellers, wine, ...)
     var getAll = function() {
@@ -45,9 +45,10 @@ angular.module("knapsack.services", [])
         method: "GET",
         url: "api/collections"
       }).then(function succesCallback(resp) {
+        console.log(resp.status + ":successfully fetched all collections");
         return resp.data;
       }, function errorCallback(resp) {
-        console.log(resp.status + ": failed fetching from server");
+        console.log(resp.status + ": failed fetching collections from server");
       });
     };
 
@@ -102,8 +103,8 @@ angular.module("knapsack.services", [])
 
     var getBooks = function(collection) {
       return $http({
-          method: "GET",
-          url: "/api/collection",
+          method: "POST",
+          url: "/api/collection/instance",
           data: JSON.stringify({
             collection: collection
           })

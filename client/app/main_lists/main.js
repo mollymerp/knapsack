@@ -5,21 +5,6 @@ angular.module("knapsack.main", [])
       author: ""
     };
 
-    $scope.bookCollection = [{
-      "title": "The Goldfinch",
-      "author": "Donna Tartt"
-    }, {
-      "title": "Harry Potter",
-      "author": "J.K. Rowling"
-    }, {
-      "title": "Just Kids",
-      "author": "Patti Smith"
-    }, {
-      "title": "Pro AngularJS",
-      "author": "Adam Freeman"
-    }];
-
-
     var getNytimes = function() {
       var bestSellers = [];
       Contents.getNytimes().then(function(resp) {
@@ -30,13 +15,13 @@ angular.module("knapsack.main", [])
           tableData.title = dat.title;
           tableData.author = dat.author;
           bestSellers.push(tableData);
-        })
-        $scope.bookCollection = bestSellers;
-      })
+        });
+        var books = bestSellers;
+        $scope.displayedCollection = [].concat(books)
+      });
     };
 
     //need to make a copy for smart table to asynchronously paginate responses
-    $scope.displayedCollection = [].concat($scope.bookCollection);
 
 
     $scope.addBook = function() {
@@ -53,12 +38,13 @@ angular.module("knapsack.main", [])
     };
 
     var getBooks = function() {
-      console.log($location.url().split("/")[2])
       if ($location.url().split("/")[2] === "bestsellers"){
-        Contents.getNytimes();
+        getNytimes();
       } else {
       Contents.getBooks($location.url().split("/")[2])
         .then(function(books) {
+          console.log("books fetched ",books);
+
           $scope.displayedCollection = books;
         });
       }
@@ -75,12 +61,12 @@ angular.module("knapsack.main", [])
       Contents.shareBook($location.url().split("/")[2], {
         title: book.title,
         author: book.author
-      }, user)
+      }, user);
       console.log(book, user);
     }
 
-    // getBooks();
-    getNytimes();
+    getBooks();
+    // getNytimes();
 
   }])
   .controller("DropdownCtrl", ["$scope", "Contents", function($scope, Contents) {
