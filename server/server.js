@@ -22,9 +22,15 @@ var ip = "127.0.0.1"; // localhost
 // Initialize Database
 /************************************************************/
 
+//Import Models(tables)
+
 var User = db.import(path.join(__dirname, "../models/Users"));
 var Collection = db.import(path.join(__dirname, "../models/Collections.js"));
 var Book = db.import(path.join(__dirname, "../models/Books.js"));
+
+//Relationships :
+//1.User can have many Collections.
+//2.Collections have a many to many relationship with Books through junction table collections_to_books
 
 User.hasMany(Collection);
 Collection.belongsToMany(Book, {
@@ -34,6 +40,8 @@ Book.belongsToMany(Collection, {
   through: "collections_to_books"
 });
 
+//Initialize Database
+
 db.sync()
   .then(function(err) {
     console.log('Database is up and running');
@@ -42,16 +50,8 @@ db.sync()
   });
 
 /************************************************************/
-
-
-/************************************************************/
 // CONFIGURE SERVER
 /************************************************************/
-
-// Express uses template engine to parse front-end scripts. Can parse HTML, EJS, JADE, etc.
-app.set("view engine", "ejs");
-// Tells Express from where to deliver front end views
-app.set("views", __dirname + "/../client/views");
 
 // Logger for dev environment
 app.use(morgan("dev"));
@@ -77,28 +77,10 @@ app.use(express.static(__dirname + "/../client"));
 
 
 /************************************************************/
-// ROUTE HANDLING
-/************************************************************/
-
-var router = express.Router();
-
-// local dev route (http://localhost:3000)
-router.get("/", function(req, res) {
-  res.render("index");
-});
-
-app.post("/", function(req, res) {
-  res.send("I got a POST Request from the home page");
-});
-
-
-// apply the routes to our application
-app.use("/", router);
-
-/************************************************************/
 // AUTHENTICATION ROUTES
 /************************************************************/
 
+//Signin post request
 
 app.post("/api/signin", function(req, res) {
   var username = req.body.username;
@@ -218,7 +200,7 @@ app.post("/api/collections", function(req, res) {
 
 //POST request to GET all books within a collection instance e.g. /api/collection/bestsellers
 //Unit Test : Pass (10/28/2015)
-//Question : This is a get request, why is post used? 
+//Question : This is a get request, why is post used?
 
 app.post("/api/collection/instance", function(req, res) {
   User.findOne({
@@ -276,7 +258,7 @@ app.post("/api/collection", function(req, res) {
 });
 
 //POST request to SHARE book to another user and places book in Recommended collection
-//Unit Test : 
+//Unit Test :
 
 app.post("/api/share", function(req, res) {
   User.findOne({
@@ -301,8 +283,7 @@ app.post("/api/share", function(req, res) {
 });
 
 //GET request to get all users from database
-//Unit Test : 
-//Questions : Can you share to yourself? 
+//Unit Test :
 
 app.get("/api/friends", function(req, res) {
   User.findAll({
