@@ -1,9 +1,25 @@
 angular.module("knapsack.main", [])
-  .controller("MainController", ["$scope", "$window", "$location", "Contents", function($scope, $window, $location, Contents) {
+  .controller("MainController", ["$scope", "$window", "$location", "$http", "Contents", function($scope, $window, $location, $http, Contents) {
     $scope.newBook = {
       title: "",
       author: ""
     };
+
+    $scope.getLocation = function(val) {
+    return $http.get('https://www.googleapis.com/books/v1/volumes', {
+      params: {
+        q: val,
+        sensor: false,
+        key: "AIzaSyD9-ymecHg0I2o_mDvvD39PxNv46yz2Gnc",
+        printType: "books"
+      }
+    }).then(function(response){
+      console.log(response)
+      return response.data.items.map(function(item){
+        return item.volumeInfo.title;
+      });
+    });
+  };
 
     var getNytimes = function() {
       var bestSellers = [];
