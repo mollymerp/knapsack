@@ -1,5 +1,5 @@
 
-    <form class="form-inline" ng-submit="addContent()">
+    <form class="form-inline" ng-submit="addBook()">
       <div class="text-center">
         <input type="text" ng-model="newBook.title" name="title" placeholder="Title" required>
         <input type="text" ng-model="newBook.author" name="author" placeholder="Author">
@@ -17,7 +17,7 @@
           <th>Delete</th>
         </tr>
       </thead>
-      <tbody ng-controller="DropdownCtrl">
+      <tbody>
         <tr ng-repeat="book in displayedCollection">
           <td> {{book.title | uppercase}} </td>
           <td> {{book.author}} </td>
