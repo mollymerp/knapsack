@@ -1,10 +1,10 @@
-angular.module("knapsack.auth", ["ui.bootstrap"])
+angular.module("knapsack.auth", ["ui.router"])
 
-.controller("authController", ["$scope", "$uibModal", "$log", function($scope, $uibModal, $log) {
+.controller("authController", ["$scope", "$window", "$location", "$uibModal", "$log", "Auth", function($scope, $window, $location, $uibModal, $log, Auth) {
 
   $scope.signupOpen = function() {
     var modalInstance = $uibModal.open({
-      templateUrl: 'app/auth/signup-modal.html',
+      templateUrl: "app/auth/signup-modal.html",
       controller: SignupModalCtrl,
       size: "modal-xs",
       scope: $scope,
@@ -32,44 +32,51 @@ angular.module("knapsack.auth", ["ui.bootstrap"])
 
 }]);
 
-var SignupModalCtrl = function($http, $scope, $modalInstance, userForm) {
+var SignupModalCtrl = function($http, $scope, $location, $modalInstance, userForm, Auth) {
   $scope.form = {};
   $scope.submitForm = function() {
     if ($scope.form.userForm.$valid) {
-      $http({
-        method: "POST",
-        url: "api/signup",
-        data: $scope.user
+      Auth.signUp($scope.user)
+
+      .then(function(resp){
+        console.log("signup fired: ", resp);
+        //somehow handle errors and successes here either log the user in or show him a message
+        $modalInstance.close();
+        // this is not working for some reason :(
+        // need to get page to redirect after submit
+        $location.path("/");
+
       });
-      //somehow handle errors and successes here either log the user in or show him a message
-      $modalInstance.close();
     } else {
       console.log("form not valid");
     }
   };
 
   $scope.cancel = function() {
-    $modalInstance.dismiss('cancel');
+    $modalInstance.dismiss("cancel");
   };
 };
 
-var SigninModalCtrl = function($http, $scope, $modalInstance, userForm) {
+var SigninModalCtrl = function($http, $scope, $location, $modalInstance, userForm, Auth) {
   $scope.form = {};
   $scope.submitForm = function() {
     if ($scope.form.userForm.$valid) {
-      $http({
-        method: "POST",
-        url: "api/signin",
-        data: $scope.user
-      });
-      //somehow handle errors and successes here as well and tell the user if he is signed in or not
-      $modalInstance.close();
+      Auth.signIn($scope.user)
+      .then(function (resp){
+        console.log("signin fired");
+        // $modalInstance.close();
+        // this is not working for some reason :(
+        // need to get page to redirect after submit
+        $location.path("/");
+     }.catch(function (error){
+        console.error(error);
+      }));
     } else {
       console.log("form not valid");
     }
   };
 
   $scope.cancel = function() {
-    $modalInstance.dismiss('cancel');
+    $modalInstance.dismiss("cancel");
   };
 };

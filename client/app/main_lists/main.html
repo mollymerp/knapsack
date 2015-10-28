@@ -1,8 +1,7 @@
-<uib-accordion close-others="true">
-  <uib-accordion-group heading="Books">
-    <form class="form-inline" ng-submit="addContent()">
+
+    <form class="form-inline" ng-submit="addBook()">
       <div class="text-center">
-        <input type="text" ng-model="newBook.title" name="title" placeholder="Title" required>
+        <input type="text" autocomplete="off" ng-model="newBook.title" name="title" placeholder="Title" uib-typeahead="address for address in getLocation($viewValue)" required>
         <input type="text" ng-model="newBook.author" name="author" placeholder="Author">
         <button type="submit" class="btn btn-sm btn-success">
           <i class="glyphicon glyphicon-plus"></i>
@@ -23,14 +22,20 @@
           <td> {{book.title | uppercase}} </td>
           <td> {{book.author}} </td>
           <td>
-            <button type="button" ng-click="shareBook(book)" class="btn btn-sm btn-primary">
-              <i class="glyphicon glyphicon-share-alt">
+            <div class="btn-group" uib-dropdown>
+              <button type="button" class="btn btn-sm btn-primary" ng-click="loadFriends()" uib-dropdown-toggle>
+                <i class="glyphicon glyphicon-share-alt">
               </i>
-            </button>
+              </button>
+              <ul class="uib-dropdown-menu" role="menu">
+                <li role="menuitem" ng-click="shareBook(book, user)" ng-repeat="user in friends">
+                  {{user}}
+                </li>
+              </ul>
           </td>
           <td>
-            <button type="button" ng-click="removeBook(book)" class="btn btn-sm btn-danger">
-              <i class="glyphicon glyphicon-trash">
+            <button type="button " ng-click="removeBook(book)" class="btn btn-sm btn-danger">
+              <i class="glyphicon glyphicon-trash ">
               </i>
             </button>
           </td>
@@ -38,11 +43,10 @@
       </tbody>
       <tfoot>
         <tr>
-          <td colspan="5" class="text-center">
+          <td colspan="5 " class="text-center ">
             <st-pagination st-items-by-page=5></st-pagination>
           </td>
         </tr>
       </tfoot>
     </table>
-  </uib-accordion-group>
-</uib-accordion>
+

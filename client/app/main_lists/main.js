@@ -1,24 +1,25 @@
 angular.module("knapsack.main", [])
-  .controller("MainController", ["$scope", "$window", "$location", "Contents", function($scope, $window, $location, Contents) {
+  .controller("MainController", ["$scope", "$window", "$location", "$http", "Contents", function($scope, $window, $location, $http, Contents) {
     $scope.newBook = {
       title: "",
       author: ""
     };
 
-    $scope.bookCollection = [{
-      "title": "The Goldfinch",
-      "author": "Donna Tartt"
-    }, {
-      "title": "Harry Potter",
-      "author": "J.K. Rowling"
-    }, {
-      "title": "Just Kids",
-      "author": "Patti Smith"
-    }, {
-      "title": "Pro AngularJS",
-      "author": "Adam Freeman"
-    }];
-
+    $scope.getLocation = function(val) {
+    return $http.get('https://www.googleapis.com/books/v1/volumes', {
+      params: {
+        q: val,
+        sensor: false,
+        key: "AIzaSyD9-ymecHg0I2o_mDvvD39PxNv46yz2Gnc",
+        printType: "books"
+      }
+    }).then(function(response){
+      console.log(response)
+      return response.data.items.map(function(item){
+        return item.volumeInfo.title;
+      });
+    });
+  };
 
     var getNytimes = function() {
       var bestSellers = [];
@@ -30,44 +31,66 @@ angular.module("knapsack.main", [])
           tableData.title = dat.title;
           tableData.author = dat.author;
           bestSellers.push(tableData);
-        })
-        $scope.bookCollection = bestSellers;
-      })
+        });
+        var books = bestSellers;
+        $scope.displayedCollection = [].concat(books);
+      });
     };
 
     //need to make a copy for smart table to asynchronously paginate responses
-    $scope.displayedCollection = [].concat($scope.bookCollection);
 
 
-    $scope.addContent = function() {
+    $scope.addBook = function() {
       if ($scope.newBook.title && $scope.newBook.title) {
-        var content = {
+        var book = {
           title: $scope.newBook.title,
           author: $scope.newBook.author
         };
-        Contents.addContent($location.url().split("/")[2], content)
-          .then(getContent);
+        Contents.addBook($location.url().split("/")[2], book)
+          .then(getBooks);
         $scope.newBook.title = "";
         $scope.newBook.author = "";
       }
     };
 
-    var getContent = function() {
-      if ($location.url().split("/")[1] === "collection") {
-        Contents.getContent($location.url().split("/")[2]);
-      } else {
+    var getBooks = function() {
+      if ($location.url().split("/")[2] === "bestsellers"){
         getNytimes();
+      } else {
+      Contents.getBooks($location.url().split("/")[2])
+        .then(function(books) {
+          console.log("books fetched ",books);
+
+          $scope.displayedCollection = books;
+        });
       }
     };
 
-    $scope.removeContent = function(book) {
-
+    $scope.removeBook = function(book) {
+      Contents.removeBook($location.url().split("/")[2], {
+        title: book.title,
+        author: book.author
+      }).then(getBooks);
     };
 
-    $scope.shareBook = function(book) {
-      console.log(book);
-    }
+    $scope.shareBook = function(book, user) {
+      Contents.shareBook($location.url().split("/")[2], {
+        title: book.title,
+        author: book.author
+      }, user);
+      console.log(book, user);
+    };
 
-    getContent();
+    getBooks();
+    // getNytimes();
 
+  }])
+  .controller("DropdownCtrl", ["$scope", "Contents", function($scope, Contents) {
+    $scope.loadFriends = function() {
+        Contents.getFriends()
+          .then(function(users) {
+            $scope.friends = users;
+          });
+      };
+    // $scope.friends = ["hans", "peter", "klaus", "anja", "frauke", "meggie", "linda"];
   }]);
