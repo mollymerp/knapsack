@@ -189,6 +189,11 @@ gulp.task("clean", function() {
       .pipe(clean({force: true}));
 });
 
+gulp.task("clean-dev", function() {
+    gulp.src("./dist.dev")
+      .pipe(clean({force: true}));
+});
+
 gulp.task("minify-css", function(){
   var opts = {comments:true,spare:true};
   gulp.src(paths.styles)
