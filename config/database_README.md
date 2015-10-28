@@ -94,4 +94,13 @@ INSERT INTO collections (collection, createdAt, updatedAt, userId) VALUES ("beer
 
 INSERT INTO collections (collection, createdAt, updatedAt, userId) VALUES ("camping", 10/26/2015, 10/26/2015, 1);
 
-INSERT INTO collections (collection, createdAt, updatedAt, userId) VALUES ("cats", 10/26/2015, 10/26/2015, 1);
+INSERT INTO collections (collection, createdAt, updatedAt, userId) VALUES ("bestsellers", 10/26/2015, 10/26/2015, 2);
+
+INSERT INTO collections (collection, createdAt, updatedAt, userId) VALUES ("wine", 10/26/2015, 10/26/2015, 2);
+
+INSERT INTO collections (collection, createdAt, updatedAt, userId) VALUES ("football", 10/26/2015, 10/26/2015, 2);
+
+INSERT INTO collections (collection, createdAt, updatedAt, userId) VALUES ("cars", 10/26/2015, 10/26/2015, 2);
+
+INSERT INTO collections (collection, createdAt, updatedAt, userId) VALUES ("cats", 10/26/2015, 10/26/2015, 2);
+
