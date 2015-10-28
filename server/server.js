@@ -143,6 +143,11 @@ app.post("/api/signup", function(req, res) {
             req.session.user = {
               user_name: username
             };
+            Collection.create({
+              collection: "recommended"
+            }).then(function(collection) {
+              user.addCollection(collection);
+            });
             res.status(201).send("Succesfully signed up user: " + username);
           });
         });
@@ -218,7 +223,7 @@ app.post("/api/collection/instance", function(req, res) {
           });
           res.send(books);
         });
-      }else {
+      } else {
         res.send([]);
       }
     });
@@ -248,11 +253,38 @@ app.post("/api/collection", function(req, res) {
   });
 });
 
-app.post("api/share", function(req, res) {
-  console.log("IM in api/share", req.body);
+app.post("/api/share", function(req, res) {
+  User.findOne({
+    where: {
+      user_name: req.body.user
+    }
+  }).then(function(user) {
+    var user_id = user.id;
+    Collection.findOne({
+      where: {
+        collection: "recommended",
+        user_id: user_id
+      }
+    }).then(function(collection) {
+      Book.create(req.body.book)
+        .then(function(book) {
+          collection.addBook(book);
+          res.status.send("succesfully shared book");
+        });
+    });
+  });
 });
 
-
+app.get("/api/friends", function(req, res) {
+  User.findAll({
+    limit: 5
+  }).then(function(users) {
+    users = _.map(users, function(user) {
+      return user.user_name;
+    });
+    res.send(users);
+  });
+});
 
 /************************************************************/
 // AUTHENTICATION ROUTES

@@ -5,21 +5,6 @@ angular.module("knapsack.main", [])
       author: ""
     };
 
-    $scope.bookCollection = [{
-      "title": "The Goldfinch",
-      "author": "Donna Tartt"
-    }, {
-      "title": "Harry Potter",
-      "author": "J.K. Rowling"
-    }, {
-      "title": "Just Kids",
-      "author": "Patti Smith"
-    }, {
-      "title": "Pro AngularJS",
-      "author": "Adam Freeman"
-    }];
-
-
     var getNytimes = function() {
       var bestSellers = [];
       Contents.getNytimes().then(function(resp) {
@@ -30,13 +15,12 @@ angular.module("knapsack.main", [])
           tableData.title = dat.title;
           tableData.author = dat.author;
           bestSellers.push(tableData);
-        })
-        $scope.bookCollection = bestSellers;
-      })
+        });
+        $scope.displayedCollection = bestSellers;
+      });
     };
 
     //need to make a copy for smart table to asynchronously paginate responses
-    $scope.displayedCollection = [].concat($scope.bookCollection);
 
 
     $scope.addBook = function() {
