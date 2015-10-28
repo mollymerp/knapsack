@@ -103,9 +103,9 @@ var dummyCollections = ["bestsellers", "wine", "football", "cars", "forFriends",
 // Returns all collections for a given user
 app.get("/api/collections", function(req, res) {
   var resCollection = [];
-  var sql = "SELECT collections.collection FROM collections WHERE userId = 2";
+  var sql = "SELECT collections.collection FROM collections WHERE userId = ?";
 
-  db.query(sql, { type: db.QueryTypes.SELECT })
+  db.query(sql, { replacements: [2], type: db.QueryTypes.SELECT })
     .then(function(users) {
       for(var i = 0; i < users.length; i++) {
         for(var key in users[i]) {
@@ -122,15 +122,15 @@ app.get("/api/collections", function(req, res) {
 app.post("/api/collections", function(req, res) {
   var newCollection = req.body.collection;
   var resCollection = [];
-  var sqlInsert = "INSERT INTO collections (collection, createdAt, updatedAt, userId) VALUES (?, 10/26/15, 10/26/15, 2)";
-  var sqlSelect = "SELECT collections.collection FROM collections WHERE userId = 2";
+  var sqlInsert = "INSERT INTO collections (collection, createdAt, updatedAt, userId) VALUES (?, 10/26/15, 10/26/15, ?)";
+  var sqlSelect = "SELECT collections.collection FROM collections WHERE userId = ?";
 
-  db.query(sqlInsert, { replacements: [newCollection], type: db.QueryTypes.INSERT})
+  db.query(sqlInsert, { replacements: [newCollection, 2], type: db.QueryTypes.INSERT})
     .then(function(result) {
       console.log(result);
     });
 
-  db.query(sqlSelect, { type: db.QueryTypes.SELECT })
+  db.query(sqlSelect, { replacements: [2], type: db.QueryTypes.SELECT })
     .then(function(users) {
       // Loop through the users array of objects
       for(var i = 0; i < users.length; i++) {
