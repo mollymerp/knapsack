@@ -102,11 +102,21 @@ var dummyCollections = ["bestsellers", "wine", "football", "cars", "forFriends",
 
 // Returns all collections for a given user
 app.get("/api/collections", function(req, res) {
+  var resCollection = [];
+  db.query("SELECT collections.collection FROM collections WHERE userId = 1", { type: db.QueryTypes.SELECT })
+    .then(function(users) {
+      for(var i = 0; i < users.length; i++) {
+        for(var key in users[i]) {
+          resCollection.push(users[i][key]);
+        }
+      }
+      console.log("resCollection: ", resCollection, "JSON.stringify: ", JSON.stringify(resCollection));
+      res.send(JSON.stringify(resCollection))
+    });
 
-  console.log("IM IN api/collections GET Request");
 
-  // res.send("Coming soon...data from the database: ", users);
-  res.send(JSON.stringify(dummyCollections));
+  // console.log("IM IN api/collections GET Request", resCollection);
+  // res.send(JSON.stringify(dummyCollections));
 });
  
 // Add a collection to a users list of collections
@@ -130,6 +140,7 @@ app.post("/api/collections", function(req, res) {
       console.log("IM FROM USERS: ", users, "dummyCollections: ", dummyCollections, "resCollection: ", resCollection);
     });
   console.log("Im in api/collections POST request: ", req.body);
+
   var dummyCollection = dummyCollections.push(resCollection);
   res.send(JSON.stringify(resCollection));
 });
