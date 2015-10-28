@@ -7,7 +7,7 @@ angular.module("knapsack.services", [])
         url: "api/signup",
         data: user
       }).then(function succesCallback(resp){
-        console.log("in signup factory")
+        console.log("in signup factory");
         return resp;
       }, function errorCallback(resp){
         // does the backend handle usernames that already exist?
@@ -26,7 +26,7 @@ angular.module("knapsack.services", [])
       }, function errorCallback(resp){
         console.log(resp.status + ": incorrect username or password");
         return resp;
-      })
+      });
     };
 
   return {
@@ -98,7 +98,7 @@ angular.module("knapsack.services", [])
         })
         .then(function(resp) {
           return resp.data.results;
-        })
+        });
     };
 
     var getBooks = function(collection) {
@@ -134,7 +134,7 @@ angular.module("knapsack.services", [])
 
     var removeBook = function(collection, book) {
       return $http({
-          method: 'DELETE',
+          method: "DELETE",
           url: "/api/collection",
           data: JSON.stringify({
             collection: collection,
@@ -188,4 +188,4 @@ angular.module("knapsack.services", [])
       shareBook: shareBook
     };
 
-  }])
+  }]);

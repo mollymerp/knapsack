@@ -4,7 +4,7 @@ angular.module("knapsack.auth", ["ui.router"])
 
   $scope.signupOpen = function() {
     var modalInstance = $uibModal.open({
-      templateUrl: 'app/auth/signup-modal.html',
+      templateUrl: "app/auth/signup-modal.html",
       controller: SignupModalCtrl,
       size: "modal-xs",
       scope: $scope,
@@ -44,7 +44,7 @@ var SignupModalCtrl = function($http, $scope, $location, $modalInstance, userFor
         $modalInstance.close();
         // this is not working for some reason :(
         // need to get page to redirect after submit
-        $location.path('/');
+        $location.path("/");
 
       });
     } else {
@@ -53,7 +53,7 @@ var SignupModalCtrl = function($http, $scope, $location, $modalInstance, userFor
   };
 
   $scope.cancel = function() {
-    $modalInstance.dismiss('cancel');
+    $modalInstance.dismiss("cancel");
   };
 };
 
@@ -67,7 +67,7 @@ var SigninModalCtrl = function($http, $scope, $location, $modalInstance, userFor
         // $modalInstance.close();
         // this is not working for some reason :(
         // need to get page to redirect after submit
-        $location.path('/');
+        $location.path("/");
      }.catch(function (error){
         console.error(error);
       }));
@@ -77,6 +77,6 @@ var SigninModalCtrl = function($http, $scope, $location, $modalInstance, userFor
   };
 
   $scope.cancel = function() {
-    $modalInstance.dismiss('cancel');
+    $modalInstance.dismiss("cancel");
   };
 };
