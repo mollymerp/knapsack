@@ -1,32 +1,33 @@
 angular.module("knapsack.services", [])
 
-.factory("Auth", ["$http", function($http) {
-  var signUp = function(user) {
-    return $http({
-      method: "POST",
-      url: "api/signup",
-      data: user
-    }).then(function succesCallback(resp) {
-      return resp;
-    }, function errorCallback(resp) {
-      // does the backend handle usernames that already exist?
-      console.log(resp.status + ": failed to signup user");
-      return resp;
-    });
-  };
+  .factory("Auth", ["$http", function($http){
+    var signUp = function (user){
+      return $http({
+        method: "POST",
+        url: "api/signup",
+        data: user
+      }).then(function succesCallback(resp){
+        console.log("in signup factory")
+        return resp;
+      }, function errorCallback(resp){
+        // does the backend handle usernames that already exist?
+        console.log(resp.status + ": failed to signup user");
+        return resp;
+      });
+    };
 
-  var signIn = function(user) {
-    return $http({
-      method: "POST",
-      url: "api/signin",
-      data: user
-    }).then(function succesCallback(resp) {
-      return resp;
-    }, function errorCallback(resp) {
-      console.log(resp.status + ": incorrect username or password");
-      return resp;
-    })
-  };
+    var signIn = function (user){
+      return $http({
+        method: "POST",
+        url: "api/signin",
+        data: user
+      }).then(function succesCallback(resp){
+        return resp;
+      }, function errorCallback(resp){
+        console.log(resp.status + ": incorrect username or password");
+        return resp;
+      })
+    };
 
   return {
     signIn: signIn,
@@ -101,7 +102,6 @@ angular.module("knapsack.services", [])
     };
 
     var getBooks = function(collection) {
-      console.log(collection);
       return $http({
           method: "POST",
           url: "/api/collection/instance",
