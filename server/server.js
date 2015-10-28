@@ -65,8 +65,7 @@ app.use(session({
 ​
 // serve up static files
 app.use(express.static(__dirname + "/../client"));
-​
-​
+
 /************************************************************/
 // AUTHENTICATION ROUTES
 /************************************************************/
