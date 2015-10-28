@@ -1,0 +1,24 @@
+<div class="modal-header">
+  <h3>Sign into your Account!</h3>
+  <p>Don't have an Account yet? <a ng-click="cancel(); signupOpen();">Sign Up</a></p>
+</div>
+<form name="form.userForm" ng-submit="submitForm()" novalidate>
+  <div class="modal-body">
+    <!-- USERNAME -->
+    <div class="form-group">
+      <label>Username</label>
+      <input type="text" name="username" class="form-control" ng-model="user.username" ng-minlength="3" ng-maxlength="15" required>
+      <p ng-show="form.userForm.username.$error.minlength" class="help-block">Username is too short.</p>
+      <p ng-show="form.userForm.username.$error.maxlength" class="help-block">Username is too long.</p>
+    </div>
+    <!-- PASSWORD -->
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" name="password" class="form-control" ng-model="user.password" ng-minlength="5" required>
+      <p ng-show="form.userForm.password.$error.minlength" class="help-block">Password is too short.</p>
+    </div>
+    <div class="modal-footer">
+      <button href="/" type="submit" class="sign-small" ng-disabled="form.userForm.$invalid">Sign In</button>
+      <button class="cancel-small" ng-click="cancel()">Cancel</button>
+    </div>
+</form>

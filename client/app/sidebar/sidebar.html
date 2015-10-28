@@ -1,0 +1,17 @@
+<div id="sidebar">
+  <form class="form-inline" ng-submit="addCollection()">
+    <div>
+      <input type="text" ng-model="newCollection.name" name="name" placeholder="add Collection..." required>
+      <button type="submit" class="btn btn-sm btn-success">
+        <i class="glyphicon glyphicon-plus"></i>
+      </button>
+    </div>
+  </form>
+  <div>
+    <div class="collections">
+      <div class="collection" ng-repeat="collection in data.collections">
+        <i class="lead glyphicon glyphicon-folder-open"><a ng-href="#/collection/{{collection}}"> {{collection}}</a></i>
+      </div>
+    </div>
+  </div>
+</div>

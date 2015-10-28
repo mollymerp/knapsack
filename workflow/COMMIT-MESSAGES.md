@@ -18,6 +18,7 @@ There is a strict style and format that we use for our commit messages at **Knap
 - refactor (refactoring production code)
 - test (adding missing tests, refactoring tests; no production code change)
 - chore (updating grunt tasks etc; no production code change)
+- library (adding any kind of dependencies or library code to production code)
 
 ####Subject
 
