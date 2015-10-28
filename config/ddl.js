@@ -1,7 +1,7 @@
 //build tables
 
 var db = require("./database.js");
-var Sequelize = require("Sequelize");
+var Sequelize = require("sequelize");
 
 var ddl = {};
 
@@ -30,13 +30,6 @@ ddl.collections = db.define("collections", {
   },
 
   freezeTableName: true
-
-  // instanceMethods: {
-  //   retrieveAll: function(onSuccess, onError) {
-  //     collections.findAll({}, {raw:true})
-  //                .sucess(onSuccess).error(onError);
-  //   }
-  // }
 
 });
 

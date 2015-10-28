@@ -2,11 +2,12 @@ angular.module("knapsack.services", [])
 
   .factory("Auth", ["$http", function($http){
     var signUp = function (user){
-      $http({
+      return $http({
         method: "POST",
         url: "api/signup",
         data: user
       }).then(function succesCallback(resp){
+        console.log("in signup factory");
         return resp;
       }, function errorCallback(resp){
         // does the backend handle usernames that already exist?
@@ -16,7 +17,7 @@ angular.module("knapsack.services", [])
     };
 
     var signIn = function (user){
-      $http({
+      return $http({
         method: "POST",
         url: "api/signin",
         data: user
@@ -25,18 +26,18 @@ angular.module("knapsack.services", [])
       }, function errorCallback(resp){
         console.log(resp.status + ": incorrect username or password");
         return resp;
-      })
+      });
     };
 
-    return {
-      signIn: signIn,
-      signUp: signUp
-    } 
+  return {
+    signIn: signIn,
+    signUp: signUp
+  };
 
-  }])
+}])
 
 
-  .factory("Collections", ["$http", function($http) {
+.factory("Collections", ["$http", function($http) {
 
     // get all collection names (ex. bestsellers, wine, ...)
     var getAll = function() {
@@ -44,20 +45,20 @@ angular.module("knapsack.services", [])
         method: "GET",
         url: "api/collections"
       }).then(function succesCallback(resp) {
+        console.log(resp.status + ":successfully fetched all collections");
         return resp.data;
       }, function errorCallback(resp) {
-        console.log(resp.status + ": failed fetching from server");
+        console.log(resp.status + ": failed fetching collections from server");
       });
     };
 
     // add a new collection (ex. boats) to the current user
-    var addCollection = function(collection, user) {
+    var addCollection = function(collection) {
       return $http({
         method: "POST",
         url: "api/collections",
         data: JSON.stringify({
-          collection: collection,
-          user: user
+          collection: collection
         })
       }).then(function succesCallback(resp) {
         console.log(resp.status + ": succesfully added Collection");
@@ -97,16 +98,16 @@ angular.module("knapsack.services", [])
         })
         .then(function(resp) {
           return resp.data.results;
-        })
+        });
     };
 
     var getBooks = function(collection) {
       return $http({
-          method: "GET",
-          url: "/api/collection/",
-          data: collection
-          // contentType: "application/json, charset=utf-8",
-          // dataType: "json"
+          method: "POST",
+          url: "/api/collection/instance",
+          data: JSON.stringify({
+            collection: collection
+          })
         })
         .then(function succesCallback(resp) {
           return resp.data;
@@ -133,7 +134,7 @@ angular.module("knapsack.services", [])
 
     var removeBook = function(collection, book) {
       return $http({
-          method: 'DELETE',
+          method: "DELETE",
           url: "/api/collection",
           data: JSON.stringify({
             collection: collection,
@@ -187,4 +188,4 @@ angular.module("knapsack.services", [])
       shareBook: shareBook
     };
 
-  }])
+  }]);

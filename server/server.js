@@ -1,13 +1,15 @@
 var express = require("express");
 var bodyParser = require("body-parser"); // request body parsing middleware (json, url)
 var morgan = require("morgan"); // log requests to the console
+
 var cookieParser = require("cookie-parser"); // parses cookie header, populate req.cookies
 var session = require("express-session");
-var sequelize = require("sequelize"); // promise based ORM for SQL
+var Sequelize = require("sequelize"); // promise based ORM for SQL
 var db = require("../config/database.js"); // connect to database
-var ddl = require("../config/ddl.js"); // create database tables
+// var ddl = require("../config/ddl.js"); // create database tables
 var path = require("path");
 var _ = require('underscore');
+
 var bcrypt = require('bcrypt-nodejs'); // hashing passwords
 var Promise = require('bluebird'); // for promisification
 
@@ -15,23 +17,25 @@ var app = express(); // create our app w/ express
 var port = process.env.PORT || 3000;
 var ip = "127.0.0.1"; // localhost
 
-
+/************************************************************/
+// CONFIGURE SERVER
+/************************************************************/
 
 /************************************************************/
 // Initialize Database
 /************************************************************/
-var Users = db.import(path.join(__dirname, "../models/Users"));
-var Collections = db.import(path.join(__dirname, "../models/Collections.js"));
-var Books = db.import(path.join(__dirname, "../models/Books.js"));
 
-Users.hasMany(Collections);
-Collections.belongsToMany(Books, {
+var User = db.import(path.join(__dirname, "../models/Users"));
+var Collection = db.import(path.join(__dirname, "../models/Collections.js"));
+var Book = db.import(path.join(__dirname, "../models/Books.js"));
+
+User.hasMany(Collection);
+Collection.belongsToMany(Book, {
   through: "collections_to_books"
 });
-Books.belongsToMany(Collections, {
+Book.belongsToMany(Collection, {
   through: "collections_to_books"
 });
-
 
 db.sync()
   .then(function(err) {
@@ -42,10 +46,6 @@ db.sync()
 
 /************************************************************/
 
-
-/************************************************************/
-// CONFIGURE SERVER
-/************************************************************/
 // Express uses template engine to parse front-end scripts. Can parse HTML, EJS, JADE, etc.
 app.set("view engine", "ejs");
 // Tells Express from where to deliver front end views
@@ -93,88 +93,11 @@ app.post("/", function(req, res) {
 // apply the routes to our application
 app.use("/", router);
 
-//**************************************************************
-// TEST DATA - dummyCollections is used to test that api/collections
-// GET REQUEST is working. 
-//**************************************************************
-var dummyCollections = ["bestsellers", "wine", "football", "cars", "forFriends", "boats", "shoes"];
-
-
-// Returns all collections for a given user
-app.get("/api/collections", function(req, res) {
-  var resCollection = [];
-  var sql = "SELECT collections.collection FROM collections WHERE userId = ?";
-
-  db.query(sql, { replacements: [2], type: db.QueryTypes.SELECT })
-    .then(function(users) {
-      for(var i = 0; i < users.length; i++) {
-        for(var key in users[i]) {
-          resCollection.push(users[i][key]);
-        }
-      }
-      res.send(JSON.stringify(resCollection));
-    });
-});
- 
-// Add a collection to a users list of collections
-// Note: The problem is we're still not capturing the 
-//       users name to query against the database....
-app.post("/api/collections", function(req, res) {
-  var newCollection = req.body.collection;
-  var resCollection = [];
-  var sqlInsert = "INSERT INTO collections (collection, createdAt, updatedAt, userId) VALUES (?, 10/26/15, 10/26/15, ?)";
-  var sqlSelect = "SELECT collections.collection FROM collections WHERE userId = ?";
-
-  db.query(sqlInsert, { replacements: [newCollection, 2], type: db.QueryTypes.INSERT})
-    .then(function(result) {
-      console.log(result);
-    });
-
-  db.query(sqlSelect, { replacements: [2], type: db.QueryTypes.SELECT })
-    .then(function(users) {
-      // Loop through the users array of objects
-      for(var i = 0; i < users.length; i++) {
-        // loop through each key in the obj
-        // and push value to resCollection 
-        for(var key in users[i]) {
-          resCollection.push(users[i][key]);
-        }
-      }
-    });
-
-  res.send(JSON.stringify(resCollection));
-});
-
-
-// For a logged in user, give back all books for a specific collection
-app.get("/api/collection:collection", function(req, res) {
-  var collectionName = req.params.collection;
-  console.log("IM THE REQUEST OBJECT FROM API/COLLECTION: ", req.originalUrl);
-  // console.log("Im in api/collection GET REQUEST", "Req.body: ", req.body, "Req.params: ", req.params, "Req.data: ", req.data);
-  res.send("COMING SOON...DATA");
-});
-
-// For a logged in user, add a book to a specified collection
-app.post("/api/collection", function(req, res) {
-  console.log("Im in api/collection", req.body);
-});
-
-// Send a collection name, book name, to another user.
-app.post("api/share", function(req, res) {
-  console.log("IM in api/share", req.body);
-});
-
-/************************************************************/
-
-
-/************************************************************/
-// AUTHENTICATION ROUTES
-/************************************************************/
 app.post("/api/signin", function(req, res) {
   var username = req.body.username;
   var password = req.body.password;
 
-  ddl.users.findOne({
+  User.findOne({
     where: {
       user_name: username
     }
@@ -203,7 +126,7 @@ app.post("/api/signup", function(req, res) {
   var username = req.body.username;
   var password = req.body.password;
 
-  ddl.users.findOne({
+  User.findOne({
     where: {
       user_name: username
     }
@@ -212,7 +135,7 @@ app.post("/api/signup", function(req, res) {
       var hashing = Promise.promisify(bcrypt.hash); // hashing is a promisified version of bcyrpt hash
       var hashPass = hashing(password, null, null).
       then(function(hash) {
-        ddl.users.create({
+        User.create({
           user_name: username,
           password: hash
         }).then(function(user) {
@@ -220,7 +143,17 @@ app.post("/api/signup", function(req, res) {
             req.session.user = {
               user_name: username
             };
-            res.status(201);
+            Collection.create({
+              collection: "recommended"
+            }).then(function(collection) {
+              user.addCollection(collection);
+            });
+            Collection.create({
+              collection: "bestsellers"
+            }).then(function(collection) {
+              user.addCollection(collection);
+            });
+            res.status(201).send("Succesfully signed up user: " + username);
           });
         });
       });
@@ -230,8 +163,135 @@ app.post("/api/signup", function(req, res) {
     }
   });
 });
-/************************************************************/
 
+
+
+//**************************************************************
+// TEST DATA - dummyCollections is used to test that api/collections
+// GET REQUEST is working. 
+//**************************************************************
+
+
+app.get("/api/collections", function(req, res) {
+  User.findOne({
+    where: {
+      user_name: req.session.user.user_name
+    }
+  }).then(function(user) {
+    user.getCollections().then(function(collections) {
+      collections = _.map(collections, function(item) {
+        return item.collection;
+      });
+      res.send(collections);
+    });
+  });
+});
+
+
+app.post("/api/collections", function(req, res) {
+  Collection.create({
+    collection: req.body.collection
+  }).then(function(collection) {
+    User.findOne({
+      where: {
+        user_name: req.session.user.user_name
+      }
+    }).then(function(user) {
+      user.addCollection(collection);
+      res.status(201).send("succesfully added collection");
+    });
+  });
+});
+
+app.post("/api/collection/instance", function(req, res) {
+  User.findOne({
+    where: {
+      user_name: req.session.user.user_name
+    }
+  }).then(function(user) {
+    var user_id = user.id;
+    Collection.findOne({
+      where: {
+        collection: req.body.collection,
+        user_id: user_id
+      }
+    }).then(function(collection) {
+      if (collection) {
+        collection.getBooks().then(function(books) {
+          books = _.map(books, function(item) {
+            return {
+              title: item.title,
+              author: item.author
+            };
+          });
+          res.send(books);
+        });
+      } else {
+        res.send([]);
+      }
+    });
+  });
+});
+
+
+app.post("/api/collection", function(req, res) {
+  User.findOne({
+    where: {
+      user_name: req.session.user.user_name
+    }
+  }).then(function(user) {
+    var user_id = user.id;
+    Collection.findOne({
+      where: {
+        collection: req.body.collection,
+        user_id: user_id
+      }
+    }).then(function(collection) {
+      Book.create(req.body.book)
+        .then(function(book) {
+          collection.addBook(book);
+          res.status(201).send("succesfully added book");
+        });
+    });
+  });
+});
+
+app.post("/api/share", function(req, res) {
+  User.findOne({
+    where: {
+      user_name: req.body.user
+    }
+  }).then(function(user) {
+    var user_id = user.id;
+    Collection.findOne({
+      where: {
+        collection: "recommended",
+        user_id: user_id
+      }
+    }).then(function(collection) {
+      Book.create(req.body.book)
+        .then(function(book) {
+          collection.addBook(book);
+          res.status.send("succesfully shared book");
+        });
+    });
+  });
+});
+
+app.get("/api/friends", function(req, res) {
+  User.findAll({
+    limit: 5
+  }).then(function(users) {
+    users = _.map(users, function(user) {
+      return user.user_name;
+    });
+    res.send(users);
+  });
+});
+
+/************************************************************/
+// AUTHENTICATION ROUTES
+/************************************************************/
 
 
 
@@ -239,9 +299,7 @@ app.post("/api/signup", function(req, res) {
 /************************************************************/
 // HANDLE WILDCARD ROUTES - IF ALL OTHER ROUTES FAIL
 /************************************************************/
-app.get("*", function(req, res) {
-  console.log("Im the wildcare route handler.....", "Heres a console.log of the req object: ", req.body, "Heres the req url: ", req.url, "Im req.params: ", req.params);
-})
+
 
 
 

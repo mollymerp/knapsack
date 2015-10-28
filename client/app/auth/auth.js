@@ -4,7 +4,7 @@ angular.module("knapsack.auth", ["ui.router"])
 
   $scope.signupOpen = function() {
     var modalInstance = $uibModal.open({
-      templateUrl: 'app/auth/signup-modal.html',
+      templateUrl: "app/auth/signup-modal.html",
       controller: SignupModalCtrl,
       size: "modal-xs",
       scope: $scope,
@@ -32,18 +32,19 @@ angular.module("knapsack.auth", ["ui.router"])
 
 }]);
 
-var SignupModalCtrl = function($http, $scope, $state, $modalInstance, userForm, Auth) {
+var SignupModalCtrl = function($http, $scope, $location, $modalInstance, userForm, Auth) {
   $scope.form = {};
   $scope.submitForm = function() {
     if ($scope.form.userForm.$valid) {
-      Auth.signUp().then(function(resp){
-        console.log("signup fired: ", resp.data);
+      Auth.signUp($scope.user)
+
+      .then(function(resp){
+        console.log("signup fired: ", resp);
         //somehow handle errors and successes here either log the user in or show him a message
         $modalInstance.close();
         // this is not working for some reason :(
         // need to get page to redirect after submit
-        $location.path('/');
-        $state.go('dashboard');
+        $location.path("/");
 
       });
     } else {
@@ -52,28 +53,30 @@ var SignupModalCtrl = function($http, $scope, $state, $modalInstance, userForm, 
   };
 
   $scope.cancel = function() {
-    $modalInstance.dismiss('cancel');
+    $modalInstance.dismiss("cancel");
   };
 };
 
-var SigninModalCtrl = function($http, $scope, $state, $urlRouter, $modalInstance, userForm, Auth) {
+var SigninModalCtrl = function($http, $scope, $location, $modalInstance, userForm, Auth) {
   $scope.form = {};
   $scope.submitForm = function() {
     if ($scope.form.userForm.$valid) {
-      Auth.signIn().then(function (resp){
-        console.log("signin fired: ", resp.data);
-        $modalInstance.close();
+      Auth.signIn($scope.user)
+      .then(function (resp){
+        console.log("signin fired");
+        // $modalInstance.close();
         // this is not working for some reason :(
         // need to get page to redirect after submit
-        $location.path('/');
-        $state.go('dashboard');
-      });
+        $location.path("/");
+     }.catch(function (error){
+        console.error(error);
+      }));
     } else {
       console.log("form not valid");
     }
   };
 
   $scope.cancel = function() {
-    $modalInstance.dismiss('cancel');
+    $modalInstance.dismiss("cancel");
   };
 };
