@@ -53,12 +53,12 @@ angular.module("knapsack.main", [])
     };
 
     var getBooks = function() {
-      console.log($location.url().split("/")[2])
       if ($location.url().split("/")[2] === "bestsellers"){
         Contents.getNytimes();
       } else {
       Contents.getBooks($location.url().split("/")[2])
         .then(function(books) {
+          console.log("books fetched ",books);
           $scope.displayedCollection = books;
         });
       }
@@ -79,8 +79,8 @@ angular.module("knapsack.main", [])
       console.log(book, user);
     }
 
-    // getBooks();
-    getNytimes();
+    getBooks();
+    // getNytimes();
 
   }])
   .controller("DropdownCtrl", ["$scope", "Contents", function($scope, Contents) {

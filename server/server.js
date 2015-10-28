@@ -30,6 +30,12 @@ var Collection = db.import(path.join(__dirname, "../models/Collections.js"));
 var Book = db.import(path.join(__dirname, "../models/Books.js"));
 
 User.hasMany(Collection);
+Collection.belongsToMany(Book, {
+  through: "collections_to_books"
+});
+Book.belongsToMany(Collection, {
+  through: "collections_to_books"
+});
 
 db.sync()
   .then(function(err) {
@@ -183,18 +189,63 @@ app.post("/api/collections", function(req, res) {
       }
     }).then(function(user) {
       user.addCollection(collection);
+      res.status(201).send("succesfully added collection");
     });
   });
-  res.status(201).send("succesfully added collection");
 });
 
-app.get("/api/collection", function(req, res) {
-  console.log("Im in api/collection", req.body);
+app.post("/api/collection/instance", function(req, res) {
+  console.log(req.body);
+  User.findOne({
+    where: {
+      user_name: req.session.user.user_name
+    }
+  }).then(function(user) {
+    var user_id = user.id;
+    Collection.findOne({
+      where: {
+        collection: req.body.collection,
+        user_id: user_id
+      }
+    }).then(function(collection) {
+      if (collection) {
+        collection.getBooks().then(function(books) {
+          books = _.map(books, function(item) {
+            return {
+              title: item.title,
+              author: item.author
+            };
+          });
+          res.send(books);
+        });
+      }else {
+        res.send([]);
+      }
+    });
+  });
 });
 
 
 app.post("/api/collection", function(req, res) {
-  console.log("Im in api/collection", req.body);
+  User.findOne({
+    where: {
+      user_name: req.session.user.user_name
+    }
+  }).then(function(user) {
+    var user_id = user.id;
+    Collection.findOne({
+      where: {
+        collection: req.body.collection,
+        user_id: user_id
+      }
+    }).then(function(collection) {
+      Book.create(req.body.book)
+        .then(function(book) {
+          collection.addBook(book);
+          res.status(201).send("succesfully added book");
+        });
+    });
+  });
 });
 
 app.post("api/share", function(req, res) {

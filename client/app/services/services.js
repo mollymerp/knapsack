@@ -7,7 +7,6 @@ angular.module("knapsack.services", [])
       url: "api/signup",
       data: user
     }).then(function succesCallback(resp) {
-      console.log(resp.data);
       return resp;
     }, function errorCallback(resp) {
       // does the backend handle usernames that already exist?
@@ -22,7 +21,6 @@ angular.module("knapsack.services", [])
       url: "api/signin",
       data: user
     }).then(function succesCallback(resp) {
-      console.log(resp.data);
       return resp;
     }, function errorCallback(resp) {
       console.log(resp.status + ": incorrect username or password");
@@ -46,9 +44,10 @@ angular.module("knapsack.services", [])
         method: "GET",
         url: "api/collections"
       }).then(function succesCallback(resp) {
+        console.log(resp.status + ":successfully fetched all collections");
         return resp.data;
       }, function errorCallback(resp) {
-        console.log(resp.status + ": failed fetching from server");
+        console.log(resp.status + ": failed fetching collections from server");
       });
     };
 
@@ -102,9 +101,10 @@ angular.module("knapsack.services", [])
     };
 
     var getBooks = function(collection) {
+      console.log(collection);
       return $http({
-          method: "GET",
-          url: "/api/collection",
+          method: "POST",
+          url: "/api/collection/instance",
           data: JSON.stringify({
             collection: collection
           })
