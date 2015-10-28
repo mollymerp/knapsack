@@ -99,6 +99,7 @@ app.use("/", router);
 // AUTHENTICATION ROUTES
 /************************************************************/
 
+
 app.post("/api/signin", function(req, res) {
   var username = req.body.username;
   var password = req.body.password;
@@ -128,6 +129,9 @@ app.post("/api/signin", function(req, res) {
   });
 });
 
+
+//Signup post request
+//Note : recommended and bestsellers are created when a new user signs up
 app.post("/api/signup", function(req, res) {
   var username = req.body.username;
   var password = req.body.password;
@@ -194,7 +198,7 @@ app.get("/api/collections", function(req, res) {
   });
 });
 
-//POST request creates new collection by using req information
+//POST request CREATE new collection by using req information
 //Unit Test : Pass (10/28/2015)
 
 app.post("/api/collections", function(req, res) {

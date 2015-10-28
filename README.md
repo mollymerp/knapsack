@@ -4,9 +4,9 @@
 
 ## Team
 
-  - __Product Owner__: teamMember
-  - __Scrum Master__: teamMember
-  - __Development Team Members__: teamMember, teamMember
+  - __Product Owner__: Sujay Patel
+  - __Scrum Master__: Arthur Mathies
+  - __Development Team Members__: Molly Lloyd , Chris Puskar, Chris Nixon
 
 ## Table of Contents
 
@@ -20,15 +20,22 @@
 
 ## Usage
 
-> Some usage instructions
+Knapsack 1.0 is a web application platform to allow the user to create book lists in different categories. 
+
+
+Key Features : 
+- Share an individual book with other users of Knapsack
+- Create categories of books
+- Default category of New York Best Sellers
+- User Authentication 
+- Clean and simple UI
+
+Knapsack 1.0 leverages Angular, Express, Node, Postgres, Sequelize, and Heroku technologies.
 
 ## Requirements
 
-- Node 0.10.x
-- Redis 2.6.x
-- Postgresql 9.1.x
-- etc
-- etc
+- Node 4.0.x
+- Postgresql 9.4.x
 
 ## Development
 
@@ -37,9 +44,7 @@
 From within the root directory:
 
 ```sh
-sudo npm install -g bower
 npm install
-bower install
 ```
 
 ### Roadmap
