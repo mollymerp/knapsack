@@ -12,13 +12,16 @@ var ngAnnotate = require('gulp-ng-annotate');
 var connect = require('gulp-connect');
 var inject = require('gulp-inject');
 var angularFilesort = require('gulp-angular-filesort');
+var es = require('event-stream');
 
 var paths = {
-  scripts: ["./client/app/app.js", "./client/app/**/*.js"],
+  scripts: "./client/app/**/*.js",
   styles: "./client/styles/*.css",
   index: "./client/index.html",
-  partials: ["./client/app/**/*.html"],
-  distDev: './dist.dev'
+  partials: "./client/app/**/*.html",
+  distDev: './dist.dev',
+  distProd: './dist.prod',
+  distScriptsProd: './dist.prod/scripts'
 };
 
 var pipes = {};
@@ -29,9 +32,14 @@ pipes.orderedAppScripts = function(){
   return plugins.angularFilesort();
 };
 
-
 pipes.orderedVendorScripts = function() {
     return plugins.order(['jquery.js', 'angular.js']);
+};
+
+pipes.minifiedFileName = function() {
+    return plugins.rename(function (path) {
+        path.extname = '.min' + path.extname;
+    });
 };
 
 pipes.validatedAppScripts = function() {
@@ -45,9 +53,31 @@ pipes.builtAppScriptsDev = function() {
         .pipe(gulp.dest(paths.distDev));
 };
 
+pipes.builtAppScriptsProd = function() {
+    var scriptedPartials = pipes.scriptedPartials();
+    var validatedAppScripts = pipes.validatedAppScripts();
+
+    return es.merge(scriptedPartials, validatedAppScripts)
+        .pipe(pipes.orderedAppScripts())
+        .pipe(plugins.sourcemaps.init())
+            .pipe(plugins.concat('app.min.js'))
+            .pipe(ngAnnotate())
+            .pipe(plugins.uglify())
+        .pipe(plugins.sourcemaps.write())
+        .pipe(gulp.dest(paths.distScriptsProd));
+};
+
 pipes.builtVendorScriptsDev = function() {
     return gulp.src(bowerFiles())
         .pipe(gulp.dest('dist.dev/bower_components'));
+};
+
+pipes.builtVendorScriptsProd = function() {
+    return gulp.src(bowerFiles('**/*.js'))
+        .pipe(pipes.orderedVendorScripts())
+        .pipe(plugins.concat('vendor.min.js'))
+        .pipe(plugins.uglify())
+        .pipe(gulp.dest(paths.distScriptsProd));
 };
 
 pipes.validatedPartials = function() {
@@ -63,16 +93,25 @@ pipes.builtPartialsDev = function() {
 
 pipes.scriptedPartials = function() {
     return pipes.validatedPartials()
-        .pipe(plugins.htmlhint.failReporter())
+        // .pipe(plugins.htmlhint.failReporter())
         .pipe(plugins.htmlmin({collapseWhitespace: true, removeComments: true}))
         .pipe(plugins.ngHtml2js({
-            moduleName: "healthyGulpAngularApp"
+            moduleName: "knapsack"
         }));
 };
 
 pipes.builtStylesDev = function() {
     return gulp.src(paths.styles)
         .pipe(gulp.dest(paths.distDev));
+};
+
+pipes.builtStylesProd = function() {
+    return gulp.src(paths.styles)
+        .pipe(plugins.sourcemaps.init())
+            .pipe(plugins.minifyCss())
+        .pipe(plugins.sourcemaps.write())
+        .pipe(pipes.minifiedFileName())
+        .pipe(gulp.dest(paths.distProd));
 };
 
 pipes.validatedIndex = function() {
@@ -99,15 +138,31 @@ pipes.builtIndexDev = function() {
         .pipe(gulp.dest(paths.distDev));
 };
 
+pipes.builtIndexProd = function() {
+
+    var vendorScripts = pipes.builtVendorScriptsProd();
+    var appScripts = pipes.builtAppScriptsProd();
+    var appStyles = pipes.builtStylesProd();
+
+    return pipes.validatedIndex()
+        .pipe(gulp.dest(paths.distProd)) // write first to get relative path for inject
+        .pipe(plugins.inject(vendorScripts, {relative: true, name: 'bower'}))
+        .pipe(plugins.inject(appScripts, {relative: true}))
+        .pipe(plugins.inject(appStyles, {relative: true}))
+        .pipe(plugins.htmlmin({collapseWhitespace: true, removeComments: true}))
+        .pipe(gulp.dest(paths.distProd));
+};
+
+
 gulp.task('validate-partials', pipes.validatedPartials);
 
 gulp.task('validate-index', pipes.validatedIndex);
 
 gulp.task('build-index-dev', pipes.builtIndexDev);
 
-gulp.task("default", function() {
-  console.log("Hello World");
-});
+gulp.task('build-app-scripts-prod', pipes.builtAppScriptsProd);
+
+gulp.task('build-index-prod', pipes.builtIndexProd);
 
 gulp.task("angular-filesort", function(){
   gulp.src(paths.index)
@@ -128,7 +183,7 @@ gulp.task("jshint", function() {
 });
 
 gulp.task("clean", function() {
-    gulp.src("./dist.dev")
+    gulp.src("./dist.prod")
       .pipe(clean({force: true}));
 });
 
