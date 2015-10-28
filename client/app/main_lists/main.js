@@ -6,14 +6,17 @@ angular.module("knapsack.main", [])
     };
 
     $scope.getLocation = function(val) {
-    return $http.get('//maps.googleapis.com/maps/api/geocode/json', {
+    return $http.get('https://www.googleapis.com/books/v1/volumes', {
       params: {
-        address: val,
-        sensor: false
+        q: val,
+        sensor: false,
+        key: "AIzaSyD9-ymecHg0I2o_mDvvD39PxNv46yz2Gnc",
+        printType: "books"
       }
     }).then(function(response){
-      return response.data.results.map(function(item){
-        return item.formatted_address;
+      console.log(response)
+      return response.data.items.map(function(item){
+        return item.volumeInfo.title;
       });
     });
   };
