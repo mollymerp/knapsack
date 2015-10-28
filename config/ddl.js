@@ -1,7 +1,7 @@
 //build tables
 
 var db = require("./database.js");
-var Sequelize = require("Sequelize");
+var Sequelize = require("sequelize");
 
 var ddl = {};
 

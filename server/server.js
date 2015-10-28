@@ -4,7 +4,7 @@ var morgan = require("morgan"); // log requests to the console
 
 var cookieParser = require("cookie-parser"); // parses cookie header, populate req.cookies
 var session = require("express-session");
-var sequelize = require("sequelize"); // promise based ORM for SQL
+var Sequelize = require("sequelize"); // promise based ORM for SQL
 var db = require("../config/database.js"); // connect to database
 var ddl = require("../config/ddl.js"); // create database tables
 
