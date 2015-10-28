@@ -1,13 +1,13 @@
 var express = require("express");
 var bodyParser = require("body-parser"); // request body parsing middleware (json, url)
 var morgan = require("morgan"); // log requests to the console
-
 var cookieParser = require("cookie-parser"); // parses cookie header, populate req.cookies
 var session = require("express-session");
 var sequelize = require("sequelize"); // promise based ORM for SQL
 var db = require("../config/database.js"); // connect to database
 var ddl = require("../config/ddl.js"); // create database tables
-
+var path = require("path");
+var _ = require('underscore');
 var bcrypt = require('bcrypt-nodejs'); // hashing passwords
 var Promise = require('bluebird'); // for promisification
 
@@ -15,13 +15,24 @@ var app = express(); // create our app w/ express
 var port = process.env.PORT || 3000;
 var ip = "127.0.0.1"; // localhost
 
-/************************************************************/
-// CONFIGURE SERVER
-/************************************************************/
+
 
 /************************************************************/
 // Initialize Database
 /************************************************************/
+var Users = db.import(path.join(__dirname, "../models/Users"));
+var Collections = db.import(path.join(__dirname, "../models/Collections.js"));
+var Books = db.import(path.join(__dirname, "../models/Books.js"));
+
+Users.hasMany(Collections);
+Collections.belongsToMany(Books, {
+  through: "collections_to_books"
+});
+Books.belongsToMany(Collections, {
+  through: "collections_to_books"
+});
+
+
 db.sync()
   .then(function(err) {
     console.log('Database is up and running');
@@ -31,6 +42,10 @@ db.sync()
 
 /************************************************************/
 
+
+/************************************************************/
+// CONFIGURE SERVER
+/************************************************************/
 // Express uses template engine to parse front-end scripts. Can parse HTML, EJS, JADE, etc.
 app.set("view engine", "ejs");
 // Tells Express from where to deliver front end views
@@ -78,6 +93,84 @@ app.post("/", function(req, res) {
 // apply the routes to our application
 app.use("/", router);
 
+//**************************************************************
+// TEST DATA - dummyCollections is used to test that api/collections
+// GET REQUEST is working. 
+//**************************************************************
+var dummyCollections = ["bestsellers", "wine", "football", "cars", "forFriends", "boats", "shoes"];
+
+
+// Returns all collections for a given user
+app.get("/api/collections", function(req, res) {
+  var resCollection = [];
+  db.query("SELECT collections.collection FROM collections WHERE userId = 2", { type: db.QueryTypes.SELECT })
+    .then(function(users) {
+      for(var i = 0; i < users.length; i++) {
+        for(var key in users[i]) {
+          resCollection.push(users[i][key]);
+        }
+      }
+      console.log("resCollection: ", resCollection, "JSON.stringify: ", JSON.stringify(resCollection));
+      res.send(JSON.stringify(resCollection));
+    });
+});
+ 
+// Add a collection to a users list of collections
+// Note: The problem is we're still not capturing the 
+//       users name to query against the database....
+app.post("/api/collections", function(req, res) {
+  var newCollection = req.body.collection;
+  var resCollection = [];
+  console.log("Im in api/collections POST request: ", newCollection);
+
+  db.query("INSERT INTO collections (collection, createdAt, updatedAt, userId) VALUES (?, 10/26/15, 10/26/15, 2)", { replacements: [newCollection], type: db.QueryTypes.INSERT})
+    .then(function(result) {
+      console.log(result);
+    });
+
+  db.query("SELECT collections.collection FROM collections WHERE userId = 2", { type: db.QueryTypes.SELECT })
+    .then(function(users) {
+      // Loop through the users array of objects
+      for(var i = 0; i < users.length; i++) {
+        // loop through each key in the obj
+        // and push value to resCollection 
+        for(var key in users[i]) {
+          resCollection.push(users[i][key]);
+        }
+      }
+      console.log("IM FROM USERS: ", users, "dummyCollections: ", dummyCollections, "resCollection: ", resCollection);
+    });
+  console.log("Im in api/collections POST request: ", req.body);
+
+  var dummyCollection = dummyCollections.push(resCollection);
+  res.send(JSON.stringify(resCollection));
+});
+
+
+// For a logged in user, give back all books for a specific collection
+app.get("/api/collection:collection", function(req, res) {
+  var collectionName = req.params.collection;
+  console.log("IM THE REQUEST OBJECT FROM API/COLLECTION: ", req.originalUrl);
+  // console.log("Im in api/collection GET REQUEST", "Req.body: ", req.body, "Req.params: ", req.params, "Req.data: ", req.data);
+  res.send("COMING SOON...DATA");
+});
+
+// For a logged in user, add a book to a specified collection
+app.post("/api/collection", function(req, res) {
+  console.log("Im in api/collection", req.body);
+});
+
+// Send a collection name, book name, to another user.
+app.post("api/share", function(req, res) {
+  console.log("IM in api/share", req.body);
+});
+
+/************************************************************/
+
+
+/************************************************************/
+// AUTHENTICATION ROUTES
+/************************************************************/
 app.post("/api/signin", function(req, res) {
   var username = req.body.username;
   var password = req.body.password;
@@ -138,45 +231,8 @@ app.post("/api/signup", function(req, res) {
     }
   });
 });
-
-
-
-//**************************************************************
-// TEST DATA - dummyCollections is used to test that api/collections
-// GET REQUEST is working. 
-//**************************************************************
-var dummyCollections = ["bestsellers", "wine", "football", "cars", "forFriends", "boats", "shoes"];
-
-
-app.get("/api/collections", function(req, res) {
-  console.log("IM IN api/collections GET Request", JSON.stringify(dummyCollections));
-
-  res.send(JSON.stringify(dummyCollections));
-});
-
-
-app.post("/api/collections", function(req, res) {
-  console.log("Im in api/collections POST request: ", req.body);
-});
-
-app.get("/api/collection:collection", function(req, res) {
-  console.log("Im in api/collection", req.body);
-});
-
-
-app.post("/api/collection:collection", function(req, res) {
-  console.log("Im in api/collection", req.body);
-});
-
-app.post("api/share", function(req, res) {
-  console.log("IM in api/share", req.body);
-});
-
-
-
 /************************************************************/
-// AUTHENTICATION ROUTES
-/************************************************************/
+
 
 
 
@@ -184,7 +240,9 @@ app.post("api/share", function(req, res) {
 /************************************************************/
 // HANDLE WILDCARD ROUTES - IF ALL OTHER ROUTES FAIL
 /************************************************************/
-
+app.get("*", function(req, res) {
+  console.log("Im the wildcare route handler.....", "Heres a console.log of the req object: ", req.body, "Heres the req url: ", req.url, "Im req.params: ", req.params);
+})
 
 
 
