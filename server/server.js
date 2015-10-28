@@ -113,6 +113,8 @@ app.get("/api/collections", function(req, res) {
 app.post("/api/collections", function(req, res) {
   var collection = req.body.collection;
   console.log("Im in api/collections POST request: ", collection);
+  var dummyCollection = dummyCollections.push(collection)
+  res.send(JSON.stringify(dummyCollections));
 });
 
 
