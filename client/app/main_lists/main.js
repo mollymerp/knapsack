@@ -14,9 +14,12 @@ angular.module("knapsack.main", [])
         printType: "books"
       }
     }).then(function(response){
-      console.log(response)
       return response.data.items.map(function(item){
-        return item.volumeInfo.title;
+        var data = {
+          author: item.volumeInfo.authors === undefined? "" : item.volumeInfo.authors[0],
+          title: item.volumeInfo.title
+        };
+        return data;
       });
     });
   };
@@ -40,17 +43,11 @@ angular.module("knapsack.main", [])
     //need to make a copy for smart table to asynchronously paginate responses
 
 
-    $scope.addBook = function() {
-      if ($scope.newBook.title && $scope.newBook.title) {
-        var book = {
-          title: $scope.newBook.title,
-          author: $scope.newBook.author
-        };
-        Contents.addBook($location.url().split("/")[2], book)
-          .then(getBooks);
-        $scope.newBook.title = "";
-        $scope.newBook.author = "";
-      }
+    $scope.addBook = function(book) {
+      console.log(book);
+      Contents.addBook($location.url().split("/")[2], book)
+        .then(getBooks);
+      $scope.newBook.title = "";
     };
 
     var getBooks = function() {
