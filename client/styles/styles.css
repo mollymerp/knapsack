@@ -1,10 +1,11 @@
-
 li {
-    list-style-type: none;
+  list-style-type: none;
 }
+
 .collections a {
   text-decoration: none;
 }
+
 
 /*
 if we want the scroll through feature this might
@@ -30,58 +31,62 @@ body {
   margin: 0 auto;
   text-align: center;
   padding-top: 50px;
-  color:#4A4A4A;
+  color: #4A4A4A;
 }
 
 #sign-up-button {
-  -moz-border-radius:11px;
-  -webkit-border-radius:11px;
-  border-radius:11px;
-  border:3px solid #B8E986;
-  display:inline-block;
-  cursor:pointer;
+  -moz-border-radius: 11px;
+  -webkit-border-radius: 11px;
+  border-radius: 11px;
+  border: 3px solid #B8E986;
+  display: inline-block;
+  cursor: pointer;
   /*font-family: 'Roboto', sans-serif;*/
   font-weight: 300;
-  font-size:24px;
-  color:#4A4A4A;
-  padding:6px 36px;
-  text-decoration:none;
+  font-size: 24px;
+  color: #4A4A4A;
+  padding: 6px 36px;
+  text-decoration: none;
 }
+
 #sign-up-button:hover {
-  background-color:#B8E986;
+  background-color: #B8E986;
   opacity: 50%;
 }
+
 #sign-up-button:active {
-  position:relative;
-  top:1px;
+  position: relative;
+  top: 1px;
 }
 
 button {
-  -moz-border-radius:11px;
-  -webkit-border-radius:11px;
-  border-radius:11px;
-  border:3px solid #B8E986;
-  display:inline-block;
-  cursor:pointer;
+  -moz-border-radius: 11px;
+  -webkit-border-radius: 11px;
+  border-radius: 11px;
+  border: 3px solid #B8E986;
+  display: inline-block;
+  cursor: pointer;
   font-weight: 300;
-  font-size:16px;
-  padding:4px 18px;
-  text-decoration:none;
+  font-size: 16px;
+  padding: 4px 18px;
+  text-decoration: none;
 }
+
 .sign-small {
-  color:#4A4A4A;
+  color: #4A4A4A;
   background-color: #FFFFFF;
 }
 
 .sign-small:hover {
-  background-color:#B8E986;
+  background-color: #B8E986;
   opacity: 50%;
 }
 
 .cancel-small {
-  border:3px solid #80848C;
+  border: 3px solid #80848C;
   background-color: #FFFFFF
 }
+
 .cancel-small:hover {
   opacity: 50%;
   background-color: #80848C;
@@ -89,7 +94,7 @@ button {
 
 h1.landing-header {
   padding-top: 50px;
-  font-size:80px;
+  font-size: 80px;
   font-weight: 100;
   margin-top: 0px;
   margin-bottom: 0px;
@@ -101,22 +106,23 @@ h3 {
 
 a {
   text-decoration: none;
-  color:#B8E986 ;
+  color: #B8E986;
   font-weight: 300;
-  cursor:pointer;
+  cursor: pointer;
 }
 
 a:hover {
   text-decoration: none;
   font-weight: 400;
-  color:#B8E986 ;
+  color: #B8E986;
 }
+
 .landing-table {
   padding-top: 50px;
 }
 
 table {
-  border:3px solid #B8E986;
+  border: 3px solid #B8E986;
   border-collapse: inherit;
   text-align: left;
 }

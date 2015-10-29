@@ -38,14 +38,14 @@ var SignupModalCtrl = function($scope, $rootScope, $location, $modalInstance, us
     if ($scope.form.userForm.$valid) {
       Auth.signUp($scope.user)
 
-      .then(function(user){
+      .then(function(user) {
         console.log("signup fired: ", user);
         $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
         $scope.setCurrentUser(user);
         $modalInstance.close();
         $location.path("/");
 
-      }).catch(function (error){
+      }).catch(function(error) {
         $rootScope.$broadcast(AUTH_EVENTS.loginFailed);
         console.error(error);
       });
@@ -64,17 +64,17 @@ var SigninModalCtrl = function($scope, $rootScope, $location, $modalInstance, us
   $scope.submitForm = function() {
     if ($scope.form.userForm.$valid) {
       Auth.signIn($scope.user)
-      .then(function (user){
-        console.log("signin fired", user);
-        $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
-        $scope.setCurrentUser(user);
+        .then(function(user) {
+          console.log("signin fired", user);
+          $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
+          $scope.setCurrentUser(user);
 
-        $modalInstance.close();
-        $location.path("/");
-     }).catch(function (error){
-        $rootScope.$broadcast(AUTH_EVENTS.loginFailed);
-        console.error(error);
-      });
+          $modalInstance.close();
+          $location.path("/");
+        }).catch(function(error) {
+          $rootScope.$broadcast(AUTH_EVENTS.loginFailed);
+          console.error(error);
+        });
     } else {
       console.log("form not valid");
     }

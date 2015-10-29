@@ -111,7 +111,10 @@ app.post("/api/signin", function(req, res) {
               user_name: username
             };
             // changed to send session user data back to front-end - ML
-            res.status(201).send({id: req.session.id, user: req.session.user.user_name});
+            res.status(201).send({
+              id: req.session.id,
+              user: req.session.user.user_name
+            });
           });
         } else {
           res.status(200).send("Wrong password");
@@ -155,7 +158,10 @@ app.post("/api/signup", function(req, res) {
               user.addCollection(collection);
             });
             // changed to send session user data back to front-end - ML
-            res.status(201).send({id: req.session.id, user: req.session.user.user_name});
+            res.status(201).send({
+              id: req.session.id,
+              user: req.session.user.user_name
+            });
           });
         });
       });
