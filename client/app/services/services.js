@@ -1,12 +1,12 @@
 angular.module("knapsack.services", [])
   .service('Session', function() {
-    this.create = function(sessionId, userId) {
+    this.create = function(sessionId, username) {
       this.id = sessionId;
-      this.userId = userId;
+      this.username = username;
     };
     this.destroy = function() {
       this.id = null;
-      this.userId = null;
+      this.username = null;
     };
   })
   .factory("Auth", ["$http", "Session", function($http, Session) {
@@ -38,15 +38,30 @@ angular.module("knapsack.services", [])
         return resp;
       });
     };
+    
+    var logOut = function (user){
+      return $http({
+        method: "POST",
+        url: "api/logout",
+        data: JSON.stringify({user: user})
+      }).then(function succesCallback (resp){
+        Session.destroy();
+        return resp;
+      }, function errorCallback(resp){
+        console.log(resp.status + ": unable to logout");
+        return resp;
+      })
+    };
 
     var isAuthenticated = function() {
-      return !!Session.userId;
+      return !!Session.username;
     };
 
     return {
       signIn: signIn,
       signUp: signUp,
-      isAuthenticated: isAuthenticated
+      isAuthenticated: isAuthenticated,
+      logOut: logOut
     };
 
   }])

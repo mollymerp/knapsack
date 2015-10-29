@@ -164,6 +164,22 @@ app.post("/api/signup", function(req, res) {
   });
 });
 
+
+app.post("/api/logout", function (req, res) {
+  if (req.session.user.user_name === req.body.user) {
+    req.session.destroy(function (err){
+      if (err){
+       console.error(err);
+       res.status(201).send("unable to logout user")
+      } else {
+       console.log("logout success");
+       res.status(200).send("logout success");
+      }
+    })
+  }
+  res.send(200);
+})
+
 //**************************************************************
 // GET and POST Requests
 //**************************************************************

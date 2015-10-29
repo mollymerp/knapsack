@@ -14,7 +14,8 @@ angular.module("knapsack", [
     $scope.setCurrentUser = function(user) {
       $scope.currentUser = user;
     };
-
+    
+    $scope.$on(AUTH_EVENTS.logoutSuccess, $scope.setCurrentUser(null));
     $scope.$on(AUTH_EVENTS.notAuthenticated, $location.path('/landing'));
   })
   .config(["$stateProvider", "$urlRouterProvider", function($stateProvider, $urlRouteProvider) {

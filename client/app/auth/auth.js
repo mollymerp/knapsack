@@ -1,6 +1,6 @@
 angular.module("knapsack.auth", ["ui.router"])
 
-.controller("authController", ["$scope", "$location", "$uibModal", "$log", "Auth", function($scope, $location, $uibModal, $log, Auth) {
+.controller("authController", ["$scope", "$rootScope", "$location", "$uibModal", "$log", "Auth", "AUTH_EVENTS", function($scope, $rootScope, $location, $uibModal, $log, Auth, AUTH_EVENTS) {
 
   $scope.signupOpen = function() {
     var modalInstance = $uibModal.open({
@@ -30,6 +30,16 @@ angular.module("knapsack.auth", ["ui.router"])
     });
   };
 
+  $scope.logOut = function () {
+    Auth.logOut($scope.currentUser)
+    .then(function (resp){
+      if (resp.status === 200){
+        $rootScope.$broadcast(AUTH_EVENTS.logoutSuccess);
+        $location.path("/landing")
+      }
+    })
+  };
+
 }]);
 
 var SignupModalCtrl = function($scope, $rootScope, $location, $modalInstance, userForm, AUTH_EVENTS, Auth) {
@@ -39,7 +49,6 @@ var SignupModalCtrl = function($scope, $rootScope, $location, $modalInstance, us
       Auth.signUp($scope.user)
 
       .then(function(user) {
-        console.log("signup fired: ", user);
         $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
         $scope.setCurrentUser(user);
         $modalInstance.close();

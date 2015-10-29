@@ -21,7 +21,7 @@ angular.module("knapsack.main", [])
         };
         return data;
       });
-    };
+    })};
 
     var getNytimes = function() {
       var bestSellers = [];
@@ -51,7 +51,7 @@ angular.module("knapsack.main", [])
     };
 
     var getBooks = function() {
-      if ($location.url().split("/")[2] === "bestsellers") {
+      if ($location.url() === "/landing" || $location.url().split("/")[2] === "bestsellers") {
         getNytimes();
       } else {
         Contents.getBooks($location.url().split("/")[2])
