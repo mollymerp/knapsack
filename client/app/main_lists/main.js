@@ -21,8 +21,7 @@ angular.module("knapsack.main", [])
         };
         return data;
       });
-    });
-  };
+    };
 
     var getNytimes = function() {
       var bestSellers = [];
@@ -36,7 +35,8 @@ angular.module("knapsack.main", [])
           bestSellers.push(tableData);
         });
         var books = bestSellers;
-        $scope.displayedCollection = [].concat(books);
+        $scope.displayedCollection = books;
+        $scope.bookCollection = [].concat(books);
       });
     };
 
@@ -51,15 +51,16 @@ angular.module("knapsack.main", [])
     };
 
     var getBooks = function() {
-      if ($location.url().split("/")[2] === "bestsellers"){
+      if ($location.url().split("/")[2] === "bestsellers") {
         getNytimes();
       } else {
-      Contents.getBooks($location.url().split("/")[2])
-        .then(function(books) {
-          console.log("books fetched ",books);
+        Contents.getBooks($location.url().split("/")[2])
+          .then(function(books) {
+            console.log("books fetched ", books);
 
-          $scope.displayedCollection = books;
-        });
+            $scope.displayedCollection = books;
+            $scope.bookCollection = [].concat(books);
+          });
       }
     };
 
@@ -84,10 +85,10 @@ angular.module("knapsack.main", [])
   }])
   .controller("DropdownCtrl", ["$scope", "Contents", function($scope, Contents) {
     $scope.loadFriends = function() {
-        Contents.getFriends()
-          .then(function(users) {
-            $scope.friends = users;
-          });
-      };
+      Contents.getFriends()
+        .then(function(users) {
+          $scope.friends = users;
+        });
+    };
     // $scope.friends = ["hans", "peter", "klaus", "anja", "frauke", "meggie", "linda"];
   }]);
