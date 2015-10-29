@@ -7,15 +7,17 @@ angular.module("knapsack", [
   "knapsack.sidebar",
   "knapsack.auth"
 ])
-.controller('AppController', function ($scope, Auth) {
+.controller('AppController', function ($scope, $location, Auth, AUTH_EVENTS) {
   $scope.currentUser = null;
   $scope.isAuthorized = Auth.isAuthorized;
  
   $scope.setCurrentUser = function (user) {
     $scope.currentUser = user;
   };
+
+  $scope.$on(AUTH_EVENTS.notAuthenticated, $location.path('/landing'));
 })
-.config(["$stateProvider", "$urlRouterProvider", function($stateProvider, $urlRouteProvider, $urlRouter) {
+.config(["$stateProvider", "$urlRouterProvider", function($stateProvider, $urlRouteProvider) {
   $urlRouteProvider.otherwise("/");
 
 
@@ -76,19 +78,19 @@ angular.module("knapsack", [
   logoutSuccess: 'auth-logout-success',
   sessionTimeout: 'auth-session-timeout',
   notAuthenticated: 'auth-not-authenticated'
-});
-.run(['$rootScope', '$urlRouter', '$location', "AUTH_EVENTS","Auth", function ($rootScope, $urlRouter, $location, AUTH_EVENTS, Auth) {
-    $rootScope.$on('$locationChangeSuccess', function(e, newUrl, oldUrl) {
-      // Prevent $urlRouter's default handler from firing
-      e.preventDefault();
-
-//       * 
-//        * provide conditions on when to 
-//        * sync change in $location.path() with state reload.
-//        * I use $location and $state as examples, but
-//        * You can do any logic
-//        * before syncing OR stop syncing all together.
-    });
-//     // Configures $urlRouter's listener *after* your custom listener
-    $urlRouter.listen();
-  }]);;
+})
+.run(['$rootScope', '$urlRouter', '$location', '$state',"AUTH_EVENTS","Auth", function ($rootScope, $state ,$urlRouter, $location, AUTH_EVENTS, Auth) {
+    // $rootScope.$on('$stateChangeStart', function (event, next, $state) {
+    //   event.preventDefault();
+    //   if (Auth.isAuthenticated()) {
+    //     // $rootScope.$broadcast(AUTH_EVENTS.isAuthenticated);
+    //   } else {
+    //     console.log("in here"); 
+    //     console.log($location);
+    //     $location.path('/landing');
+    //   };
+    //     // $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
+    // });
+    //// Configures $urlRouter's listener *after* your custom listener
+    // $urlRouter.listen();
+}]);
