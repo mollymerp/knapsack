@@ -81,11 +81,9 @@ angular.module("knapsack.main", [])
   }])
   .controller("DropdownCtrl", ["$scope", "Contents", function($scope, Contents) {
     $scope.loadFriends = function() {
-      console.log("called load friends");
       Contents.getFriends()
         .then(function(users) {
           $scope.friends = users;
         });
     };
-    // $scope.friends = ["hans", "peter", "klaus", "anja", "frauke", "meggie", "linda"];
   }]);
