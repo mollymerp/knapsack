@@ -78,8 +78,6 @@ angular.module("knapsack.main", [])
     };
 
     getBooks();
-    // getNytimes();
-
   }])
   .controller("DropdownCtrl", ["$scope", "Contents", function($scope, Contents) {
     $scope.loadFriends = function() {
