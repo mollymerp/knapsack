@@ -15,12 +15,12 @@
       <th>Delete</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody ng-controller="DropdownCtrl">
     <tr ng-repeat="book in displayedCollection">
       <td> {{book.title | uppercase}} </td>
       <td> {{book.author}} </td>
       <td>
-        <div ng-controller="DropdownCtrl">
+        <div>
           <div class="btn-group" uib-dropdown>
             <button type="button" class="btn btn-sm btn-primary" ng-click="loadFriends()" uib-dropdown-toggle>
               <i class="glyphicon glyphicon-share-alt">
