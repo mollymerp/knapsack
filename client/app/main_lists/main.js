@@ -44,7 +44,6 @@ angular.module("knapsack.main", [])
 
 
     $scope.addBook = function(book) {
-      console.log(book);
       Contents.addBook($location.url().split("/")[2], book)
         .then(getBooks);
       $scope.newBook.title = "";
@@ -57,7 +56,6 @@ angular.module("knapsack.main", [])
         Contents.getBooks($location.url().split("/")[2])
           .then(function(books) {
             console.log("books fetched ", books);
-
             $scope.displayedCollection = books;
             $scope.bookCollection = [].concat(books);
           });
