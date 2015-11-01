@@ -20,16 +20,19 @@
       <td> {{book.title | uppercase}} </td>
       <td> {{book.author}} </td>
       <td>
-        <div class="btn-group" uib-dropdown>
-          <button type="button" class="btn btn-sm btn-primary" ng-click="loadFriends()" uib-dropdown-toggle>
-            <i class="glyphicon glyphicon-share-alt">
+        <div ng-controller="DropdownCtrl">
+          <div class="btn-group" uib-dropdown>
+            <button type="button" class="btn btn-sm btn-primary" ng-click="loadFriends()" uib-dropdown-toggle>
+              <i class="glyphicon glyphicon-share-alt">
               </i>
-          </button>
-          <ul class="uib-dropdown-menu" role="menu">
-            <li role="menuitem" ng-click="shareBook(book, user)" ng-repeat="user in friends">
-              {{user}}
-            </li>
-          </ul>
+            </button>
+            <ul class="uib-dropdown-menu" role="menu">
+              <li role="menuitem" ng-click="shareBook(book, user)" ng-repeat="user in friends">
+                {{user}}
+              </li>
+            </ul>
+          </div>
+        </div>
       </td>
       <td>
         <button type="button " ng-click="removeBook(book)" class="btn btn-sm btn-danger">
