@@ -6,28 +6,31 @@ var cookieParser = require("cookie-parser"); // parses cookie header, populate r
 var session = require("express-session");
 var Sequelize = require("sequelize"); // promise based ORM for SQL
 var db = require("../config/database.js"); // connect to database
-// var ddl = require("../config/ddl.js"); // create database tables
+
 var path = require("path");
 var _ = require('underscore');
 
-var bcrypt = require('bcrypt-nodejs'); // hashing passwords
-var Promise = require('bluebird'); // for promisification
+var bcrypt = require("bcrypt-nodejs"); // hashing passwords
+var Promise = require("bluebird"); // for promisification
 
 var app = express(); // create our app w/ express
 var port = process.env.PORT || 3000;
 var ip = "127.0.0.1"; // localhost
 
-/************************************************************/
-// CONFIGURE SERVER
-/************************************************************/
 
 /************************************************************/
 // Initialize Database
 /************************************************************/
 
+//Import Models(tables)
+
 var User = db.import(path.join(__dirname, "../models/Users"));
 var Collection = db.import(path.join(__dirname, "../models/Collections.js"));
 var Book = db.import(path.join(__dirname, "../models/Books.js"));
+
+//Relationships :
+//1.User can have many Collections.
+//2.Collections have a many to many relationship with Books through junction table collections_to_books
 
 User.hasMany(Collection);
 Collection.belongsToMany(Book, {
@@ -37,19 +40,18 @@ Book.belongsToMany(Collection, {
   through: "collections_to_books"
 });
 
+//Initialize Database
+
 db.sync()
   .then(function(err) {
-    console.log('Database is up and running');
+    console.log("Database is up and running");
   }, function(err) {
-    console.log('An error occurred while creating the database:', err);
+    console.log("An error occurred while creating the database:", err);
   });
 
 /************************************************************/
-
-// Express uses template engine to parse front-end scripts. Can parse HTML, EJS, JADE, etc.
-app.set("view engine", "ejs");
-// Tells Express from where to deliver front end views
-app.set("views", __dirname + "/../client/views");
+// CONFIGURE SERVER
+/************************************************************/
 
 // Logger for dev environment
 app.use(morgan("dev"));
@@ -75,23 +77,10 @@ app.use(express.static(__dirname + "/../client"));
 
 
 /************************************************************/
-// ROUTE HANDLING
+// AUTHENTICATION ROUTES
 /************************************************************/
 
-var router = express.Router();
-
-// local dev route (http://localhost:3000)
-router.get("/", function(req, res) {
-  res.render("index");
-});
-
-app.post("/", function(req, res) {
-  res.send("I got a POST Request from the home page");
-});
-
-
-// apply the routes to our application
-app.use("/", router);
+//Signin post request
 
 app.post("/api/signin", function(req, res) {
   var username = req.body.username;
@@ -110,7 +99,11 @@ app.post("/api/signin", function(req, res) {
             req.session.user = {
               user_name: username
             };
-            res.status(201).send("Succesfully signed in");
+            // changed to send session user data back to front-end - ML
+            res.status(201).send({
+              id: req.session.id,
+              user: req.session.user.user_name
+            });
           });
         } else {
           res.status(200).send("Wrong password");
@@ -122,6 +115,9 @@ app.post("/api/signin", function(req, res) {
   });
 });
 
+
+//Signup post request
+//Note : recommended and bestsellers are created when a new user signs up
 app.post("/api/signup", function(req, res) {
   var username = req.body.username;
   var password = req.body.password;
@@ -153,7 +149,11 @@ app.post("/api/signup", function(req, res) {
             }).then(function(collection) {
               user.addCollection(collection);
             });
-            res.status(201).send("Succesfully signed up user: " + username);
+            // changed to send session user data back to front-end - ML
+            res.status(201).send({
+              id: req.session.id,
+              user: req.session.user.user_name
+            });
           });
         });
       });
@@ -165,12 +165,29 @@ app.post("/api/signup", function(req, res) {
 });
 
 
+app.post("/api/logout", function (req, res) {
+  if (req.session.user.user_name === req.body.user) {
+    req.session.destroy(function (err){
+      if (err){
+       console.error(err);
+       res.status(201).send("unable to logout user")
+      } else {
+       console.log("logout success");
+       res.status(200).send("logout success");
+      }
+    })
+  }
+  res.send(200);
+})
 
 //**************************************************************
-// TEST DATA - dummyCollections is used to test that api/collections
-// GET REQUEST is working. 
+// GET and POST Requests
 //**************************************************************
 
+//Following GET request displays all the collections for a given user
+//getCollection() function uses established relationship between user and collections to return all collections
+//Note : _.map function is required to return array of all collections which can be rendered
+//Unit Test : Pass (10/28/2015)
 
 app.get("/api/collections", function(req, res) {
   User.findOne({
@@ -185,8 +202,11 @@ app.get("/api/collections", function(req, res) {
       res.send(collections);
     });
   });
+
 });
 
+//POST request CREATE new collection by using req information
+//Unit Test : Pass (10/28/2015)
 
 app.post("/api/collections", function(req, res) {
   Collection.create({
@@ -202,6 +222,10 @@ app.post("/api/collections", function(req, res) {
     });
   });
 });
+
+//POST request to GET all books within a collection instance e.g. /api/collection/bestsellers
+//Unit Test : Pass (10/28/2015)
+//Question : This is a get request, why is post used?
 
 app.post("/api/collection/instance", function(req, res) {
   User.findOne({
@@ -233,6 +257,8 @@ app.post("/api/collection/instance", function(req, res) {
   });
 });
 
+//POST request to CREATE new books within a collection instance e.g. /api/collection/bestsellers
+//Unit Test : Pass (10/28/2015)
 
 app.post("/api/collection", function(req, res) {
   User.findOne({
@@ -256,6 +282,9 @@ app.post("/api/collection", function(req, res) {
   });
 });
 
+//POST request to SHARE book to another user and places book in Recommended collection
+//Unit Test :
+
 app.post("/api/share", function(req, res) {
   User.findOne({
     where: {
@@ -278,6 +307,9 @@ app.post("/api/share", function(req, res) {
   });
 });
 
+//GET request to get all users from database
+//Unit Test :
+
 app.get("/api/friends", function(req, res) {
   User.findAll({
     limit: 5
@@ -290,17 +322,8 @@ app.get("/api/friends", function(req, res) {
 });
 
 /************************************************************/
-// AUTHENTICATION ROUTES
-/************************************************************/
-
-
-
-
-/************************************************************/
 // HANDLE WILDCARD ROUTES - IF ALL OTHER ROUTES FAIL
 /************************************************************/
-
-
 
 
 /************************************************************/
