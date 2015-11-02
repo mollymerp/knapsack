@@ -17,6 +17,7 @@ angular.module("knapsack", [
     
     $scope.$on(AUTH_EVENTS.logoutSuccess, $scope.setCurrentUser(null));
     $scope.$on(AUTH_EVENTS.notAuthenticated, $location.path('/landing'));
+    $scope.$on(AUTH_EVENTS.loginFailed, $location.path('/landing'))
   })
   .config(["$stateProvider", "$urlRouterProvider", function($stateProvider, $urlRouteProvider) {
     $urlRouteProvider.otherwise("/");

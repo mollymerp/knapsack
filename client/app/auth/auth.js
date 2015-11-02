@@ -49,13 +49,15 @@ var SignupModalCtrl = function($scope, $rootScope, $location, $modalInstance, us
   $scope.submitForm = function() {
     if ($scope.form.userForm.$valid) {
       Auth.signUp($scope.user)
-
       .then(function(user) {
-        $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
-        $scope.setCurrentUser(user);
-        $modalInstance.close();
-        $location.path("/collection/bestsellers");
-
+        if (user === "already exists"){
+          alert("Username already exists. Please choose another one.")
+        } else {
+          $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
+          $scope.setCurrentUser(user);
+          $modalInstance.close();
+          $location.path("/collection/bestsellers");
+        }
       }).catch(function(error) {
         $rootScope.$broadcast(AUTH_EVENTS.loginFailed);
         console.error(error);
@@ -76,12 +78,15 @@ var SigninModalCtrl = function($scope, $rootScope, $location, $modalInstance, us
     if ($scope.form.userForm.$valid) {
       Auth.signIn($scope.user)
         .then(function(user) {
-          console.log("signin fired", user);
-          $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
-          $scope.setCurrentUser(user);
+          if (user === "Wrong password") {
+            alert("Wrong password. Please try again.");
+          } else {
+            $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
+            $scope.setCurrentUser(user);
 
-          $modalInstance.close();
-          $location.path("/collection/bestsellers");
+            $modalInstance.close();
+            $location.path("/collection/bestsellers");
+          }
         }).catch(function(error) {
           $rootScope.$broadcast(AUTH_EVENTS.loginFailed);
           console.error(error);
