@@ -5,12 +5,12 @@ angular.module("knapsack.main", [])
       author: ""
     };
 
-    $scope.getBooks = function(val) {
+    $scope.searchBooks = function(val) {
     return $http.get('https://www.googleapis.com/books/v1/volumes', {
       params: {
         q: val,
         sensor: false,
-        key: "AIzaSyD9-ymecHg0I2o_mDvvD39PxNv46yz2Gnc", // insert Google API key here
+        key: "AIzaSyD9-ymecHg0I2o_mDvvD39PxNv46yz2Gnc", // Insert Google API key here
         printType: "books"
       }
     }).then(function(response){
