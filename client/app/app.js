@@ -82,17 +82,12 @@ angular.module("knapsack", [
     notAuthenticated: 'auth-not-authenticated'
   })
   .run(['$rootScope', '$urlRouter', '$location', '$state', "AUTH_EVENTS", "Auth", function($rootScope, $state, $urlRouter, $location, AUTH_EVENTS, Auth) {
-    // $rootScope.$on('$stateChangeStart', function (event, next, $state) {
-    //   event.preventDefault();
-    //   if (Auth.isAuthenticated()) {
-    //     // $rootScope.$broadcast(AUTH_EVENTS.isAuthenticated);
-    //   } else {
-    //     console.log("in here"); 
-    //     console.log($location);
-    //     $location.path('/landing');
-    //   };
-    //     // $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
-    // });
-    //// Configures $urlRouter's listener *after* your custom listener
-    // $urlRouter.listen();
+    $rootScope.$on('$stateChangeStart', function (event, next, $state) {
+      // event.preventDefault();
+      if ($rootScope.currentUser === null) {
+        console.log("no logged in user");
+        $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
+        $location.path('/landing');
+      };
+    });
   }]);
