@@ -2,9 +2,7 @@ var express = require("express");
 var bodyParser = require("body-parser"); // request body parsing middleware (json, url)
 var morgan = require("morgan"); // log requests to the console
 
-var cookieParser = require("cookie-parser"); // parses cookie header, populate req.cookies
 var session = require("express-session");
-var Sequelize = require("sequelize"); // promise based ORM for SQL
 var db = require("../config/database.js"); // connect to database
 
 var path = require("path");
@@ -13,9 +11,9 @@ var _ = require('underscore');
 var bcrypt = require("bcrypt-nodejs"); // hashing passwords
 var Promise = require("bluebird"); // for promisification
 
-var app = express(); // create our app w/ express
+var app = express();
 var port = process.env.PORT || 3000;
-var ip = "127.0.0.1"; // localhost
+var ip = "127.0.0.1";
 
 
 /************************************************************/
@@ -56,14 +54,7 @@ db.sync()
 // Logger for dev environment
 app.use(morgan("dev"));
 
-// Body parser is middleware to handle POST data in Express 4
-app.use(bodyParser.urlencoded({
-  "extended": "true"
-}));
-
 app.use(bodyParser.json());
-// Cookie parser is middleware to handle cookies sent from the client.
-app.use(cookieParser());
 // Express sessions handles sessions in Express
 app.use(session({
   secret: "$#%!@#@@#SSDASASDVV@@@@",
@@ -99,7 +90,6 @@ app.post("/api/signin", function(req, res) {
             req.session.user = {
               user_name: username
             };
-            // changed to send session user data back to front-end - ML
             res.status(201).send({
               id: req.session.id,
               user: req.session.user.user_name
@@ -129,7 +119,7 @@ app.post("/api/signup", function(req, res) {
   }).then(function(user) {
     if (!user) {
       var hashing = Promise.promisify(bcrypt.hash); // hashing is a promisified version of bcyrpt hash
-      var hashPass = hashing(password, null, null).
+      hashing(password, null, null).
       then(function(hash) {
         User.create({
           user_name: username,
@@ -149,7 +139,6 @@ app.post("/api/signup", function(req, res) {
             }).then(function(collection) {
               user.addCollection(collection);
             });
-            // changed to send session user data back to front-end - ML
             res.status(201).send({
               id: req.session.id,
               user: req.session.user.user_name
@@ -165,20 +154,17 @@ app.post("/api/signup", function(req, res) {
 });
 
 
-app.post("/api/logout", function (req, res) {
-  if (req.session.user.user_name === req.body.user) {
-    req.session.destroy(function (err){
-      if (err){
-       console.error(err);
-       res.status(201).send("unable to logout user")
-      } else {
-       console.log("logout success");
-       res.status(200).send("logout success");
-      }
-    })
-  }
-  res.send(200);
-})
+app.post("/api/logout", function(req, res) {
+  req.session.destroy(function(err) {
+    if (err) {
+      console.error(err);
+      res.status(201).send("unable to logout user")
+    } else {
+      console.log("logout success");
+      res.status(200).send("logout success");
+    }
+  });
+});
 
 //**************************************************************
 // GET and POST Requests
@@ -223,9 +209,9 @@ app.post("/api/collections", function(req, res) {
   });
 });
 
-//POST request to GET all books within a collection instance e.g. /api/collection/bestsellers
-//Unit Test : Pass (10/28/2015)
-//Question : This is a get request, why is post used?
+// POST request to GET all books within a collection instance e.g. /api/collection/bestsellers
+// Unit Test : Pass (10/28/2015)
+// We have to use POST here, because GET requests do not allow data(collection name) to be sent with a request.
 
 app.post("/api/collection/instance", function(req, res) {
   User.findOne({
@@ -257,7 +243,7 @@ app.post("/api/collection/instance", function(req, res) {
   });
 });
 
-//POST request to CREATE new books within a collection instance e.g. /api/collection/bestsellers
+//POST request to CREATE new books within a collection instance e.g. /api/collection/collectionname
 //Unit Test : Pass (10/28/2015)
 
 app.post("/api/collection", function(req, res) {
@@ -282,8 +268,36 @@ app.post("/api/collection", function(req, res) {
   });
 });
 
+app.post("/api/collection/delete", function(req, res) {
+  console.log(req.body);
+  User.findOne({
+    where: {
+      user_name: req.session.user.user_name
+    }
+  }).then(function(user) {
+    var user_id = user.id;
+    Collection.findOne({
+      where: {
+        collection: req.body.collection,
+        user_id: user_id
+      }
+    }).then(function(collection) {
+      collection.getBooks({
+        where: {
+          title: req.body.book.title
+        }
+      }).then(function(books) {
+        books[0].destroy().then(function() {
+          console.log("successfully deleted book");
+          res.send("deleted book");
+        })
+      });
+    });
+  });
+});
+
 //POST request to SHARE book to another user and places book in Recommended collection
-//Unit Test :
+//Unit Test : Pass (11/2/2015)
 
 app.post("/api/share", function(req, res) {
   User.findOne({
@@ -307,13 +321,11 @@ app.post("/api/share", function(req, res) {
   });
 });
 
-//GET request to get all users from database
-//Unit Test :
+//GET request to get users from the database
+//Unit Test : Pass (11/2/2015)
 
 app.get("/api/friends", function(req, res) {
-  User.findAll({
-    limit: 5
-  }).then(function(users) {
+  User.findAll().then(function(users) {
     users = _.map(users, function(user) {
       return user.user_name;
     });
@@ -324,7 +336,6 @@ app.get("/api/friends", function(req, res) {
 /************************************************************/
 // HANDLE WILDCARD ROUTES - IF ALL OTHER ROUTES FAIL
 /************************************************************/
-
 
 /************************************************************/
 // START THE SERVER
