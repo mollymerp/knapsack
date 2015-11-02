@@ -1,6 +1,6 @@
 <form class="form-inline" ng-submit="addBook()">
   <div class="text-center">
-    <input type="text" autocomplete="off" ng-model="newBook.title" name="title" placeholder="Title" uib-typeahead="data as data.title + ' (' + data.author + ')' for data in getLocation($viewValue)" typeahead-on-select="addBook($item)" required>
+    <input type="text" autocomplete="off" ng-model="newBook.title" name="title" placeholder="Title" uib-typeahead="data as data.title + ' (' + data.author + ')' for data in searchBooks($viewValue)" typeahead-on-select="addBook($item)" required>
     <button type="submit" class="btn btn-sm btn-success">
       <i class="glyphicon glyphicon-plus"></i>
     </button>
