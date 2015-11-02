@@ -25,6 +25,22 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
+.row, header {
+  position: relative;
+  width: 80%;
+  margin: 0 auto;
+  padding-top: 50px; 
+}
+
+input[type=text]:focus, input[type=password]:focus{
+  box-shadow: 0 0 5px rgba(184, 233, 134, 1);
+  border: 1px solid rgba(184, 233, 134, 1);
+}
+
+a header {
+  color: #4A4A4A;
+}
+
 .landing-container {
   position: relative;
   width: 60%;
@@ -34,7 +50,7 @@ body {
   color: #4A4A4A;
 }
 
-#sign-up-button {
+#sign-up-button, #logout-button {
   -moz-border-radius: 11px;
   -webkit-border-radius: 11px;
   border-radius: 11px;
@@ -49,14 +65,23 @@ body {
   text-decoration: none;
 }
 
-#sign-up-button:hover {
+a.navbar-brand {
+  font-size: 20px;
+  color: #4A4A4A;
+}
+
+.navbar-right {
+  padding-right: 20px;
+}
+
+#sign-up-button:hover, #logout-button:hover {
   background-color: #B8E986;
   opacity: 50%;
 }
 
-#sign-up-button:active {
-  position: relative;
-  top: 1px;
+#logout-button {
+  font-size: 20px;
+  padding: 6px 20px;
 }
 
 button {
@@ -115,6 +140,31 @@ a:hover {
   text-decoration: none;
   font-weight: 400;
   color: #B8E986;
+}
+
+a.book-category {
+  font-size: 18px;
+  color: #4A4A4A;
+}
+
+.collections {
+  line-height: 2;
+}
+
+#new-collection {
+  font-size: 18px;
+  border: none;
+  width: 130px;
+  font-style: italic;
+  font-weight: 100;
+}
+
+#new-book {
+  font-size: 16px;
+  border: none;
+  width: 220px;
+  font-style: italic;
+  font-weight: 100;
 }
 
 .landing-table {
