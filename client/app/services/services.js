@@ -123,7 +123,7 @@ angular.module("knapsack.services", [])
     var getNytimes = function() {
       return $http({
           method: "GET",
-          url: "http://api.nytimes.com/svc/books/v3/lists.json?list-name=hardcover-fiction&api-key=b2f850985c69c53458eac07ce2f7a874%3A7%3A65642337"
+          url: "https://api.nytimes.com/svc/books/v3/lists.json?list-name=hardcover-fiction&api-key=b2f850985c69c53458eac07ce2f7a874%3A7%3A65642337"
         })
         .then(function(resp) {
           return resp.data.results;
