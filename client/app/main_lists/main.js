@@ -10,12 +10,14 @@ angular.module("knapsack.main", [])
       params: {
         q: val,
         sensor: false,
-        key: "AIzaSyD9-ymecHg0I2o_mDvvD39PxNv46yz2Gnc",
+        key: "AIzaSyD9-ymecHg0I2o_mDvvD39PxNv46yz2Gnc", // insert Google API key here
         printType: "books"
       }
     }).then(function(response){
       return response.data.items.map(function(item){
         var data = {
+          /* There are often multiple authors for books. This comes from the Google Books API via an array. For the sake of time, we are using this function to limit the amount of authors to the first result. In the future, this would be good to flush out...
+          */
           author: item.volumeInfo.authors === undefined? "" : item.volumeInfo.authors[0],
           title: item.volumeInfo.title
         };

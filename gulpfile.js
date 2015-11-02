@@ -14,6 +14,7 @@ var inject = require('gulp-inject');
 var angularFilesort = require('gulp-angular-filesort');
 var es = require('event-stream');
 
+//commonly used files paths stored here in an object for easy reference
 var paths = {
   scripts: "./client/app/**/*.js",
   styles: "./client/styles/*.css",
@@ -24,6 +25,7 @@ var paths = {
   distScriptsProd: './dist.prod/scripts'
 };
 
+//storing helper functions in an object
 var pipes = {};
 
 
@@ -32,27 +34,33 @@ pipes.orderedAppScripts = function(){
   return plugins.angularFilesort();
 };
 
+//if jquery is being uses, ensures that it takes precedence when arranging vendor scripts
 pipes.orderedVendorScripts = function() {
     return plugins.order(['jquery.js', 'angular.js']);
 };
 
+//can be used at anytime to add .min to file names
 pipes.minifiedFileName = function() {
     return plugins.rename(function (path) {
         path.extname = '.min' + path.extname;
     });
 };
 
+//jshint for scripts
 pipes.validatedAppScripts = function() {
     return gulp.src(paths.scripts)  
         .pipe(plugins.jshint())
         .pipe(plugins.jshint.reporter('jshint-stylish'));
 };
 
+//just adds the unminified scripts into a new directory for dev usage
 pipes.builtAppScriptsDev = function() {
     return pipes.validatedAppScripts()
         .pipe(gulp.dest(paths.distDev));
 };
 
+//minifies and concatenates scripts for production usage. The output is a new directory called
+// dist.prod. Currently does not work
 pipes.builtAppScriptsProd = function() {
     var scriptedPartials = pipes.scriptedPartials();
     var validatedAppScripts = pipes.validatedAppScripts();
@@ -67,11 +75,13 @@ pipes.builtAppScriptsProd = function() {
         .pipe(gulp.dest(paths.distScriptsProd));
 };
 
+//outputs bower scripts into dev directory
 pipes.builtVendorScriptsDev = function() {
     return gulp.src(bowerFiles())
         .pipe(gulp.dest('dist.dev/bower_components'));
 };
 
+//minifies and concats vendor scripts
 pipes.builtVendorScriptsProd = function() {
     return gulp.src(bowerFiles('**/*.js'))
         .pipe(pipes.orderedVendorScripts())
@@ -80,17 +90,20 @@ pipes.builtVendorScriptsProd = function() {
         .pipe(gulp.dest(paths.distScriptsProd));
 };
 
+//runs htmlHint on angular templats
 pipes.validatedPartials = function() {
     return gulp.src(paths.partials)
         .pipe(plugins.htmlhint({'doctype-first': false}))
         .pipe(plugins.htmlhint.reporter());
 };
 
+//outputs all client html files into dev directory
 pipes.builtPartialsDev = function() {
     return pipes.validatedPartials()
         .pipe(gulp.dest(paths.distDev));
 };
 
+//this function runs html hint on html files in client. It also uses a plugin to turn the html files into an Angular module to be used in the Angular templateCache. Uncomment the failReporter() function to cancel the function from completing if there is an html syntax error
 pipes.scriptedPartials = function() {
     return pipes.validatedPartials()
         // .pipe(plugins.htmlhint.failReporter())
@@ -100,11 +113,13 @@ pipes.scriptedPartials = function() {
         }));
 };
 
+//outputs any files in the client/styles directory into dev director
 pipes.builtStylesDev = function() {
     return gulp.src(paths.styles)
         .pipe(gulp.dest(paths.distDev));
 };
 
+//minifies anything in the styles directory
 pipes.builtStylesProd = function() {
     return gulp.src(paths.styles)
         .pipe(plugins.sourcemaps.init())
@@ -114,12 +129,14 @@ pipes.builtStylesProd = function() {
         .pipe(gulp.dest(paths.distProd));
 };
 
+//checks index.html for syntax issues
 pipes.validatedIndex = function() {
     return gulp.src(paths.index)
         .pipe(plugins.htmlhint())
         .pipe(plugins.htmlhint.reporter());
 };
 
+//rebuilds the index.html file into the dev directory automatically adding updating the dependency script source URLs
 pipes.builtIndexDev = function() {
 
     var orderedVendorScripts = pipes.builtVendorScriptsDev()
@@ -138,6 +155,7 @@ pipes.builtIndexDev = function() {
         .pipe(gulp.dest(paths.distDev));
 };
 
+//rebuilds the index.html file into the dev directory automatically adding updating the dependency script source URLs and referencing the new minified JS file
 pipes.builtIndexProd = function() {
 
     var vendorScripts = pipes.builtVendorScriptsProd();
