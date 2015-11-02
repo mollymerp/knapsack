@@ -19,7 +19,6 @@ angular.module("knapsack.services", [])
         Session.create(resp.data.id, resp.data.user);
         return resp.data.user;
       }, function errorCallback(resp) {
-        // does the backend handle usernames that already exist?
         console.log(resp.status + ": failed to signup user");
         return resp;
       });

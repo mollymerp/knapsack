@@ -1,10 +1,10 @@
 {
   "name": "knapsack",
-  "description": "> Pithy project description",
+  "description": "",
   "main": "client/app/app.js",
   "authors": [
     "mollymerp <mollylloyd@gmail.com>",
-    "arthurmathies <arthurmnathies@googlemail.com",
+    "arthurmathies <arthur.mathies@googlemail.com",
     "ccnixon <chrisnxn@gmail.com>",
     "cjpuskar <cjpuskar@comcast.net>",
     "sujaypatel16 <sujay.sanjay.patel@gmail.com>"
