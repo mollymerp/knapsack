@@ -12,7 +12,7 @@
           <td>
             <form class="form-inline" ng-submit="addBook()">
               <div class="text-left">
-                <input id = "new-book" type="text" autocomplete="off" ng-model="newBook.title" name="title" placeholder="Start typing to add a book" uib-typeahead="data as data.title + ' (' + data.author + ')' for data in getLocation($viewValue)" typeahead-on-select="addBook($item)" required>
+                <input id = "new-book" type="text" autocomplete="off" ng-model="newBook.title" name="title" placeholder="Start typing to add a book" uib-typeahead="data as data.title + ' (' + data.author + ')' for data in searchBooks($viewValue)" typeahead-on-select="addBook($item)" required>
                 <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;" tabindex="-1"/>
               </div>
             </form>
