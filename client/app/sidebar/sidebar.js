@@ -8,7 +8,6 @@ angular.module("knapsack.sidebar", [])
     };
 
     var getCollections = function() {
-      //this code is whenever we start working with http requests which return promises
       Collections.getAll()
       .then(function(retrievedCollections) {
         $scope.data.collections = retrievedCollections;
@@ -17,7 +16,6 @@ angular.module("knapsack.sidebar", [])
         console.error(error);
       });
     };
-    getCollections();
 
     $scope.addCollection = function addCollection() {
       Collections.addCollection($scope.newCollection.name)
@@ -25,6 +23,5 @@ angular.module("knapsack.sidebar", [])
       $scope.newCollection.name = "";
     };
 
-
-
+    getCollections();
   }]);
