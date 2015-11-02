@@ -16,8 +16,13 @@ angular.module("knapsack.services", [])
         url: "api/signup",
         data: user
       }).then(function succesCallback(resp) {
-        Session.create(resp.data.id, resp.data.user);
-        return resp.data.user;
+        console.log("signup resposne", resp.data);
+        if (resp.data.constructor === String && resp.data.search("already taken") > 0) {
+         return("already exists");
+        } else {
+          Session.create(resp.data.id, resp.data.user);
+          return resp.data.user;
+        }
       }, function errorCallback(resp) {
         console.log(resp.status + ": failed to signup user");
         return resp;
@@ -30,6 +35,9 @@ angular.module("knapsack.services", [])
         url: "api/signin",
         data: user
       }).then(function succesCallback(resp) {
+        if (resp.data==="Wrong password") {
+          return resp.data;
+        }
         Session.create(resp.data.id, resp.data.user);
         return resp.data.user;
       }, function errorCallback(resp) {
@@ -123,7 +131,7 @@ angular.module("knapsack.services", [])
     var getNytimes = function() {
       return $http({
           method: "GET",
-          url: "http://api.nytimes.com/svc/books/v3/lists.json?list-name=hardcover-fiction&api-key=b2f850985c69c53458eac07ce2f7a874%3A7%3A65642337"
+          url: "https://api.nytimes.com/svc/books/v3/lists.json?list-name=hardcover-fiction&api-key=b2f850985c69c53458eac07ce2f7a874%3A7%3A65642337"
         })
         .then(function(resp) {
           return resp.data.results;
