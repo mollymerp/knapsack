@@ -171,8 +171,8 @@ angular.module("knapsack.services", [])
 
     var removeBook = function(collection, book) {
       return $http({
-          method: "DELETE",
-          url: "/api/collection",
+          method: "POST",
+          url: "/api/collection/delete",
           data: JSON.stringify({
             collection: collection,
             book: book
