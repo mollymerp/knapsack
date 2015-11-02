@@ -32,3 +32,6 @@ client/lib/
 
 # database
 *.sqlite
+
+# ds
+.DS_Store
