@@ -301,7 +301,7 @@ app.post("/api/share", function(req, res) {
       Book.create(req.body.book)
         .then(function(book) {
           collection.addBook(book);
-          res.status.send("succesfully shared book");
+          res.send("succesfully shared book");
         });
     });
   });
