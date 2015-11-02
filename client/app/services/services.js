@@ -17,7 +17,7 @@ angular.module("knapsack.services", [])
         data: user
       }).then(function succesCallback(resp) {
         console.log("signup resposne", resp.data);
-        if (resp.data.search("already taken") > 0) {
+        if (resp.data.constructor === String && resp.data.search("already taken") > 0) {
          return("already exists");
         } else {
           Session.create(resp.data.id, resp.data.user);
