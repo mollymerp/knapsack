@@ -81,6 +81,7 @@ angular.module("knapsack.main", [])
 
     getBooks();
   }])
+
   .controller("DropdownCtrl", ["$scope", "Contents", function($scope, Contents) {
     $scope.loadFriends = function() {
       Contents.getFriends()
