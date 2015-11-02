@@ -14,6 +14,10 @@ var inject = require('gulp-inject');
 var angularFilesort = require('gulp-angular-filesort');
 var es = require('event-stream');
 
+//much of the code here is from this article: http://paislee.io/a-healthy-gulp-setup-for-angularjs-projects/
+
+//some of it might not be necessary
+
 //commonly used files paths stored here in an object for easy reference
 var paths = {
   scripts: "./client/app/**/*.js",
@@ -59,8 +63,7 @@ pipes.builtAppScriptsDev = function() {
         .pipe(gulp.dest(paths.distDev));
 };
 
-//minifies and concatenates scripts for production usage. The output is a new directory called
-// dist.prod. Currently does not work
+//minifies and concatenates scripts for production usage. The output is a new directory called dist.prod. Currently does not work
 pipes.builtAppScriptsProd = function() {
     var scriptedPartials = pipes.scriptedPartials();
     var validatedAppScripts = pipes.validatedAppScripts();
@@ -243,7 +246,3 @@ gulp.task("template-cache", function(){
   .pipe(templateCache({standalone:true, root:"app/"}))
   .pipe(gulp.dest("./dist/"))
 });
-
-gulp.task('build',
-  ['jshint', 'minify-css', 'minify-js', 'main-bower-files', 'template-cache', 'connect']
-);
