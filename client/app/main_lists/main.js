@@ -5,7 +5,7 @@ angular.module("knapsack.main", [])
       author: ""
     };
 
-    $scope.getLocation = function(val) {
+    $scope.getBooks = function(val) {
     return $http.get('https://www.googleapis.com/books/v1/volumes', {
       params: {
         q: val,
