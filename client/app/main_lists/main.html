@@ -8,11 +8,11 @@
           <th>Title</th>
           <th>Author</th>
           <th>Share</th>
-          <th>Delete</th>
+          <th ng-if="currentCollection != 'bestsellers'">Delete</th>
         </tr>
       </thead>
       <tbody ng-controller="DropdownCtrl">
-        <tr>
+        <tr ng-if="currentCollection != 'bestsellers'">
           <td>
             <form class="form-inline" ng-submit="addBook()">
               <div class="text-left">
@@ -39,7 +39,7 @@
                 </li>
               </ul>
           </td>
-          <td>
+          <td ng-if="currentCollection != 'bestsellers'">
             <button type="button " ng-click="removeBook(book)" class="btn btn-sm btn-default">
               <i class="glyphicon glyphicon-trash ">
               </i>
