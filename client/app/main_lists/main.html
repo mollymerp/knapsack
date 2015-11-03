@@ -23,7 +23,7 @@
           </td>
         </tr>
         <tr ng-repeat="book in displayedCollection">
-          <td> {{book.title}} </td>
+          <td> {{book.title | lowercase}} </td>
           <td> {{book.author}} </td>
           <td>
             <div class="btn-group" uib-dropdown uib-keyboard-nav>
@@ -49,8 +49,8 @@
   </tbody>
   <tfoot>
     <tr>
-      <td colspan="5 " class="text-center ">
-        <st-pagination st-items-by-page=5></st-pagination>
+      <td colspan="5" class="text-center ">
+        <st-pagination st-items-by-page=7></st-pagination>
       </td>
     </tr>
   </tfoot>

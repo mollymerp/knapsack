@@ -198,6 +198,9 @@ a.book-category {
   padding-top: 50px;
 }
 
+.book-table, .landing-table {
+  text-transform:capitalize;
+}
 table {
   border: 3px solid #B8E986;
   border-collapse: inherit;
