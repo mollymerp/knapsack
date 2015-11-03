@@ -209,6 +209,65 @@ app.post("/api/collections", function(req, res) {
   });
 });
 
+app.post("/api/collections/delete", function(req, res) {
+  User.findOne({
+    where: {
+      user_name: req.session.user.user_name
+    }
+  }).then(function(user) {
+    Collection.findOne({
+      where: {
+        user_id: user.id,
+        collection: req.body.collection
+      }
+    }).then(function(collection) {
+      collection.destroy().then(function() {
+        console.log("destroyed collection: " + req.body.collection);
+        res.send("succesfully deleted collection");
+      });
+    });
+  });
+});
+
+app.post("/api/collections/share", function(req, res) {
+  User.findOne({
+    where: {
+      user_name: req.session.user.user_name //currently logged in user
+    }
+  }).then(function(user) {
+    Collection.findOne({
+      where: {
+        user_id: user.id,
+        collection: req.body.collection
+      }
+    }).then(function(collection) {
+      collection.getBooks().then(function(books) {
+        User.findOne({
+          where: {
+            user_name: req.body.user //user you are sharing with
+          }
+        }).then(function(user) {
+          Collection.create({
+            collection: req.body.collection
+          }).then(function(collection) {
+            user.addCollection(collection);
+            for (var i = 0; i < books.length; i++) {
+              Book.create({
+                  title: books[i].title,
+                  author: books[i].author
+                })
+                .then(function(book) {
+                  collection.addBook(book);
+                });
+            }
+            res.status(201).send("succesfully shared collection");
+          });
+        });
+      });
+    });
+  });
+});
+
 // POST request to GET all books within a collection instance e.g. /api/collection/bestsellers
 // Unit Test : Pass (10/28/2015)
 // We have to use POST here, because GET requests do not allow data(collection name) to be sent with a request.
@@ -269,7 +328,6 @@ app.post("/api/collection", function(req, res) {
 });
 
 app.post("/api/collection/delete", function(req, res) {
-  console.log(req.body);
   User.findOne({
     where: {
       user_name: req.session.user.user_name

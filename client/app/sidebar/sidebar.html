@@ -1,18 +1,28 @@
-<div id="sidebar">
-
+<div id="sidebar" ng-Controller="DropdownCtrl">
   <div>
     <div class="collections">
       <div class="collection" ng-repeat="collection in data.collections">
-        <a class = "book-category" ng-href="#/collection/{{collection}}"> {{collection}}</a>
+        <div class="btn-group" uib-dropdown>
+          <button type="button" class="btn btn-sm btn-default" ng-click="loadFriends()" uib-dropdown-toggle>
+            <i class="glyphicon glyphicon-share-alt"></i>
+          </button>
+          <ul class="uib-dropdown-menu" role="menu">
+            <li role="menuitem" ng-click="shareCollection(collection, user)" ng-repeat="user in friends">
+              {{user}}
+            </li>
+          </ul>
+        </div>
+        <button type="button " ng-click="removeCollection(collection)" class="btn btn-sm btn-default">
+          <i class="glyphicon glyphicon-trash "></i>
+        </button>
+        <a class="book-category" ng-href="#/collection/{{collection}}"> {{collection}}</a>
       </div>
     </div>
   </div>
   <form class="form-inline" ng-submit="addCollection()">
     <div>
       <input id="new-collection" type="text" ng-model="newCollection.name" name="name" placeholder="add a collection" required/>
-      <input type="submit" 
-             style="position: absolute; left: -9999px; width: 1px; height: 1px;"
-             tabindex="-1" />
+      <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;" tabindex="-1" />
     </div>
   </form>
 </div>

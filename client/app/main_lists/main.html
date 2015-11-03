@@ -1,42 +1,42 @@
-    <table st-safe-src="bookCollection" st-table="displayedCollection" class="table book-table">
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Author</th>
-          <th>Share</th>
-          <th>Delete</th>
-        </tr>
-      </thead>
-      <tbody ng-controller="DropdownCtrl">
-        <tr>
-          <td>
-            <form class="form-inline" ng-submit="addBook()">
-              <div class="text-left">
-                <input id = "new-book" type="text" autocomplete="off" ng-model="newBook.title" name="title" placeholder="Start typing to add a book" uib-typeahead="data as data.title + ' (' + data.author + ')' for data in searchBooks($viewValue)" typeahead-on-select="addBook($item)" required>
-                <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;" tabindex="-1"/>
-              </div>
-            </form>
-          </td>
-        </tr>
-        <tr ng-repeat="book in displayedCollection">
-          <td> {{book.title | uppercase}} </td>
-          <td> {{book.author}} </td>
-          <td>
-            <div class="btn-group" uib-dropdown>
-              <button type="button" class="btn btn-sm btn-default" ng-click="loadFriends()" uib-dropdown-toggle>
-                <i class="glyphicon glyphicon-share-alt">
-                </i>
-              </button>
-              <ul class="uib-dropdown-menu" role="menu">
-                <li role="menuitem" ng-click="shareBook(book, user)" ng-repeat="user in friends">
-                  {{user}}
-                </li>
-              </ul>
-          </td>
-          <td>
-            <button type="button " ng-click="removeBook(book)" class="btn btn-sm btn-default">
-              <i class="glyphicon glyphicon-trash ">
-              </i>
+<table st-safe-src="bookCollection" st-table="displayedCollection" class="table book-table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Author</th>
+      <th>Share</th>
+      <th>Delete</th>
+    </tr>
+  </thead>
+  <tbody ng-controller="DropdownCtrl">
+    <tr>
+      <td>
+        <form class="form-inline" ng-submit="addBook()">
+          <div class="text-left">
+            <input id="new-book" type="text" autocomplete="off" ng-model="newBook.title" name="title" placeholder="Start typing to add a book" uib-typeahead="data as data.title + ' (' + data.author + ')' for data in searchBooks($viewValue)" typeahead-on-select="addBook($item)" required>
+            <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;" tabindex="-1" />
+          </div>
+        </form>
+      </td>
+    </tr>
+    <tr ng-repeat="book in displayedCollection">
+      <td> {{book.title | uppercase}} </td>
+      <td> {{book.author}} </td>
+      <td>
+<div class="btn-group" uib-dropdown>
+  <button type="button" class="btn btn-sm btn-default" ng-click="loadFriends()" uib-dropdown-toggle>
+    <i class="glyphicon glyphicon-share-alt"></i>
+  </button>
+  <ul class="uib-dropdown-menu" role="menu">
+    <li role="menuitem" ng-click="shareBook(book, user)" ng-repeat="user in friends">
+      {{user}}
+    </li>
+  </ul>
+</div>
+
+      </td>
+      <td>
+        <button type="button " ng-click="removeBook(book)" class="btn btn-sm btn-default">
+          <i class="glyphicon glyphicon-trash "></i>
         </button>
       </td>
     </tr>
