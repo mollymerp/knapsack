@@ -127,12 +127,20 @@ button {
 }
 
 .uib-dropdown-menu {
-  max-height: 100px;
+  max-height: 150px;
   overflow-y: scroll;
+}
+
+.uib-dropdown-menu>li{
+  padding: 0 5px;
+  cursor: pointer;
+  border-top: 5px;
+  border-color: #DDDDDD;
 }
 
 h1.landing-header {
   padding-top: 50px;
+  padding-bottom: 25px;
   font-size: 80px;
   font-weight: 100;
   margin-top: 0px;
@@ -190,6 +198,9 @@ a.book-category {
   padding-top: 50px;
 }
 
+.book-table, .landing-table {
+  text-transform:capitalize;
+}
 table {
   border: 3px solid #B8E986;
   border-collapse: inherit;
