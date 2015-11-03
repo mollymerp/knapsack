@@ -1,5 +1,5 @@
 angular.module("knapsack.services", [])
-  .service('Session', function() {
+  .service("Session", function() {
     this.create = function(sessionId, username) {
       this.id = sessionId;
       this.username = username;
@@ -18,7 +18,7 @@ angular.module("knapsack.services", [])
       }).then(function succesCallback(resp) {
         console.log("signup resposne", resp.data);
         if (resp.data.constructor === String && resp.data.search("already taken") > 0) {
-         return("already exists");
+          return ("already exists");
         } else {
           Session.create(resp.data.id, resp.data.user);
           return resp.data.user;
@@ -45,19 +45,21 @@ angular.module("knapsack.services", [])
         return resp;
       });
     };
-    
-    var logOut = function (user){
+
+    var logOut = function(user) {
       return $http({
         method: "POST",
         url: "api/logout",
-        data: JSON.stringify({user: user})
-      }).then(function succesCallback (resp){
+        data: JSON.stringify({
+          user: user
+        })
+      }).then(function succesCallback(resp) {
         Session.destroy();
         return resp;
-      }, function errorCallback(resp){
+      }, function errorCallback(resp) {
         console.log(resp.status + ": unable to logout");
         return resp;
-      })
+      });
     };
 
     var isAuthenticated = function() {
@@ -107,9 +109,11 @@ angular.module("knapsack.services", [])
     //remove a collection from the collection list for current user
     var removeCollection = function(collection) {
       return $http({
-        method: "DELETE",
-        url: "api/collections",
-        data: JSON.stringify(collection)
+        method: "POST",
+        url: "api/collections/delete",
+        data: JSON.stringify({
+          collection: collection
+        })
       }).then(function succesCallback(resp) {
         console.log(resp.status + ": succesfully deleted Collection");
       }, function errorCallback(resp) {
@@ -117,10 +121,26 @@ angular.module("knapsack.services", [])
       });
     };
 
+    var shareCollection = function(collection, user) {
+      return $http({
+        method: "POST",
+        url: "api/collections/share",
+        data: JSON.stringify({
+          collection: collection,
+          user: user
+        })
+      }).then(function succesCallback(resp) {
+        console.log(resp.status + ": succesfully shared collection");
+      }, function errorCallback(resp) {
+        console.log(resp.status + ": failed sharing collection");
+      });
+    };
+
     return {
       getAll: getAll,
       addCollection: addCollection,
-      removeCollection: removeCollection
+      removeCollection: removeCollection,
+      shareCollection: shareCollection
     };
 
   }])

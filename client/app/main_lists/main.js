@@ -14,24 +14,25 @@ angular.module("knapsack.main", [])
     
 
     $scope.searchBooks = function(val) {
-    return $http.get('https://www.googleapis.com/books/v1/volumes', {
-      params: {
-        q: val,
-        sensor: false,
-        key: "AIzaSyD9-ymecHg0I2o_mDvvD39PxNv46yz2Gnc", // Insert Google API key here
-        printType: "books"
-      }
-    }).then(function(response){
-      return response.data.items.map(function(item){
-        var data = {
-          /* There are often multiple authors for books. This comes from the Google Books API via an array. For the sake of time, we are using this function to limit the amount of authors to the first result. In the future, this would be good to flush out to allow for storing multiple authors in the DB
-          */
-          author: item.volumeInfo.authors === undefined? "" : item.volumeInfo.authors[0],
-          title: item.volumeInfo.title
-        };
-        return data;
+      return $http.get("https://www.googleapis.com/books/v1/volumes", {
+        params: {
+          q: val,
+          sensor: false,
+          key: "AIzaSyD9-ymecHg0I2o_mDvvD39PxNv46yz2Gnc", // Insert Google API key here
+          printType: "books"
+        }
+      }).then(function(response) {
+        return response.data.items.map(function(item) {
+          var data = {
+            /* There are often multiple authors for books. This comes from the Google Books API via an array. For the sake of time, we are using this function to limit the amount of authors to the first result. In the future, this would be good to flush out to allow for storing multiple authors in the DB
+             */
+            author: item.volumeInfo.authors === undefined ? "" : item.volumeInfo.authors[0],
+            title: item.volumeInfo.title
+          };
+          return data;
+        });
       });
-    })};
+    };
 
     var getNytimes = function() {
       var bestSellers = [];
@@ -88,11 +89,11 @@ angular.module("knapsack.main", [])
     getBooks();
   }])
 
-  .controller("DropdownCtrl", ["$scope", "Contents", function($scope, Contents) {
-    $scope.loadFriends = function() {
-      Contents.getFriends()
-        .then(function(users) {
-          $scope.friends = users;
-        });
-    };
-  }]);
+.controller("DropdownCtrl", ["$scope", "Contents", function($scope, Contents) {
+  $scope.loadFriends = function() {
+    Contents.getFriends()
+      .then(function(users) {
+        $scope.friends = users;
+      });
+  };
+}]);

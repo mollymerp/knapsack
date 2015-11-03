@@ -14,7 +14,7 @@ angular.module("knapsack", [
     $scope.setCurrentUser = function(user) {
       $scope.currentUser = user;
     };
-    
+
     $scope.$on(AUTH_EVENTS.logoutSuccess, $scope.setCurrentUser(null));
     $scope.$on(AUTH_EVENTS.notAuthenticated, $location.path('/landing'));
     $scope.$on(AUTH_EVENTS.loginFailed, $location.path('/landing'))
@@ -83,7 +83,7 @@ angular.module("knapsack", [
     notAuthenticated: 'auth-not-authenticated'
   })
   .run(['$rootScope', '$urlRouter', '$location', '$state', "AUTH_EVENTS", "Auth", function($rootScope, $state, $urlRouter, $location, AUTH_EVENTS, Auth) {
-    $rootScope.$on('$stateChangeStart', function (event, next, $state) {
+    $rootScope.$on('$stateChangeStart', function(event, next, $state) {
       // event.preventDefault();
       if ($rootScope.currentUser === null) {
         console.log("no logged in user");
