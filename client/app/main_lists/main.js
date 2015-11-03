@@ -5,6 +5,14 @@ angular.module("knapsack.main", [])
       author: ""
     };
 
+    $scope.currentCollection = "";
+    if ($location.url().split("/")[2]){
+      $scope.currentCollection = $location.url().split("/")[2].replace("%20"," "); 
+      // in the database, we don't want spaces in our collection names, so we replace the space in the url.
+      var dbCollection = $location.url().split("/")[2].replace("%20"," "); 
+    }
+    
+
     $scope.searchBooks = function(val) {
       return $http.get("https://www.googleapis.com/books/v1/volumes", {
         params: {
@@ -43,11 +51,10 @@ angular.module("knapsack.main", [])
       });
     };
 
-    //need to make a copy for smart table to asynchronously paginate responses
-
+    
 
     $scope.addBook = function(book) {
-      Contents.addBook($location.url().split("/")[2], book)
+      Contents.addBook(dbCollection, book)
         .then(getBooks);
       $scope.newBook.title = "";
     };
@@ -56,9 +63,8 @@ angular.module("knapsack.main", [])
       if ($location.url() === "/landing" || $location.url().split("/")[2] === "bestsellers") {
         getNytimes();
       } else {
-        Contents.getBooks($location.url().split("/")[2])
+        Contents.getBooks(dbCollection)
           .then(function(books) {
-            console.log("books fetched ", books);
             $scope.displayedCollection = books;
             $scope.bookCollection = [].concat(books);
           });
@@ -66,14 +72,14 @@ angular.module("knapsack.main", [])
     };
 
     $scope.removeBook = function(book) {
-      Contents.removeBook($location.url().split("/")[2], {
+      Contents.removeBook(dbCollection, {
         title: book.title,
         author: book.author
       }).then(getBooks);
     };
 
     $scope.shareBook = function(book, user) {
-      Contents.shareBook($location.url().split("/")[2], {
+      Contents.shareBook(dbCollection, {
         title: book.title,
         author: book.author
       }, user);

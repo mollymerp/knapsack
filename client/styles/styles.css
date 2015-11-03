@@ -70,6 +70,15 @@ a.navbar-brand {
   color: #4A4A4A;
 }
 
+.pagination>.active>a, .pagination>.active>a:hover   {
+  background-color: #B8E986;
+  border-color:#B8E986;
+  color: #4A4A4A;
+}
+
+.pagination>li>a{
+  color: #4A4A4A;
+}
 .navbar-right {
   padding-right: 20px;
 }
@@ -117,8 +126,21 @@ button {
   background-color: #80848C;
 }
 
+.uib-dropdown-menu {
+  max-height: 150px;
+  overflow-y: scroll;
+}
+
+.uib-dropdown-menu>li{
+  padding: 0 5px;
+  cursor: pointer;
+  border-top: 5px;
+  border-color: #DDDDDD;
+}
+
 h1.landing-header {
   padding-top: 50px;
+  padding-bottom: 25px;
   font-size: 80px;
   font-weight: 100;
   margin-top: 0px;
@@ -127,6 +149,11 @@ h1.landing-header {
 
 h3 {
   font-weight: 100;
+}
+
+h3.current-collection {
+  margin-top: 5px;
+  margin-bottom: 20px;
 }
 
 a {
@@ -171,6 +198,9 @@ a.book-category {
   padding-top: 50px;
 }
 
+.book-table, .landing-table {
+  text-transform:capitalize;
+}
 table {
   border: 3px solid #B8E986;
   border-collapse: inherit;
