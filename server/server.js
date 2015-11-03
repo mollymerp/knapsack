@@ -269,7 +269,14 @@ app.post("/api/collection", function(req, res) {
 });
 
 app.post("/api/collection/delete", function(req, res) {
-  console.log(req.body);
+  // NY Times bestsellers arent stored in the database, theyre an
+  // an API call (not stored in the DB). If you try to delete a book 
+  // from the bestsellers collection, the server will crash. This 
+  // if statement prevents that from happening.
+  if(req.body.collection === "bestsellers") {
+    console.log("Cant delete from bestsellers");
+    return;
+  }
   User.findOne({
     where: {
       user_name: req.session.user.user_name
