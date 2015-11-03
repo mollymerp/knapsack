@@ -80,6 +80,8 @@ var SigninModalCtrl = function($scope, $rootScope, $location, $modalInstance, us
         .then(function(user) {
           if (user === "Wrong password") {
             alert("Wrong password. Please try again.");
+          } else if (user.search("does not exist") > 0 ) {
+            alert("This username does not exist. Please sign up.");
           } else {
             $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
             $scope.setCurrentUser(user);

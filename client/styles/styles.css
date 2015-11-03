@@ -132,9 +132,9 @@ button {
 }
 
 .uib-dropdown-menu>li{
-  padding-left: 5px;
+  padding: 0 5px;
   cursor: pointer;
-  border-top: 1px;
+  border-top: 5px;
   border-color: #DDDDDD;
 }
 
