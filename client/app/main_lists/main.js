@@ -64,7 +64,6 @@ angular.module("knapsack.main", [])
       } else {
         Contents.getBooks(dbCollection)
           .then(function(books) {
-            console.log("books fetched ", books);
             $scope.displayedCollection = books;
             $scope.bookCollection = [].concat(books);
           });
