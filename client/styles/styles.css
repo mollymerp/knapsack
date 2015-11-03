@@ -41,6 +41,10 @@ a header {
   color: #4A4A4A;
 }
 
+i {
+  cursor: pointer;
+}
+
 .landing-container {
   position: relative;
   width: 60%;

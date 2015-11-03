@@ -17,6 +17,12 @@ angular.module("knapsack.sidebar", [])
         });
     };
 
+    $scope.show = false;
+
+    $scope.hover = function(){
+      $scope.show = !$scope.show;
+    };
+
     $scope.addCollection = function addCollection() {
       Collections.addCollection($scope.newCollection.name)
         .then(getCollections);
