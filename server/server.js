@@ -267,6 +267,7 @@ app.post("/api/collection", function(req, res) {
     }
   }).then(function(user) {
     var user_id = user.id;
+    console.log("req collection", req.body.collection)
     Collection.findOne({
       where: {
         collection: req.body.collection,

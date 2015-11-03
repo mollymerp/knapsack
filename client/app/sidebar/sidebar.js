@@ -10,6 +10,7 @@ angular.module("knapsack.sidebar", [])
     var getCollections = function() {
       Collections.getAll()
       .then(function(retrievedCollections) {
+        console.log(retrievedCollections);
         $scope.data.collections = retrievedCollections;
       })
       .catch(function(error) {

@@ -1,3 +1,7 @@
+    <div>
+      <h3 class="current-collection"> {{currentCollection}}</h3>
+    </div>
+
     <table st-safe-src="bookCollection" st-table="displayedCollection" class="table book-table">
       <thead>
         <tr>
@@ -19,7 +23,7 @@
           </td>
         </tr>
         <tr ng-repeat="book in displayedCollection">
-          <td> {{book.title | uppercase}} </td>
+          <td> {{book.title}} </td>
           <td> {{book.author}} </td>
           <td>
             <div class="btn-group" uib-dropdown>
